@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="Copied from console">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/analyst.glx7zA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/area.jdAtAA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/coupon.JthCrw.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/default.QdYTXA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/emilia_gettdwh.e9_Tig.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/staging_ccs.DzKGAQ.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/staging_fraud.YM3yuA.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SQL taska to train.sql" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="033262b3-3f33-461d-abb0-52cbf9de9fb0" />
+  </component>
+  <component name="ProjectId" id="1e2ssbSpsfQS6XS56pVHCreRCTO" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DBE.Init.BalloonShown" value="true" />
+    <property name="DatabaseDriversLRU" value="java.sql.Driver" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="database.data.extractors.current.export.id" value="JSON-Groovy.json.groovy" />
+    <property name="database.data.extractors.current.id" value="Tab-separated (TSV)_id" />
+    <property name="grid.search.filter.rows" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/Desktop/MY/sql" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$USER_HOME$/Desktop/Desktop/MY/sql" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="console.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
+      <script-file value="$APPLICATION_CONFIG_DIR$/consoles/db/91601007-24ff-495d-9f48-eb7aeeb13fbe/console.sql" />
+      <script-mode>FILE</script-mode>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="First commit" />
+    <MESSAGE value="Copied from console" />
+    <option name="LAST_COMMIT_MESSAGE" value="Copied from console" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="247" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593767731947">
+      <screen x="0" y="22" width="1440" height="838" />
+    </state>
+    <state x="247" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.22.1440.838@0.22.1440.838" timestamp="1593767731947" />
+    <state x="420" y="128" key="#console.sql" timestamp="1593953198987">
+      <screen x="0" y="22" width="1440" height="838" />
+    </state>
+    <state x="420" y="128" key="#console.sql/0.22.1440.838@0.22.1440.838" timestamp="1593953198987" />
+    <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1593768654079">
+      <screen x="0" y="22" width="1440" height="838" />
+    </state>
+    <state width="254" height="195" key="DatabaseViewActions_Filter/0.22.1440.838@0.22.1440.838" timestamp="1593768654079" />
+    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1596270611035">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog/0.0.1440.900@0.0.1440.900" timestamp="1596270611035" />
+    <state x="590" y="354" key="Github.ShareDialog" timestamp="1596269132701">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="590" y="354" key="Github.ShareDialog/0.0.1440.900@0.0.1440.900" timestamp="1596269132701" />
+    <state x="347" y="162" key="Github.UntrackedFilesDialog" timestamp="1596269154539">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="347" y="162" key="Github.UntrackedFilesDialog/0.0.1440.900@0.0.1440.900" timestamp="1596269154539" />
+    <state width="1111" height="302" key="GridCell.Tab.0.bottom" timestamp="1596270896297">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1111" height="302" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1596270896297" />
+    <state width="1101" height="310" key="GridCell.Tab.0.bottom/0.22.1440.838@0.22.1440.838" timestamp="1595836533615" />
+    <state width="1111" height="302" key="GridCell.Tab.0.center" timestamp="1596270896296">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1111" height="302" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1596270896296" />
+    <state width="1101" height="310" key="GridCell.Tab.0.center/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
+    <state width="1111" height="302" key="GridCell.Tab.0.left" timestamp="1596270896295">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1111" height="302" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1596270896295" />
+    <state width="1101" height="310" key="GridCell.Tab.0.left/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
+    <state width="1111" height="302" key="GridCell.Tab.0.right" timestamp="1596270896296">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1111" height="302" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1596270896296" />
+    <state width="1101" height="310" key="GridCell.Tab.0.right/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
+    <state width="256" height="491" key="HiddenNamespacesPopup" timestamp="1594218188778">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="256" height="491" key="HiddenNamespacesPopup/0.0.1440.900@0.0.1440.900" timestamp="1594218188778" />
+    <state width="256" height="491" key="HiddenNamespacesPopup/0.22.1440.838@0.22.1440.838" timestamp="1594217971652" />
+    <state x="308" y="192" key="IDE.errors.dialog" timestamp="1596270262370">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="308" y="192" key="IDE.errors.dialog/0.0.1440.900@0.0.1440.900" timestamp="1596270262370" />
+    <state x="221" y="62" key="SettingsEditor" timestamp="1596269628305">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="221" y="62" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1596269628305" />
+    <state x="221" y="80" key="SettingsEditor/0.22.1440.838@0.22.1440.838" timestamp="1593953153751" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1596270947620">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1596270947620" />
+    <state x="379" y="191" key="VcsDiffUtil.ChangesDialog" timestamp="1596270600970">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="379" y="191" key="VcsDiffUtil.ChangesDialog/0.0.1440.900@0.0.1440.900" timestamp="1596270600970" />
+    <state x="504" y="290" width="472" height="343" key="com.intellij.database.psi.DbRenamePsiElementProcessor.DbRenameDialog" timestamp="1593951780444">
+      <screen x="0" y="22" width="1440" height="838" />
+    </state>
+    <state x="504" y="290" width="472" height="343" key="com.intellij.database.psi.DbRenamePsiElementProcessor.DbRenameDialog/0.22.1440.838@0.22.1440.838" timestamp="1593951780444" />
+    <state x="657" y="400" key="com.intellij.database.run.ParametersPanel.Standalone" timestamp="1594581714935">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="657" y="400" key="com.intellij.database.run.ParametersPanel.Standalone/0.0.1440.900@0.0.1440.900" timestamp="1594581714935" />
+    <state x="0" y="0" key="com.intellij.database.run.actions.ShowCsvFormatsAction$ForExport" timestamp="1594301025606">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="0" y="0" key="com.intellij.database.run.actions.ShowCsvFormatsAction$ForExport/0.0.1440.900@0.0.1440.900" timestamp="1594301025606" />
+    <state x="444" y="195" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog" timestamp="1594711796724">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="444" y="195" key="com.intellij.database.view.ui.AbstractDbRefactoringDialog/0.0.1440.900@0.0.1440.900" timestamp="1594711796724" />
+    <state x="199" y="162" key="com.intellij.execution.console.ConsoleHistoryController$MyBrowseAction$1" timestamp="1594641224630">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="199" y="162" key="com.intellij.execution.console.ConsoleHistoryController$MyBrowseAction$1/0.0.1440.900@0.0.1440.900" timestamp="1594641224630" />
+    <state x="527" y="346" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1596270965205">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="527" y="346" key="git4idea.remote.GitConfigureRemotesDialog/0.0.1440.900@0.0.1440.900" timestamp="1596270965205" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1595399170413">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1595399170413" />
+  </component>
+</project>
