@@ -10,19 +10,8 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="Copied from console">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/analyst.glx7zA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/area.jdAtAA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/coupon.JthCrw.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/default.QdYTXA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/emilia_gettdwh.e9_Tig.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/staging_ccs.DzKGAQ.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/staging_fraud.YM3yuA.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/SQL taska to train.sql" afterDir="false" />
+    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="deleted big development script about steal cases">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +23,55 @@
   </component>
   <component name="GithubDefaultAccount">
     <option name="defaultAccountId" value="033262b3-3f33-461d-abb0-52cbf9de9fb0" />
+  </component>
+  <component name="GotoClassSymbolConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="GitIgnore" />
+      <filtered-out-file-type name="IgnoreLang" />
+      <filtered-out-file-type name="Redshift" />
+      <filtered-out-file-type name="CassandraQL" />
+      <filtered-out-file-type name="Derby" />
+      <filtered-out-file-type name="HiveQL" />
+      <filtered-out-file-type name="SparkSQL" />
+      <filtered-out-file-type name="BigQuery" />
+      <filtered-out-file-type name="ClickHouse" />
+      <filtered-out-file-type name="DTD" />
+      <filtered-out-file-type name="Exasol" />
+      <filtered-out-file-type name="GitExclude" />
+      <filtered-out-file-type name="GenericSQL" />
+      <filtered-out-file-type name="Greenplum" />
+      <filtered-out-file-type name="H2" />
+      <filtered-out-file-type name="HSQLDB" />
+      <filtered-out-file-type name="HTML" />
+      <filtered-out-file-type name="DB2_IS" />
+      <filtered-out-file-type name="DB2" />
+      <filtered-out-file-type name="DB2_ZOS" />
+      <filtered-out-file-type name="JSON" />
+      <filtered-out-file-type name="JSON5" />
+      <filtered-out-file-type name="JSRegexp" />
+      <filtered-out-file-type name="JSUnicodeRegexp" />
+      <filtered-out-file-type name="MariaDB" />
+      <filtered-out-file-type name="TSQL" />
+      <filtered-out-file-type name="MySQL" />
+      <filtered-out-file-type name="MySQL based" />
+      <filtered-out-file-type name="Oracle" />
+      <filtered-out-file-type name="OracleSqlPlus" />
+      <filtered-out-file-type name="TEXT" />
+      <filtered-out-file-type name="PostgreSQL" />
+      <filtered-out-file-type name="RegExp" />
+      <filtered-out-file-type name="RELAX-NG" />
+      <filtered-out-file-type name="Snowflake" />
+      <filtered-out-file-type name="SQL" />
+      <filtered-out-file-type name="SQL92" />
+      <filtered-out-file-type name="SQLite" />
+      <filtered-out-file-type name="SVG" />
+      <filtered-out-file-type name="Sybase" />
+      <filtered-out-file-type name="textmate" />
+      <filtered-out-file-type name="Vertica" />
+      <filtered-out-file-type name="XHTML" />
+      <filtered-out-file-type name="XML" />
+      <filtered-out-file-type name="XsdRegExp" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1e2ssbSpsfQS6XS56pVHCreRCTO" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -50,7 +88,8 @@
     <property name="database.data.extractors.current.id" value="Tab-separated (TSV)_id" />
     <property name="grid.search.filter.rows" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/Desktop/MY/sql" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="SQL Dialects" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/SQL taska to train.sql" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -64,6 +103,7 @@
       <method v="2" />
     </configuration>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
@@ -74,29 +114,46 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First commit" />
     <MESSAGE value="Copied from console" />
-    <option name="LAST_COMMIT_MESSAGE" value="Copied from console" />
+    <MESSAGE value="New file" />
+    <MESSAGE value="deleted big development script about steal cases" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleted big development script about steal cases" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="30" y="286" key="#SQL_Dialects" timestamp="1596272120381">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="30" y="286" key="#SQL_Dialects/0.0.1440.900@0.0.1440.900" timestamp="1596272120381" />
     <state x="247" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1593767731947">
       <screen x="0" y="22" width="1440" height="838" />
     </state>
     <state x="247" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.22.1440.838@0.22.1440.838" timestamp="1593767731947" />
+    <state x="408" y="193" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1596271789509">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="408" y="193" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1440.900@0.0.1440.900" timestamp="1596271789509" />
     <state x="420" y="128" key="#console.sql" timestamp="1593953198987">
       <screen x="0" y="22" width="1440" height="838" />
     </state>
     <state x="420" y="128" key="#console.sql/0.22.1440.838@0.22.1440.838" timestamp="1593953198987" />
-    <state width="254" height="195" key="DatabaseViewActions_Filter" timestamp="1593768654079">
-      <screen x="0" y="22" width="1440" height="838" />
-    </state>
-    <state width="254" height="195" key="DatabaseViewActions_Filter/0.22.1440.838@0.22.1440.838" timestamp="1593768654079" />
-    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1596270611035">
+    <state width="254" height="210" key="DatabaseViewActions_Filter" timestamp="1596273216474">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
+    <state width="254" height="210" key="DatabaseViewActions_Filter/0.0.1440.900@0.0.1440.900" timestamp="1596273216474" />
+    <state width="254" height="195" key="DatabaseViewActions_Filter/0.22.1440.838@0.22.1440.838" timestamp="1593768654079" />
+    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1596272431844">
+      <screen x="0" y="22" width="1440" height="838" />
+    </state>
     <state x="100" y="100" width="1240" height="700" key="DiffContextDialog/0.0.1440.900@0.0.1440.900" timestamp="1596270611035" />
+    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog/0.22.1440.838@0.22.1440.838" timestamp="1596272431844" />
+    <state x="522" y="376" key="Github.CreateGistDialog" timestamp="1596271260119">
+      <screen x="0" y="22" width="1440" height="838" />
+    </state>
+    <state x="522" y="376" key="Github.CreateGistDialog/0.22.1440.838@0.22.1440.838" timestamp="1596271260119" />
     <state x="590" y="354" key="Github.ShareDialog" timestamp="1596269132701">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -105,25 +162,25 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="347" y="162" key="Github.UntrackedFilesDialog/0.0.1440.900@0.0.1440.900" timestamp="1596269154539" />
-    <state width="1111" height="302" key="GridCell.Tab.0.bottom" timestamp="1596270896297">
+    <state width="1111" height="302" key="GridCell.Tab.0.bottom" timestamp="1596273186852">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1596270896297" />
+    <state width="1111" height="302" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1596273186852" />
     <state width="1101" height="310" key="GridCell.Tab.0.bottom/0.22.1440.838@0.22.1440.838" timestamp="1595836533615" />
-    <state width="1111" height="302" key="GridCell.Tab.0.center" timestamp="1596270896296">
+    <state width="1111" height="302" key="GridCell.Tab.0.center" timestamp="1596273186851">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1596270896296" />
+    <state width="1111" height="302" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1596273186851" />
     <state width="1101" height="310" key="GridCell.Tab.0.center/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
-    <state width="1111" height="302" key="GridCell.Tab.0.left" timestamp="1596270896295">
+    <state width="1111" height="302" key="GridCell.Tab.0.left" timestamp="1596273186850">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1596270896295" />
+    <state width="1111" height="302" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1596273186850" />
     <state width="1101" height="310" key="GridCell.Tab.0.left/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
-    <state width="1111" height="302" key="GridCell.Tab.0.right" timestamp="1596270896296">
+    <state width="1111" height="302" key="GridCell.Tab.0.right" timestamp="1596273186851">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1596270896296" />
+    <state width="1111" height="302" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1596273186851" />
     <state width="1101" height="310" key="GridCell.Tab.0.right/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
     <state width="256" height="491" key="HiddenNamespacesPopup" timestamp="1594218188778">
       <screen x="0" y="0" width="1440" height="900" />
@@ -134,11 +191,15 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="308" y="192" key="IDE.errors.dialog/0.0.1440.900@0.0.1440.900" timestamp="1596270262370" />
-    <state x="221" y="62" key="SettingsEditor" timestamp="1596269628305">
+    <state x="192" y="137" key="SettingsEditor" timestamp="1596272801068">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="221" y="62" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1596269628305" />
+    <state x="192" y="137" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1596272801068" />
     <state x="221" y="80" key="SettingsEditor/0.22.1440.838@0.22.1440.838" timestamp="1593953153751" />
+    <state width="254" height="200" key="ShowFilterAction_Filter_Popup" timestamp="1596272877708">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="254" height="200" key="ShowFilterAction_Filter_Popup/0.0.1440.900@0.0.1440.900" timestamp="1596272877708" />
     <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1596270947620">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -147,6 +208,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="379" y="191" key="VcsDiffUtil.ChangesDialog/0.0.1440.900@0.0.1440.900" timestamp="1596270600970" />
+    <state x="458" y="262" key="com.intellij.database.dbimport.ImportUtil.ChooseTargetDialog" timestamp="1596273116688">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="458" y="262" key="com.intellij.database.dbimport.ImportUtil.ChooseTargetDialog/0.0.1440.900@0.0.1440.900" timestamp="1596273116688" />
     <state x="504" y="290" width="472" height="343" key="com.intellij.database.psi.DbRenamePsiElementProcessor.DbRenameDialog" timestamp="1593951780444">
       <screen x="0" y="22" width="1440" height="838" />
     </state>
@@ -167,13 +232,18 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="199" y="162" key="com.intellij.execution.console.ConsoleHistoryController$MyBrowseAction$1/0.0.1440.900@0.0.1440.900" timestamp="1594641224630" />
+    <state x="100" y="84" width="1240" height="752" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1596272431845">
+      <screen x="0" y="22" width="1440" height="838" />
+    </state>
+    <state x="100" y="84" width="1240" height="752" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.22.1440.838@0.22.1440.838" timestamp="1596272431845" />
     <state x="527" y="346" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1596270965205">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="527" y="346" key="git4idea.remote.GitConfigureRemotesDialog/0.0.1440.900@0.0.1440.900" timestamp="1596270965205" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1595399170413">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1596272884021">
+      <screen x="0" y="22" width="1440" height="838" />
     </state>
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1595399170413" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1596272860528" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.22.1440.838@0.22.1440.838" timestamp="1596272884021" />
   </component>
 </project>
