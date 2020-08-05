@@ -10,8 +10,12 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="deleted big development script about steal cases">
+    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="some correctioms">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Steal Cases.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Steal Cases.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vkusvill.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Vkusvill.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +125,8 @@
     <MESSAGE value="Copied from console" />
     <MESSAGE value="New file" />
     <MESSAGE value="deleted big development script about steal cases" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleted big development script about steal cases" />
+    <MESSAGE value="some correctioms" />
+    <option name="LAST_COMMIT_MESSAGE" value="some correctioms" />
   </component>
   <component name="WindowStateProjectService">
     <state x="30" y="286" key="#SQL_Dialects" timestamp="1596272120381">
@@ -187,19 +192,19 @@
     </state>
     <state width="256" height="491" key="HiddenNamespacesPopup/0.0.1440.900@0.0.1440.900" timestamp="1594218188778" />
     <state width="256" height="491" key="HiddenNamespacesPopup/0.22.1440.838@0.22.1440.838" timestamp="1594217971652" />
-    <state x="308" y="192" key="IDE.errors.dialog" timestamp="1596270262370">
+    <state x="308" y="192" key="IDE.errors.dialog" timestamp="1596273522281">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="308" y="192" key="IDE.errors.dialog/0.0.1440.900@0.0.1440.900" timestamp="1596270262370" />
+    <state x="308" y="192" key="IDE.errors.dialog/0.0.1440.900@0.0.1440.900" timestamp="1596273522281" />
     <state x="192" y="137" key="SettingsEditor" timestamp="1596272801068">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="192" y="137" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1596272801068" />
     <state x="221" y="80" key="SettingsEditor/0.22.1440.838@0.22.1440.838" timestamp="1593953153751" />
-    <state width="254" height="200" key="ShowFilterAction_Filter_Popup" timestamp="1596272877708">
+    <state width="254" height="200" key="ShowFilterAction_Filter_Popup" timestamp="1596273433110">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="254" height="200" key="ShowFilterAction_Filter_Popup/0.0.1440.900@0.0.1440.900" timestamp="1596272877708" />
+    <state width="254" height="200" key="ShowFilterAction_Filter_Popup/0.0.1440.900@0.0.1440.900" timestamp="1596273433110" />
     <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1596270947620">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -232,18 +237,19 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="199" y="162" key="com.intellij.execution.console.ConsoleHistoryController$MyBrowseAction$1/0.0.1440.900@0.0.1440.900" timestamp="1594641224630" />
-    <state x="100" y="84" width="1240" height="752" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1596272431845">
-      <screen x="0" y="22" width="1440" height="838" />
+    <state x="100" y="67" width="1240" height="808" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1596273707550">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
+    <state x="100" y="67" width="1240" height="808" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1440.900@0.0.1440.900" timestamp="1596273707550" />
     <state x="100" y="84" width="1240" height="752" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.22.1440.838@0.22.1440.838" timestamp="1596272431845" />
     <state x="527" y="346" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1596270965205">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="527" y="346" key="git4idea.remote.GitConfigureRemotesDialog/0.0.1440.900@0.0.1440.900" timestamp="1596270965205" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1596272884021">
-      <screen x="0" y="22" width="1440" height="838" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1596273445544">
+      <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1596272860528" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1596273445544" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.22.1440.838@0.22.1440.838" timestamp="1596272884021" />
   </component>
 </project>
