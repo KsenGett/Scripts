@@ -10,7 +10,8 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="added all details about delivery performance">
+    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="Corrections of companies dynamic part. Added all companies and fixed mistakes">
+      <change afterPath="$PROJECT_DIR$/Orders 7 per day in Companies mistake .sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Steal Cases.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Steal Cases.sql" afterDir="false" />
     </list>
@@ -87,7 +88,6 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="database.data.extractors.current.export.id" value="JSON-Groovy.json.groovy" />
     <property name="database.data.extractors.current.id" value="Tab-separated (TSV)_id" />
-    <property name="grid.search.filter.rows" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/Desktop/MY/sql" />
     <property name="settings.editor.selected.configurable" value="SQL Dialects" />
     <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/SQL taska to train.sql" />
@@ -134,7 +134,8 @@
     <MESSAGE value="deleted big development script about steal cases" />
     <MESSAGE value="some correctioms" />
     <MESSAGE value="added all details about delivery performance" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Corrections of companies dynamic part. Added all companies and fixed mistakes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Corrections of companies dynamic part. Added all companies and fixed mistakes" />
   </component>
   <component name="WindowStateProjectService">
     <state x="30" y="286" key="#SQL_Dialects" timestamp="1596272120381">
@@ -153,6 +154,10 @@
       <screen x="0" y="22" width="1440" height="838" />
     </state>
     <state x="420" y="128" key="#console.sql/0.22.1440.838@0.22.1440.838" timestamp="1593953198987" />
+    <state x="483" y="171" key="#xdebugger.evaluate" timestamp="1596787673240">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="483" y="171" key="#xdebugger.evaluate/0.0.1440.900@0.0.1440.900" timestamp="1596787673240" />
     <state width="254" height="210" key="DatabaseViewActions_Filter" timestamp="1596273216474">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -175,25 +180,25 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="347" y="162" key="Github.UntrackedFilesDialog/0.0.1440.900@0.0.1440.900" timestamp="1596269154539" />
-    <state width="1111" height="302" key="GridCell.Tab.0.bottom" timestamp="1596786323206">
+    <state width="1111" height="302" key="GridCell.Tab.0.bottom" timestamp="1596787233844">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1596786323206" />
+    <state width="1111" height="302" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1596787233844" />
     <state width="1101" height="310" key="GridCell.Tab.0.bottom/0.22.1440.838@0.22.1440.838" timestamp="1595836533615" />
-    <state width="1111" height="302" key="GridCell.Tab.0.center" timestamp="1596786323205">
+    <state width="1111" height="302" key="GridCell.Tab.0.center" timestamp="1596787233843">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1596786323205" />
+    <state width="1111" height="302" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1596787233843" />
     <state width="1101" height="310" key="GridCell.Tab.0.center/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
-    <state width="1111" height="302" key="GridCell.Tab.0.left" timestamp="1596786323203">
+    <state width="1111" height="302" key="GridCell.Tab.0.left" timestamp="1596787233843">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1596786323203" />
+    <state width="1111" height="302" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1596787233843" />
     <state width="1101" height="310" key="GridCell.Tab.0.left/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
-    <state width="1111" height="302" key="GridCell.Tab.0.right" timestamp="1596786323206">
+    <state width="1111" height="302" key="GridCell.Tab.0.right" timestamp="1596787233844">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1596786323206" />
+    <state width="1111" height="302" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1596787233844" />
     <state width="1101" height="310" key="GridCell.Tab.0.right/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
     <state width="256" height="491" key="HiddenNamespacesPopup" timestamp="1594218188778">
       <screen x="0" y="0" width="1440" height="900" />
