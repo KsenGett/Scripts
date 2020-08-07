@@ -10,12 +10,9 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="some correctioms">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="added all details about delivery performance">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Steal Cases.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Steal Cases.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Vkusvill.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Vkusvill.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,12 +97,22 @@
       <recent name="$USER_HOME$/Desktop/Desktop/MY/sql" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Database Script.Steal Cases.sql">
+    <configuration name="Steal Cases.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/Steal Cases.sql" />
+      <script-mode>FILE</script-mode>
+      <method v="2" />
+    </configuration>
     <configuration name="console.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
       <script-file value="$APPLICATION_CONFIG_DIR$/consoles/db/91601007-24ff-495d-9f48-eb7aeeb13fbe/console.sql" />
       <script-mode>FILE</script-mode>
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Database Script.Steal Cases.sql" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="Vcs.Log.Tabs.Properties">
@@ -126,7 +133,8 @@
     <MESSAGE value="New file" />
     <MESSAGE value="deleted big development script about steal cases" />
     <MESSAGE value="some correctioms" />
-    <option name="LAST_COMMIT_MESSAGE" value="some correctioms" />
+    <MESSAGE value="added all details about delivery performance" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="WindowStateProjectService">
     <state x="30" y="286" key="#SQL_Dialects" timestamp="1596272120381">
@@ -167,25 +175,25 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="347" y="162" key="Github.UntrackedFilesDialog/0.0.1440.900@0.0.1440.900" timestamp="1596269154539" />
-    <state width="1111" height="302" key="GridCell.Tab.0.bottom" timestamp="1596273186852">
+    <state width="1111" height="302" key="GridCell.Tab.0.bottom" timestamp="1596786323206">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1596273186852" />
+    <state width="1111" height="302" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1596786323206" />
     <state width="1101" height="310" key="GridCell.Tab.0.bottom/0.22.1440.838@0.22.1440.838" timestamp="1595836533615" />
-    <state width="1111" height="302" key="GridCell.Tab.0.center" timestamp="1596273186851">
+    <state width="1111" height="302" key="GridCell.Tab.0.center" timestamp="1596786323205">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1596273186851" />
+    <state width="1111" height="302" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1596786323205" />
     <state width="1101" height="310" key="GridCell.Tab.0.center/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
-    <state width="1111" height="302" key="GridCell.Tab.0.left" timestamp="1596273186850">
+    <state width="1111" height="302" key="GridCell.Tab.0.left" timestamp="1596786323203">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1596273186850" />
+    <state width="1111" height="302" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1596786323203" />
     <state width="1101" height="310" key="GridCell.Tab.0.left/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
-    <state width="1111" height="302" key="GridCell.Tab.0.right" timestamp="1596273186851">
+    <state width="1111" height="302" key="GridCell.Tab.0.right" timestamp="1596786323206">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="302" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1596273186851" />
+    <state width="1111" height="302" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1596786323206" />
     <state width="1101" height="310" key="GridCell.Tab.0.right/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
     <state width="256" height="491" key="HiddenNamespacesPopup" timestamp="1594218188778">
       <screen x="0" y="0" width="1440" height="900" />
@@ -205,10 +213,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="254" height="200" key="ShowFilterAction_Filter_Popup/0.0.1440.900@0.0.1440.900" timestamp="1596273433110" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1596270947620">
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1596657368953">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1596270947620" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1596657368953" />
     <state x="379" y="191" key="VcsDiffUtil.ChangesDialog" timestamp="1596270600970">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
