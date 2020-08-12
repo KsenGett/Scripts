@@ -1,12 +1,13 @@
 with aggregate_table AS (
             with robbed_companies AS --18 companies
                     (
-                    SELECT fo.ordering_corporate_account_gk, fo.date_key, fo.origin_location_key,
+                    SELECT distinct fo.ordering_corporate_account_gk
+                    /*fo.date_key, fo.origin_location_key,
                     (CASE when fl.vendor_name like '%courier car%' THEN 'PHV'
                     when fl.vendor_name like '%courier pedestrian%' THEN 'pedestrian'
                     when fl.vendor_name like '%courier scooter%' THEN 'scooter'
                     when fl.vendor_name is null THEN NULL
-                    ELSE 'taxi' end) AS supply_type
+                    ELSE 'taxi' end) AS supply_type */
                     --order_id
 
                         FROM sheets."default".delivery_steal_cases_actual steal
@@ -16,11 +17,11 @@ with aggregate_table AS (
                         and fo.date_key between date'2020-03-06' and current_date
                         and fo.country_key = 2
 
-                        LEFT JOIN emilia_gettdwh.dwh_dim_vendors_v fl ON fo.fleet_gk = fl.vendor_gk
+                        --LEFT JOIN emilia_gettdwh.dwh_dim_vendors_v fl ON fo.fleet_gk = fl.vendor_gk
                         )
 
                 --completed orders per date IN company
-                SELECT --04-05 -1 taxi 750
+                SELECT
                 fo.ordering_corporate_account_gk,
                 (CASE when fo.ordering_corporate_account_gk = cast(internal.company_gk AS integer)
                     THEN internal.name_internal ELSE
@@ -44,9 +45,8 @@ with aggregate_table AS (
                     when fl.vendor_name like '%courier scooter%' THEN 'scooter'
                     when fl.vendor_name is null THEN NULL
                     ELSE 'taxi' end) AS supply_type,
+
                     (CASE when fo.ordering_corporate_account_gk = cr.ordering_corporate_account_gk
-                    and fo.origin_location_key = cr.origin_location_key and fo.date_key = cr.date_key
-                    and supply_type = cr.supply_type
                     THEN 'Yes' ELSE 'No' end) AS robbed_company,
 
                     count(fo.order_gk) orders_7_per_day
@@ -56,7 +56,7 @@ with aggregate_table AS (
                     --robbed companies
                     LEFT JOIN robbed_companies cr ON
                     cr.ordering_corporate_account_gk = fo.ordering_corporate_account_gk
-                    and fo.date_key = cr.date_key and fo.origin_location_key = cr.origin_location_key
+                    --and fo.date_key = cr.date_key and fo.origin_location_key = cr.origin_location_key
                     --vendor
                     LEFT JOIN emilia_gettdwh.dwh_dim_vendors_v fl ON fo.fleet_gk = fl.vendor_gk
                     -- company name
@@ -76,7 +76,8 @@ with aggregate_table AS (
                     and fo.order_status_key = 7
 
                     GROUP BY 1,2,3,4,5,6,7,8
-                )
+
+         )
 
             , steal_orders_info AS (
             SELECT  --orders
@@ -119,22 +120,30 @@ with aggregate_table AS (
                 and fo.date_key between date'2020-03-06' and current_date
                 and steal.order_id = cast(fo.sourceid AS varchar)
                 )
-
 SELECT agt.ordering_corporate_account_gk company_gk,
 agt.company_name company, agt.Client_type, agt.supply_type, agt.region_name,
 agt.date_key, tp.timecategory, tp.subperiod, tp.period, tp.subperiod2 AS time_period,
 agt.orders_7_per_day, agt.robbed_company,
-soi.order_id, soi.status,soi.driver_name, soi.supply_type, soi.driver_phone_number, soi.order_cost,
-soi.region_name
+soi.order_id, soi.status,soi.driver_name, soi.supply_type supply_type2, soi.driver_phone_number, soi.order_cost,
+soi.region_name region_name2
 --spd.order_cost
 FROM aggregate_table agt
             --steal date
 LEFT JOIN steal_orders_info soi
 ON soi.ordering_corporate_account_gk = agt.ordering_corporate_account_gk and soi.date_key = agt.date_key
 and soi.supply_type = agt.supply_type and soi.region_name = agt.region_name
-
 --time
 LEFT JOIN  emilia_gettdwh.periods_v tp
 ON agt.hour_key = tp.hour_key and tp.date_key = agt.date_key
 and tp.timecategory IN ( '2.Dates', '3.Weeks', '4.Months', '5.Quarters')
 WHERE tp.timecategory is not null
+
+
+select count(order_gk)
+--2020-04-17 pyaterocka in my sql 5457; in dash 5457 in this request 5457
+
+from emilia_gettdwh.dwh_fact_orders_v fo
+WHERE fo.date_key = date'2020-04-17'
+and fo.lob_key IN (5,6)
+and fo.order_status_key = 7
+and ordering_corporate_account_gk = 200022121

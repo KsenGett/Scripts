@@ -303,6 +303,7 @@ SELECT  --orders
 
 
 -- All delivery orders
+with all
 select fo.ordering_corporate_account_gk,
 (CASE when fo.ordering_corporate_account_gk = cast(internal.company_gk AS integer)
                     THEN internal.name_internal ELSE
@@ -336,6 +337,7 @@ group by 1,2,3,4,5,6,7,8
 
 
 ---ALL FLEETS + Steal Details
+with all__ as (
 with aggregate_table as (
         with --5-7 sec
             fleet_robbers as (
@@ -446,5 +448,5 @@ LEFT JOIN  emilia_gettdwh.periods_v tp
 ON agt.hour_key = tp.hour_key and tp.date_key = agt.date_key
 and tp.timecategory IN ( '2.Dates', '3.Weeks', '4.Months', '5.Quarters')
 WHERE tp.timecategory is not null
-
+) select count(distinct fleet_gk) from all__
 --test
