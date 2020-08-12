@@ -10,10 +10,11 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="old skript">
+    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="Fixed Orders 7 per day in Fleets and inserted correct script fpr companies">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Orders 7 per day in Companies mistake .sql" beforeDir="false" afterPath="$PROJECT_DIR$/Orders 7 per day in Companies mistake .sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Steal Cases.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Steal Cases.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vkusvill.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Vkusvill.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +138,8 @@
     <MESSAGE value="Corrections of companies dynamic part. Added all companies and fixed mistakes" />
     <MESSAGE value="new script" />
     <MESSAGE value="old skript" />
-    <option name="LAST_COMMIT_MESSAGE" value="old skript" />
+    <MESSAGE value="Fixed Orders 7 per day in Fleets and inserted correct script fpr companies" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed Orders 7 per day in Fleets and inserted correct script fpr companies" />
   </component>
   <component name="WindowStateProjectService">
     <state x="30" y="286" key="#SQL_Dialects" timestamp="1596272120381">
@@ -182,25 +184,25 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="347" y="162" key="Github.UntrackedFilesDialog/0.0.1440.900@0.0.1440.900" timestamp="1596269154539" />
-    <state width="1111" height="316" key="GridCell.Tab.0.bottom" timestamp="1596822950896">
+    <state width="1111" height="316" key="GridCell.Tab.0.bottom" timestamp="1597222084082">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="316" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1596822950896" />
+    <state width="1111" height="316" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1597222084082" />
     <state width="1101" height="310" key="GridCell.Tab.0.bottom/0.22.1440.838@0.22.1440.838" timestamp="1595836533615" />
-    <state width="1111" height="316" key="GridCell.Tab.0.center" timestamp="1596822950895">
+    <state width="1111" height="316" key="GridCell.Tab.0.center" timestamp="1597222084081">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="316" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1596822950895" />
+    <state width="1111" height="316" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1597222084081" />
     <state width="1101" height="310" key="GridCell.Tab.0.center/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
-    <state width="1111" height="316" key="GridCell.Tab.0.left" timestamp="1596822950894">
+    <state width="1111" height="316" key="GridCell.Tab.0.left" timestamp="1597222084079">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="316" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1596822950894" />
+    <state width="1111" height="316" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1597222084079" />
     <state width="1101" height="310" key="GridCell.Tab.0.left/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
-    <state width="1111" height="316" key="GridCell.Tab.0.right" timestamp="1596822950896">
+    <state width="1111" height="316" key="GridCell.Tab.0.right" timestamp="1597222084081">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1111" height="316" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1596822950896" />
+    <state width="1111" height="316" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1597222084081" />
     <state width="1101" height="310" key="GridCell.Tab.0.right/0.22.1440.838@0.22.1440.838" timestamp="1595836533614" />
     <state width="256" height="491" key="HiddenNamespacesPopup" timestamp="1594218188778">
       <screen x="0" y="0" width="1440" height="900" />
