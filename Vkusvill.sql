@@ -15,7 +15,19 @@ fo.date_key, fo.hour_key,
         THEN internal.name_internal ELSE
         ca.corporate_account_name end) company_name,
 fo.ordering_corporate_account_gk company_gk,
- 'GT' as platform
+
+ST_Distance(
+    to_spherical_geography(ST_Point(fo.dest_longitude, fo.dest_latitude)),
+    to_spherical_geography(ST_Point(fo.dropoff_longitude, fo.dropoff_latitude))
+) AS destination_drop_difference,
+
+ST_Distance(
+    to_spherical_geography(ST_Point(fo.origin_longitude, fo.origin_latitude)),
+    to_spherical_geography(ST_Point(fo.dropoff_longitude, fo.dropoff_latitude))
+) AS pickup_drop_difference
+,'GT' as platform
+
+
 
 from emilia_gettdwh.dwh_fact_orders_v fo
 left join emilia_gettdwh.dwh_dim_drivers_v dr on fo.driver_gk = dr.driver_gk
@@ -49,6 +61,7 @@ cast(substring(cast(d.dropped_off_at as varchar), 1, 10) as date) date_key, cast
                     THEN internal.name_internal ELSE
                         ca.corporate_account_name end) company_name,
 ca.corporate_account_gk company_gk,
+0 as destination_drop_difference, 0 as pickup_drop_difference,
 'EDP' as platform
 
 --user number EDP - drop_off_contact
@@ -107,3 +120,78 @@ select array_intersect(array[213,234,213,234], array[23,234,213])
 sELECT histogram(x) FROM UNNEST(ARRAY[1111, 1111, 22, 22, 1111]) t(x);
 
 select cast(substring('2020-07-18 00:00:00', 1, 10) as date)
+
+-- distance calculation
+--for GT
+select
+origin_longitude, origin_latitude,
+dest_longitude, dest_latitude,
+dropoff_longitude, dropoff_latitude,
+
+ST_Distance(
+    to_spherical_geography(ST_Point(dest_longitude, dest_latitude)),
+    to_spherical_geography(ST_Point(dropoff_longitude, dropoff_latitude))
+) / 1000 AS destination_drop_difference,
+
+ST_Distance(
+    to_spherical_geography(ST_Point(origin_longitude, origin_latitude)),
+    to_spherical_geography(ST_Point(dropoff_longitude, dropoff_latitude))
+) / 1000 AS pickup_drop_difference
+
+from emilia_gettdwh.dwh_fact_orders_v
+where country_key = 2
+and lob_key in (5,6)
+and dropoff_latitude <> -1
+limit 5;
+--for EDP
+select
+ST_Distance(
+    to_spherical_geography(
+        ST_Point(
+            cast(json_extract_scalar("pickup", '$.lng') as integer),
+            cast(json_extract_scalar("pickup", '$.lat') as integer)
+        )
+    )
+    , to_spherical_geography(
+        ST_Point(
+            --longitude
+            cast(
+                json_extract(json_extract(json_extract(
+                    "completion_info", '$.courier_info'),'$.location'),'$.lng')
+            as integer)
+            --latitude
+            , cast(
+                json_extract(json_extract(json_extract(
+                    "completion_info", '$.courier_info'),'$.location'),'$.lat')
+            as integer)
+        )
+    )
+) / 1000 AS pickup_drop_difference -- pickup - completion
+
+, ST_Distance(
+    to_spherical_geography(
+        ST_Point(
+            cast(json_extract_scalar("drop_off", '$.lng') as integer)
+            , cast(json_extract_scalar("drop_off", '$.lat') as integer)
+        )
+    )
+    , to_spherical_geography(
+        ST_Point(
+            --longitude
+            cast(
+                json_extract(json_extract(json_extract(
+                    "completion_info",'$.courier_info'),'$.location'),'$.lng')
+            as integer)
+            --latitude
+            , cast(
+                json_extract(json_extract(json_extract(
+                    "completion_info",'$.courier_info'),'$.location'),'$.lat')
+            as integer)
+        )
+    )
+)
+ / 1000 AS destination_drop_difference -- drop_off - completion
+
+
+from "delivery"."public"."deliveries"
+limit 5;
