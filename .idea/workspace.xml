@@ -10,19 +10,16 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="Distance calculation for GT">
-      <change afterPath="$PROJECT_DIR$/K_ata.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/K_p:p_delivery_performance.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cancell reason.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dasboard_leads_delivery.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/week_report.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/week_report_ops.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/week_report_v2.sql" afterDir="false" />
+    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="added agents, fixed bugs and etc">
+      <change afterPath="$PROJECT_DIR$/week_report_finance.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/week_report_ops_ataonly.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders 7 per day in Companies mistake .sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Orders 7 per day in Companies old.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/K_ata.sql" beforeDir="false" afterPath="$PROJECT_DIR$/K_ata.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dasboard_leads_delivery.sql" beforeDir="false" afterPath="$PROJECT_DIR$/dasboard_leads_delivery.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/week_report.sql" beforeDir="false" afterPath="$PROJECT_DIR$/week_report.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/week_report_ops.sql" beforeDir="false" afterPath="$PROJECT_DIR$/week_report_ops.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/week_report_v2.sql" beforeDir="false" afterPath="$PROJECT_DIR$/week_report_v2.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,18 +149,20 @@
     <MESSAGE value="Mistakes checked and corrected" />
     <MESSAGE value="Time categories are added" />
     <MESSAGE value="Distance calculation for GT" />
-    <option name="LAST_COMMIT_MESSAGE" value="Distance calculation for GT" />
+    <MESSAGE value="general" />
+    <MESSAGE value="added agents, fixed bugs and etc" />
+    <option name="LAST_COMMIT_MESSAGE" value="added agents, fixed bugs and etc" />
   </component>
   <component name="WindowStateProjectService">
     <state x="30" y="286" key="#SQL_Dialects" timestamp="1600157086506">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="30" y="286" key="#SQL_Dialects/0.0.1440.900@0.0.1440.900" timestamp="1600157086506" />
-    <state x="247" y="113" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599818913115">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state x="247" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600436158207">
+      <screen x="0" y="22" width="1440" height="838" />
     </state>
     <state x="247" y="113" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1599818913115" />
-    <state x="247" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.22.1440.838@0.22.1440.838" timestamp="1593767731947" />
+    <state x="247" y="127" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.22.1440.838@0.22.1440.838" timestamp="1600436158207" />
     <state x="408" y="193" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1596271789509">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -198,26 +197,26 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="347" y="162" key="Github.UntrackedFilesDialog/0.0.1440.900@0.0.1440.900" timestamp="1596269154539" />
-    <state width="1035" height="208" key="GridCell.Tab.0.bottom" timestamp="1600434476377">
+    <state width="1193" height="312" key="GridCell.Tab.0.bottom" timestamp="1601030813697">
       <screen x="0" y="22" width="1440" height="838" />
     </state>
-    <state width="1143" height="189" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1600267227694" />
-    <state width="1035" height="208" key="GridCell.Tab.0.bottom/0.22.1440.838@0.22.1440.838" timestamp="1600434476377" />
-    <state width="1035" height="208" key="GridCell.Tab.0.center" timestamp="1600434476376">
+    <state width="1193" height="235" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1600786760421" />
+    <state width="1193" height="312" key="GridCell.Tab.0.bottom/0.22.1440.838@0.22.1440.838" timestamp="1601030813697" />
+    <state width="1193" height="312" key="GridCell.Tab.0.center" timestamp="1601030813696">
       <screen x="0" y="22" width="1440" height="838" />
     </state>
-    <state width="1143" height="189" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1600267227691" />
-    <state width="1035" height="208" key="GridCell.Tab.0.center/0.22.1440.838@0.22.1440.838" timestamp="1600434476376" />
-    <state width="1035" height="208" key="GridCell.Tab.0.left" timestamp="1600434476376">
+    <state width="1193" height="235" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1600786760420" />
+    <state width="1193" height="312" key="GridCell.Tab.0.center/0.22.1440.838@0.22.1440.838" timestamp="1601030813696" />
+    <state width="1193" height="312" key="GridCell.Tab.0.left" timestamp="1601030813694">
       <screen x="0" y="22" width="1440" height="838" />
     </state>
-    <state width="1143" height="189" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1600267227690" />
-    <state width="1035" height="208" key="GridCell.Tab.0.left/0.22.1440.838@0.22.1440.838" timestamp="1600434476376" />
-    <state width="1035" height="208" key="GridCell.Tab.0.right" timestamp="1600434476377">
+    <state width="1193" height="235" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1600786760418" />
+    <state width="1193" height="312" key="GridCell.Tab.0.left/0.22.1440.838@0.22.1440.838" timestamp="1601030813694" />
+    <state width="1193" height="312" key="GridCell.Tab.0.right" timestamp="1601030813696">
       <screen x="0" y="22" width="1440" height="838" />
     </state>
-    <state width="1143" height="189" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1600267227692" />
-    <state width="1035" height="208" key="GridCell.Tab.0.right/0.22.1440.838@0.22.1440.838" timestamp="1600434476377" />
+    <state width="1193" height="235" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1600786760421" />
+    <state width="1193" height="312" key="GridCell.Tab.0.right/0.22.1440.838@0.22.1440.838" timestamp="1601030813696" />
     <state width="256" height="491" key="HiddenNamespacesPopup" timestamp="1600095859473">
       <screen x="0" y="0" width="1440" height="900" />
     </state>

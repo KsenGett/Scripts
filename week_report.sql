@@ -81,8 +81,6 @@
 
 
 ---Delivery performance
-with p2p_fo AS (
-
     with iml as (
     --IML start
                 with t_cost AS (
@@ -140,10 +138,6 @@ with p2p_fo AS (
 
                 )
             (SELECT
-            tp.timecategory,
-            tp.subperiod,
-            tp.period,
-            tp.subperiod2 AS time_period,
             '200024062' AS company_gk,
             t3.journey_id,
             t3.legacy_order_id, -- to attach to p2p
@@ -155,11 +149,11 @@ with p2p_fo AS (
             t3.completed * t3.price_per_stop AS customer_total_cost_wo_vat,
             t3.completed * t3.price_per_stop*1.2 AS customer_total_cost_w_vat
                  FROM t_cost AS t3
-                    LEFT JOIN  emilia_gettdwh.periods_v AS tp ON tp.hour_key = t3.hour_key and tp.date_key = t3.dates
-                    and tp.timecategory IN ('1.Hours', '2.Dates', '3.Weeks', '4.Months', '5.Quarters'))
+
     --IML finish
     )
 
+with p2p_fo AS (
     (SELECT fo.date_key AS dates,
            fo.hour_key,
            loc.city_name AS city,
@@ -181,9 +175,7 @@ with p2p_fo AS (
            (CASE when am.name like '%Delivery%' THEN 1 ELSE 2 end) end) AS Client_type_key,
            (CASE when ct.class_type_desc like '%c2c%' THEN 'C2C' ELSE
            (CASE when am.name like '%Delivery%' THEN 'eCommerce' ELSE 'Corporate' end) end) AS Client_type_desc,
-          -- + IML correction
-          case when fo.ordering_corporate_account_gk = 200024062 then iml.customer_total_cost_w_vat
-            else fo.customer_total_cost_inc_vat end AS customer_total_cost_inc_vat,
+            fo.customer_total_cost_inc_vat AS customer_total_cost_inc_vat,
 
           case when fo.ordering_corporate_account_gk = 200024062 then iml.customer_total_cost_wo_vat
            else fo.customer_total_cost end AS customer_total_cost ,
@@ -194,28 +186,16 @@ with p2p_fo AS (
          -- + IML correction
          (CASE
                 WHEN lob_desc = 'Deliveries - B2B'
-                THEN
-                -- + IML correction
-                (case when fo.ordering_corporate_account_gk = 200024062 then iml.customer_total_cost_wo_vat
-                else fo.customer_total_cost end) - driver_total_cost_inc_vat
+                THEN fo.customer_total_cost - driver_total_cost_inc_vat
                 ELSE (CASE
-                          WHEN -- + IML correction
-                            (case when fo.ordering_corporate_account_gk = 200024062 then iml.customer_total_cost_w_vat
-                            else fo.customer_total_cost_inc_vat end) - driver_total_cost_inc_vat > 0
-                          -- + IML correction
-                          THEN round((
-                            (case when fo.ordering_corporate_account_gk = 200024062 then iml.customer_total_cost_w_vat
-                            else fo.customer_total_cost_inc_vat end) - driver_total_cost_inc_vat)/1.2,2)
-                          -- + IML correction
-                          ELSE (case when fo.ordering_corporate_account_gk = 200024062 then iml.customer_total_cost_w_vat
-                            else fo.customer_total_cost_inc_vat end) - driver_total_cost_inc_vat
-                      END)
-            END) AS buy_sell,
-            -- IML correction??
-        sum( case when fo.ordering_corporate_account_gk = 200024062 then iml.completed else
-        (CASE when ct.class_family IN ('Premium') and ct.class_type_desc not like '%ondemand% 'then jo.completed_deliveries
+                          WHEN fo.customer_total_cost_inc_vat - driver_total_cost_inc_vat > 0
+                          THEN round((fo.customer_total_cost_inc_vat - driver_total_cost_inc_vat)/1.2,2)
+                          ELSE fo.customer_total_cost_inc_vat end) - driver_total_cost_inc_vat
+                      END) AS buy_sell,
+
+        sum(CASE when ct.class_family IN ('Premium') and ct.class_type_desc not like '%ondemand% 'then jo.completed_deliveries
         when ct.class_family IN ('Premium') and ct.class_type_desc like '%ondemand%' THEN jo.deliveries
-        ELSE 0 end) end) AS deliveries_NF
+        ELSE 0 end) AS deliveries_NF
 
         FROM "emilia_gettdwh"."dwh_fact_orders_v" fo
 
@@ -247,9 +227,6 @@ with p2p_fo AS (
         LEFT JOIN "emilia_gettdwh"."dwh_dim_drivers_v" d ON d.driver_gk = fo.driver_gk
         --fleets
         LEFT JOIN emilia_gettdwh.dwh_dim_vendors_v AS v ON v.vendor_gk = d.fleet_gk
-        --IML
-        left join iml on cast(iml.company_gk as integer) = fo.ordering_corporate_account_gk and fo.date_key = iml.dates
-        and cast(fo.sourceid as integer) = iml.legacy_order_id
 
         WHERE fo.country_key=2
           AND ct.lob_key IN (5,6)
