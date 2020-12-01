@@ -1,3 +1,4 @@
+--with main as (
 -- OF
 select
 fo.date_key,
@@ -14,15 +15,15 @@ tp.subperiod2 AS time_period,
 ca.corporate_account_name,
 accounts.name_internal,
 ca.corporate_account_gk,
-(CASE when order_status_key = 7 THEN 'Completed' ELSE 'Cancelled ON Arrival' end) AS order_status,
+loc.city_name,
+(CASE when order_status_key = 7 and driver_gk <> 200013 THEN 'Completed' ELSE 'Cancelled ON Arrival' end) AS order_status,
 
-count (distinct CASE when fo.order_status_key = 7 THEN fo.series_original_order_gk ELSE null end) AS completed_orders,
+count (distinct CASE when fo.order_status_key = 7 THEN fo.order_gk ELSE null end) AS completed_orders,
 
--- TO CHECK - e-com is the same, corporate is different
-count (distinct CASE when (fo.order_status_key = 7 or (fo.order_status_key = 4 and driver_total_cost > 0))
+count(distinct CASE when (fo.order_status_key = 7 or (fo.order_status_key = 4 and driver_total_cost > 0))
 THEN fo.order_gk ELSE null end) AS completed_and_cancelled_orders,
 count(distinct fo.series_original_order_gk) as net_orders,
-count( distinct  fo.order_gk) gross_orders
+count(distinct fo.order_gk) gross_orders
 
 from emilia_gettdwh.dwh_fact_orders_v fo
 
@@ -34,6 +35,7 @@ LEFT JOIN emilia_gettdwh.dwh_dim_class_types_v AS ct ON ct.class_type_key = fo.c
 LEFT JOIN "emilia_gettdwh"."dwh_dim_account_managers_v" am ON am."account_manager_gk" = ca."account_manager_gk"
 LEFT JOIN sheets."default".delivery_corp_accounts_20191203 AS accounts
     ON cast(accounts.company_gk AS bigint)=fo.ordering_corporate_account_gk
+left join emilia_gettdwh.dwh_dim_locations_v loc on fo.origin_location_key = loc.location_key
 
 where tp.timecategory is not null
 and fo.date_key >= date'2020-08-01'
@@ -41,12 +43,13 @@ and fo.country_key = 2
 and fo.lob_key in (5,6)
 and ct.class_family not IN ('Premium')
 and ct.class_group not like 'Test'
-group by 1,2,3,4,5,6,7,8,9,10,11
+and ordering_corporate_account_gk not in (200017459, 20004730)
+group by 1,2,3,4,5,6,7,8,9,10,11,12
 
 union
 
 --NF
-SELECT date(j.scheduled_at) AS dates,
+(SELECT date(j.scheduled_at) AS dates,
     tp.timecategory,
     tp.subperiod,
     tp.period,
@@ -54,12 +57,13 @@ SELECT date(j.scheduled_at) AS dates,
     'NF' as platform,
     'eCommerce' client_type,
     ca.corporate_account_name,
-    'nan' name_internal,
+    ca.corporate_account_name name_internal,
     ca.corporate_account_gk,
-    j.status,
+    loc.city_name,
+    d.status,
 
-    count(distinct CASE when d.status = 'completed' THEN d.id ELSE null end) AS completed_orders,
-    count(distinct CASE when d.status IN ('completed', 'not_delivered')THEN d.id end ) AS completed_and_cancelled_orders,
+    count(distinct CASE when d.status = 'completed' and j.supplier_id <> 13 THEN d.id ELSE null end) AS completed_orders,
+    count(distinct CASE when d.status IN ('completed', 'not_delivered') and j.supplier_id <> 13 THEN d.id end ) AS completed_and_cancelled_orders,
     0 as net_orders,
     count(distinct d.id) AS gross_orders
 
@@ -73,6 +77,7 @@ and tp.timecategory IN ('2.Dates', '3.Weeks', '4.Months')
 LEFT JOIN emilia_gettdwh.dwh_fact_orders_v AS fo ON j.legacy_order_id = fo.sourceid
 and fo.country_key = 2 and lob_key = 5 and year(fo.date_key) > 2019
 LEFT JOIN emilia_gettdwh.dwh_dim_class_types_v ct ON fo.class_type_key=ct.class_type_key
+left join emilia_gettdwh.dwh_dim_locations_v loc on fo.origin_location_key = loc.location_key
 
 
 WHERE d.env ='RU'
@@ -81,14 +86,24 @@ WHERE d.env ='RU'
   and tp.timecategory is not null
   and ct.class_type_desc like '%ondemand%'
   and d.company_id  <> '17459'
-  and d.status IN ('completed', 'not_delivered', 'cancelled', 'rejected')
-GROUP BY 1,2,3,4,5,6,7,8,9,10,11;
+  and d.status IN ('not_delivered', 'completed', 'cancelled', 'rejected')
+  and j.supplier_id <> 13
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12)
 
 
+select * from delivery.public.journeys
 
+/*)
+(select platform ,  subperiod, client_type,--name_internal,
+        sum(completed_orders) compl_orders, sum(gross_orders) gross_orders,
+        sum(completed_and_cancelled_orders) CAA,
+        sum(completed_and_cancelled_orders) * 1.00 / sum(gross_orders) * 100 GCR
 
+from main
+where subperiod in ('W37', 'W38','W39','W36')
+group by 1,2,3
+); */
 
-
-
-
+--> Differ from Orders and Completion rate
+--1) Compl. orders NF are less due to filter - ct.class_type_desc like '%ondemand%'
 
