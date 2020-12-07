@@ -23,6 +23,7 @@ THEN 'Sadovoye ring'
 
     CASE when date_diff('second', fo.order_datetime,fo.driver_arrived_datetime)*1.00/60 > 0 THEN
     date_diff('second', fo.order_datetime, fo.driver_arrived_datetime)*1.00/60 end AS ata,
+
     (CASE when date_diff('second', fo.order_datetime,fo.driver_arrived_datetime)*1.00/60 > 0 THEN 1
     end) count_ata --  В Катином скрипте 0 учитываются
 
@@ -68,9 +69,9 @@ THEN 'Sadovoye ring'
  ELSE 'other' end) AS area,
     ds.delivery_status_desc order_status ,
 
-    (CASE when date_diff('second', fd.scheduled_at , fd.arrived_at)*1.00/60 > 0 THEN
-    date_diff('second', fd.scheduled_at , fd.arrived_at) end)*1.00/60 AS ata,
-    (CASE when date_diff('second', fd.scheduled_at , fd.arrived_at)*1.00/60 >= 0 THEN 1 end) count_ata
+    (CASE when date_diff('second', fd.requested_schedule_time , fd.arrived_at)*1.00/60 > 0 THEN
+    date_diff('second', fd.requested_schedule_time , fd.arrived_at) end)*1.00/60 AS ata,
+    (CASE when date_diff('second', fd.requested_schedule_time , fd.arrived_at)*1.00/60 >= 0 THEN 1 end) count_ata
 
     FROM "model_delivery"."dwh_fact_deliveries_v" fd
         left join "model_delivery".dwh_dim_delivery_statuses_v ds on ds.delivery_status_id = fd.delivery_status_id
@@ -86,7 +87,7 @@ THEN 'Sadovoye ring'
 
     WHERE fd.country_symbol ='RU'
       and lower(ca.corporate_account_name) not like '%test%'
-      and date(fd.scheduled_at) >= date'2020-08-01'
+      and date(fd.requested_schedule_time) >= date'2020-08-01'
       and tp.timecategory is not null
       and ct.class_type_desc like '%ondemand%'
       and fd.company_gk  not in (200017459, 20004730)
