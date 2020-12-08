@@ -1,4 +1,4 @@
---control/test tzlil
+--control/test Tzlil
 with
             scoring_group AS
                 (
