@@ -234,6 +234,9 @@ and jor.courier_gk = 200013
 select * from model_delivery.dwh_dim_journey_statuses_v;
 
 
+                     
+                     
+--- OLD script OF MATCHING TEAM
 with assigned_by_cc AS (SELECT env, cast(json_extract_scalar(json_parse(from_utf8(cc.payload)), '$.order_id')
                                                   AS bigint) AS order_assigned_by_cc, occurred_date
                         FROM app_events cc
