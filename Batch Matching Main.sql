@@ -1,4 +1,5 @@
 --control/test Tzlil
+-- EDP
 with
             scoring_group AS
                 (
@@ -72,13 +73,14 @@ offers_10more_eta,
 sum(matching_driving_eta) matching_eta_sum,
 sum(case when matching_driving_eta is not null then 1 end) matching_eta_count,
 --- AR
--- SUM(CASE WHEN fof.Driver_Response_Key=1 THEN 1 ELSE 0 END) AS numerator,
---
--- (SUM(CASE WHEN fof.Delivered_Datetime IS NOT NULL THEN 1 ELSE 0 END)
--- - SUM(CASE WHEN fof.Delivered_Datetime IS NOT NULL AND fof.Is_Withdrawned=1
--- AND fof.Driver_Response_Key<>1 THEN 1 ELSE 0 END) )  AS denominator,
-sum (CASE when fof.driver_response_key = 1 and fof.is_received = 1 THEN 1 ELSE 0 end) AS numerator,
-sum (CASE when fof.is_withdrawned = 0 and fof.is_received = 1 THEN 1 ELSE 0 end) denominator,
+SUM(CASE WHEN fof.Driver_Response_Key=1 THEN 1 ELSE 0 END) AS numerator,
+
+(SUM(CASE WHEN fof.Delivered_Datetime IS NOT NULL THEN 1 ELSE 0 END)
+- SUM(CASE WHEN fof.Delivered_Datetime IS NOT NULL AND fof.Is_Withdrawned=1
+AND fof.Driver_Response_Key<>1 THEN 1 ELSE 0 END) )  AS denominator,
+-- count(distinct Case when driver_response_key = 1 then offer_gk else NULL end) accepted_offers,
+-- count(distinct Case when driver_response_key = 1 or is_received = 1 then offer_gk else NULL end) received_offers,
+-- count(distinct Case when driver_response_key = 2 and is_received = 1 and is_withdrawned = 1 then offer_gk else NULL end)  ignored_and_withdrawn,
 
 -- withdrawned
 count(distinct case when is_received  = 1 and is_withdrawned = 1 then fof.offer_gk end) withdrawned, -- is received =1 is_withdrawned = 1 check
@@ -175,6 +177,122 @@ CR = Completed/ (Completed + Cancelled + Rejected)
 - Offers / Order  (как считать количество волн, а не офферов)
 - AT (matching starts event: 'bulk_matching|batch_scoring' )
 */
+
+
+--GT
+with
+            scoring_group AS
+                (
+                SELECT distinct /*edeited*/
+                json_extract_scalar(from_utf8(payload), '$.batch_id') sc_batch_id,
+                json_extract_scalar(from_utf8(payload), '$.scoring_test_group') sc_test_group
+
+                FROM events
+                WHERE event_name = 'bulk_matching|batch_scoring'
+                and event_date >= date_add('day', -60, current_date)
+                and env = 'RU'
+                ),
+            bulk_offers AS
+                (
+                SELECT
+                distinct /*edeited*/
+                cast(json_extract_scalar(json_parse(from_utf8(cc.payload)), '$.order_id') AS bigint) AS                                            source_id,
+                json_extract_scalar(from_utf8(payload), '$.data.batch_id') batch_id
+
+                FROM events cc
+
+                WHERE event_name = 'matching|bulk_matching_offers'
+                and event_date >= date_add('day', -60, current_date)
+                and env = 'RU'
+                )
+        , sc_gr_orders AS
+            (
+            SELECT
+            distinct a.source_id, b.sc_test_group
+
+            FROM bulk_offers a
+            inner JOIN scoring_group b ON a.batch_id = b.sc_batch_id
+            )
+, data_three AS
+    (
+      SELECT
+      t.source_id,
+      CASE when count(1) = 1 THEN min(sc_test_group) ELSE 'both_groups' end sc_test_group
+
+      FROM sc_gr_orders t
+      GROUP BY 1
+    )
+
+(
+select
+fo.date_key,
+loc.city_name,
+ca.corporate_account_name,
+accounts.name_internal,
+ca.corporate_account_gk,
+
+coalesce(dt.sc_test_group, 'NULL') test_group,
+
+'OF' platform,
+count(distinct fo.order_gk) gross_orders,
+count(distinct case when fo.order_status_key = 7 and fo.driver_gk <> 200013 then fo.order_gk end) completed_orders,
+count(distinct CASE when ((fo.order_status_key = 7 and fo.driver_gk <> 200013) or (fo.order_status_key = 4 and fo.driver_total_cost > 0))
+THEN fo.order_gk ELSE null end) AS completed_and_cancelled_orders,
+-- cancelled/rej orders
+count(distinct case when fo.order_status_key = 4 or fo.driver_gk = 200013 then fo.order_gk end) cancelled_orders,
+--count(distinct canc.journey_gk) cancelled_orders,
+--count(distinct case when canc.cancellation_stage = 'before driver assignment' then canc.journey_gk end) cancelled_BDA,
+count(distinct case when fo.order_status_key = 9 then fo.order_gk end) rejected_orders,
+-- offers
+count(offer_gk) offers,
+count(distinct case when is_received = 1 then fof.driver_gk end ) drivers_recieved_offers,
+count(distinct case when is_received = 1 and matching_driving_eta/60.00 > 10 then fof.offer_gk end) -- check
+offers_10more_eta,
+-- eta
+sum(matching_driving_eta) matching_eta_sum,
+sum(case when matching_driving_eta is not null then 1 end) matching_eta_count,
+--- AR
+SUM(CASE WHEN fof.Driver_Response_Key=1 THEN 1 ELSE 0 END) AS numerator,
+
+(SUM(CASE WHEN fof.Delivered_Datetime IS NOT NULL THEN 1 ELSE 0 END)
+- SUM(CASE WHEN fof.Delivered_Datetime IS NOT NULL AND fof.Is_Withdrawned=1
+AND fof.Driver_Response_Key<>1 THEN 1 ELSE 0 END) )  AS denominator,
+-- withdrawned
+count(distinct case when is_received  = 1 and is_withdrawned = 1 then fof.offer_gk end) withdrawned, -- is received =1 is_withdrawned = 1 check
+--
+count(case when fof.order_gk is null then fo.order_gk end) unoffered,
+count(distinct case when driver_unassigned_datetime <> timestamp '1900-01-01 00:00:00' then fof.offer_gk end) unassigned
+
+
+from emilia_gettdwh.dwh_fact_orders_v fo
+-- test control group
+LEFT JOIN data_three dt ON fo.sourceid = dt.source_id and fo.country_key = 2
+-- offers
+left join emilia_gettdwh.dwh_fact_offers_v fof on fo.order_gk = fof.order_gk
+        and fof.country_key = 2 and fof.date_key between current_date - interval '60' day and current_date
+-- company info
+LEFT JOIN emilia_gettdwh.dwh_dim_corporate_accounts_v AS ca
+          ON ca.corporate_account_gk = fo.ordering_corporate_account_gk
+          and ca.country_key = 2
+LEFT JOIN emilia_gettdwh.dwh_dim_class_types_v AS ct ON ct.class_type_key = fo.class_type_key
+            and ct.country_key = 2
+LEFT JOIN sheets."default".delivery_corp_accounts_20191203 AS accounts
+    ON cast(accounts.company_gk AS bigint)=fo.ordering_corporate_account_gk
+-- locations
+left join emilia_gettdwh.dwh_dim_locations_v loc on fo.origin_location_key = loc.location_key
+            and loc.country_key = 2
+where 1=1
+and fo.country_key = 2
+and fo.lob_key in (5,6)
+and ct.class_family <> 'Premium'
+and fo.ordering_corporate_account_gk <> 20004730
+and fo.date_key between current_date - interval '60' day and current_date
+
+group by 1,2,3,4,5,6,7
+)
+
+
+
 
 -- cancellations
 ----- FOR BATCH MATHCNING JOURNEYS LEVEL
