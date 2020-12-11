@@ -1,4 +1,4 @@
--- Scouts - agents, their payment is based on number of journeys within 30 days after FTR (reFTR included)
+-- Scouts - agents, their payment is based on number of JOURNEYS within 30 days after FTR (reFTR included)
 with leads as
         (
         select
@@ -108,7 +108,7 @@ left join --2sec
 group by 1,2,3,4,5,6,7,8,9,10,11,12,13;
 
 
--- Reff - their payment is based on number of deliveries within 14 days after FTR (no reFTR included)
+-- Reff - their payment is based on number of DELIVERIES within 14 days after FTR (no reFTR included)
 with leads as
         (
         select
