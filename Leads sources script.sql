@@ -16,6 +16,7 @@ as
             (case when d.driver_gk = ref.driver_gk then 'Reff'
             when d.fleet_gk in (200014202,200016265,200016266,200016267,200016359,200016361) then 'Gorizont'
             when d.fleet_gk = 200017083 then 'Scouts'
+            when d.fleet_gk = 200017111 then 'D_Uspekha'
             else 'Fleet' end) source,
 
             d.registration_date_key, d.ftp_date_key first_ftr,
@@ -76,4 +77,4 @@ as
             and d.ftp_date_key >= date'2020-07-01'
             group by 1,2,3,4,5,6,7,8;
 
-GRANT select on analyst.new_and_churned_couriers to ROLE public
+GRANT select on analyst.delivery_leads to ROLE public
