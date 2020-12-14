@@ -2,6 +2,8 @@
 -- GCR
 -- AR%
 -- Cancelled %
+-- select sum(gross_orders)
+-- from (
 
 with groups as (
         select
@@ -11,9 +13,9 @@ with groups as (
         -- 2. to_hex() - get hexadecimal (16, hex) number as varchar
         -- 3. substring(to_hex, -1) - get last bit. ('2','4','6','8','A','C','E') are even bits = control group,
         -- odd bits - test group
-        substring(to_hex(md5(cast(cast(order_gk as varchar) as varbinary))), -1) last_bit,
+        substring(to_hex(md5(cast(cast(sourceid as varchar) as varbinary))), -1) last_bit,
         case when
-        substring(to_hex(md5(cast(cast(order_gk as varchar) as varbinary))), -1) in ('2','4','6','8','A','C','E')
+        substring(to_hex(md5(cast(cast(sourceid as varchar) as varbinary))), -1) in ('2','4','6','8','A','C','E')
         then 'control' else 'test' end "group"
 
         from emilia_gettdwh.dwh_fact_orders_v fo
@@ -97,3 +99,28 @@ and fo.date_key >= date'2020-10-29' -- test start
 
 group by 1,2,3,4,5,6,7
 )
+-- )
+-- where date_key between date'2020-10-29' and date'2020-12-06'
+-- and priority_company = TRUE
+-- and "group" = 'test'
+
+
+--- michael's events check
+        sELECT distinct
+                cast(json_extract_scalar(json_parse(from_utf8(e.payload)), '$.is_a_group') AS bigint) AS source_id,
+                e.payload
+                FROM events e
+                WHERE event_name = 'dynamic_matching|delivery_priority_experiment'
+                and event_date >= date_add('day', -60, current_date)
+                and env = 'RU'
+                limit 100
+
+-- {"batch_id":"ru:0:1607941987002","created_at":1607941989652,
+-- "env":"RU","event_name":"dynamic_matching|delivery_priority_experiment",
+-- "is_a_group":{"1473007464":false,"1473024500":false,"1473024910":false,"1473024915":false,"1473024920":false,"1473024925":true,"1473024945":true,"1473024966":true,"1473025237":false},
+-- "scrum":"prod"}
+
+select substring(to_hex(md5(cast(cast(20001473024945 as varchar) as varbinary))), -1) last_bit,
+        case when
+        substring(to_hex(md5(cast(cast(20001473024945 as varchar) as varbinary))), -1) in ('2','4','6','8','A','C','E')
+        then 'control' else 'test' end "group"
