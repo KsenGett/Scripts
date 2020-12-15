@@ -11,7 +11,7 @@ with main as (
 
             where fleet_gk in (200014202,200016265,200016266,
                                                         200016267,200016359,200016361)
-            and d.registration_date_key >= date'2020-01-01'
+            and d.registration_date_key >= date'2020-10-01'
             and d.driver_gk <> 2000683923
             group by 1,2,3,4,5,6,7,8
         UNION
@@ -39,7 +39,7 @@ with main as (
                 select created_at, auditable_id
                 from "gt-ru".gettaxi_ru_production.audits
                 where  auditable_type = 'Driver'
-                and created_at >= timestamp'2020-07-10 00:00:00' --first day of lead
+                and created_at >= timestamp'2020-10-01 00:00:00' --first day of lead
                 )
 
     (SELECT distinct dcln.driver_gk,
@@ -90,7 +90,7 @@ with main as (
         -- fo
         left join emilia_gettdwh.dwh_fact_orders_v fo on d.driver_gk = fo.driver_gk
             and fo.lob_key in (5,6) and fo.order_status_key = 7
-            and fo.country_key = 2 and fo.date_key >= date '2020-07-10'
+            and fo.country_key = 2 and fo.date_key >= date '2020-10-01'
             and fo.ordering_corporate_account_gk <> 20004730
         --vendor name
         left join emilia_gettdwh.dwh_dim_vendors_v fl on d.fleet_gk = fl.vendor_gk
@@ -132,7 +132,7 @@ with main as (
 
             where fo.fleet_gk in (200014202,200016265,200016266,200016267)
             and fo.order_status_key = 7
-            and d.registration_date_key >= date'2020-01-01'
+            and d.registration_date_key >= date'2020-10-01'
             and date_key >= d.registration_date_key
             and fo.lob_key in (5,6)
             and substring(d.phone, -10) not in ('', '2222222222', '3333333333')
@@ -158,6 +158,8 @@ select main.*, deliveries_num_after_lead, date_diff('day', lead_date, main.fdd_a
 from main
 left join drivers_first_day dfd on main.driver_gk = dfd.driver_gk
     and main.source = dfd.source
+
+where registration_date_key >= date'2020-10-1'
     );
 
 
