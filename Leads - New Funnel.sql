@@ -1,4 +1,5 @@
-
+-- PASHA V FUNNEL  |
+--                 V
 with leads as (
         (select
         distinct leads.phone_number lead_phone,
@@ -13,6 +14,7 @@ with leads as (
         fl.vendor_name,
         fl.vendor_name like '%courier%' is_courier,
         d.registration_date_key,
+        ltp_date_key last_ride,
         concat('W', cast(week(d.registration_date_key) as varchar)) week_cohort,
         max(date(lead_date)) as lead_date,
         max(case when ride_type = 'ReFTRD' then rftr.date_key end) reFTR,
@@ -34,7 +36,7 @@ with leads as (
         and phone_number is not null
         and cast(lead_date as date) >= date'2020-07-01'
 
-        group by 1,2,3,4,5,6,7,8,9,10,11,12
+        group by 1,2,3,4,5,6,7,8,9,10,11,12,13
         )
 
     union
@@ -54,6 +56,7 @@ with leads as (
                 fl.vendor_name,
                 fl.vendor_name like '%courier%' is_courier,
                 d.registration_date_key,
+                ltp_date_key last_ride,
                 concat('W', cast(week(d.registration_date_key) as varchar)) week_cohort,
                 null as lead_date,
                 max(case when ride_type = 'ReFTRD' then rftr.date_key end) reFTR,
@@ -83,8 +86,8 @@ with leads as (
                 and d.driver_gk <> 2000683923 -- some old bug
                 and fl.vendor_name like '%courier%'
                 and d.country_key = 2
-                and d.registration_date_key >= date'2020-07-01'
-                group by 1,2,3,4,5,6,7,8,9,10,11,12,13
+                --and d.registration_date_key >= date'2020-07-01'
+                group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14
             )
 )
 select l.*,
@@ -160,12 +163,7 @@ left join --2sec
     ) md on md.courier_gk  = fo.driver_gk and md.date_key = fo.date_key
 ) deliv on l.driver_gk = deliv.driver_gk
 
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16;
-
-
-
-select * from bp_ba.sm_ftr_reftr_drivers limit 10;
-
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17;
 
 
 
