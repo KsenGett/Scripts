@@ -68,19 +68,22 @@ SELECT d."fleet_gk",
          city AS fleet_city,
          Documents_signed,
          Target,
-         ftp_date_key,
          d.driver_gk,
          driver_name,
          "registration_date_key",
          "ltp_date_key",
          work_days,
          deliv deliv_14days,
-         jorn journeys_14days
+         jorn journeys_14days,
+         max(rftr.date_key) ftp_date_key
 
 FROM "emilia_gettdwh"."dwh_dim_drivers_v" d
     inner JOIN sheets."default".ru_fleet_promo p ON d."fleet_gk" = cast(p.fleet_gk AS integer)
     and ftp_date_key between cast("start" as date) and cast("end" as date)
 left join deliv on d.driver_gk = deliv.driver_gk
+-- re FTR
+left join bp_ba.sm_ftr_reftr_drivers rftr on d.driver_gk = rftr.driver_gk
 
-where ftp_date_key between cast("start" as date) and cast("end" as date)
-);
+where date(rftr.date_key) between cast("start" as date) and cast("end" as date)
+
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14);
