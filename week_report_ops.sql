@@ -19,7 +19,7 @@ loc.city_name,
 (CASE when order_status_key = 7 and driver_gk <> 200013 THEN 'Completed' ELSE 'Cancelled ON Arrival' end) AS order_status,
 
 count (distinct CASE when fo.order_status_key = 7 THEN fo.order_gk ELSE null end) AS completed_orders,
-
+-- driver gk = 200013 are cancelled
 count(distinct CASE when (fo.order_status_key = 7 or (fo.order_status_key = 4 and driver_total_cost > 0))
 THEN fo.order_gk ELSE null end) AS completed_and_cancelled_orders,
 count(distinct fo.series_original_order_gk) as net_orders,
@@ -63,6 +63,7 @@ union
     d.status,
 
     count(distinct CASE when d.status = 'completed' and j.supplier_id <> 13 THEN d.id ELSE null end) AS completed_orders,
+      -- j.supplier_id <> 13 all orders are cancelled
     count(distinct CASE when d.status IN ('completed', 'not_delivered') and j.supplier_id <> 13 THEN d.id end ) AS completed_and_cancelled_orders,
     0 as net_orders,
     count(distinct d.id) AS gross_orders
