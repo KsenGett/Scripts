@@ -16,7 +16,7 @@ with
                 (
                 SELECT
                 distinct /*edeited*/
-                cast(json_extract_scalar(json_parse(from_utf8(cc.payload)), '$.order_id') AS bigint) AS                                            source_id,
+                cast(json_extract_scalar(json_parse(from_utf8(cc.payload)), '$.order_id') AS bigint) AS source_id,
                 json_extract_scalar(from_utf8(payload), '$.data.batch_id') batch_id
 
                 FROM events cc
@@ -177,6 +177,108 @@ CR = Completed/ (Completed + Cancelled + Rejected)
 - Offers / Order  (как считать количество волн, а не офферов)
 - AT (matching starts event: 'bulk_matching|batch_scoring' )
 */
+
+-- AT only
+with
+            scoring_group AS
+                (
+                SELECT distinct /*edeited*/
+                json_extract_scalar(from_utf8(payload), '$.batch_id') sc_batch_id,
+                json_extract_scalar(from_utf8(payload), '$.scoring_test_group') sc_test_group
+
+                FROM events
+                WHERE event_name = 'bulk_matching|batch_scoring'
+                and event_date >= date_add('day', -60, current_date)
+                and env = 'RU'
+                ),
+            bulk_offers AS
+                (
+                SELECT
+                distinct /*edeited*/
+                cast(json_extract_scalar(json_parse(from_utf8(cc.payload)), '$.order_id') AS bigint) AS                                            source_id,
+                json_extract_scalar(from_utf8(payload), '$.data.batch_id') batch_id
+
+                FROM events cc
+
+                WHERE event_name = 'matching|bulk_matching_offers'
+                and event_date >= date_add('day', -60, current_date)
+                and env = 'RU'
+                )
+        , sc_gr_orders AS
+            (
+            SELECT
+            distinct a.source_id, b.sc_test_group
+
+            FROM bulk_offers a
+            inner JOIN scoring_group b ON a.batch_id = b.sc_batch_id
+            )
+, data_three AS
+    (
+      SELECT
+      t.source_id,
+      CASE when count(1) = 1 THEN min(sc_test_group) ELSE 'both_groups' end sc_test_group
+
+      FROM sc_gr_orders t
+      GROUP BY 1
+    )
+
+, app as (
+            select order_id
+            FROM app_events
+            WHERE event_name IN ('matching|sent_to_routing' ,'futureorder|send_to_routing')
+            and occurred_date between current_date - interval '60' day and current_date
+            and env = 'RU'
+    )
+
+select
+fo.date_key,
+loc.city_name,
+ca.corporate_account_name,
+accounts.name_internal,
+ca.corporate_account_gk,
+-- AT
+coalesce(dt.sc_test_group, 'NULL') test_group,
+count(distinct order_gk) gross_orders,
+sum(CASE when fo.order_confirmed_datetime is not null
+        and app.order_id is not null
+        and fo.cancellations_time_in_seconds is null
+        and fo.order_confirmed_datetime >= fo.order_datetime
+    THEN date_diff('second', fo.order_datetime, fo.order_confirmed_datetime) end) AS clean_assignment_time_num_r,
+
+count(CASE when fo.order_confirmed_datetime is not null
+                    and app.order_id is not null
+                    and fo.order_confirmed_datetime >= fo.order_datetime
+                    and fo.cancellations_time_in_seconds is null
+        THEN fo.order_gk end) AS clean_assignment_time_denum_r
+-- other
+
+from emilia_gettdwh.dwh_fact_orders_v fo
+-- test control group
+LEFT JOIN data_three dt ON fo.sourceid = dt.source_id and fo.country_key = 2
+-- routing
+left join app on substring(cast(fo.gt_order_gk as varchar), 5) = cast(app.order_id as varchar)
+                    and fo.country_key = 2
+-- company info
+LEFT JOIN emilia_gettdwh.dwh_dim_corporate_accounts_v AS ca
+          ON ca.corporate_account_gk = fo.ordering_corporate_account_gk
+          and ca.country_key = 2
+LEFT JOIN emilia_gettdwh.dwh_dim_class_types_v AS ct ON ct.class_type_key = fo.class_type_key
+            and ct.country_key = 2
+LEFT JOIN sheets."default".delivery_corp_accounts_20191203 AS accounts
+    ON cast(accounts.company_gk AS bigint)=fo.ordering_corporate_account_gk
+-- locations
+left join emilia_gettdwh.dwh_dim_locations_v loc on fo.origin_location_key = loc.location_key
+            and loc.country_key = 2
+
+where 1=1
+and fo.country_key = 2
+and fo.lob_key in (5,6)
+and ct.class_family = 'Premium'
+and fo.ordering_corporate_account_gk <> 20004730
+and fo.date_key between current_date - interval '60' day and current_date
+
+group by 1,2,3,4,5,6;
+
 
 
 --GT
@@ -653,7 +755,7 @@ SELECT
                              LEFT JOIN data ON fo.gett_order_id = data.order_id and fo.country_symbol = data.env and data.rn = 1
                              LEFT JOIN emilia_gettdwh.dwh_dim_class_types_v cl ON cl.class_type_key = fo.class_type_key
                              LEFT JOIN assigned_by_cc acc ON fo.gett_order_id = acc.order_assigned_by_cc and fo.country_symbol = acc.env
-                             LEFT JOIN hive.analyst.schedule_20181120 sch
+                             LEFT JOIN desc hive.analyst.schedule_20181120 sch
                                ON cast(sch.dow AS int) = day_of_week(data.event_at)
                                     and sch.routing_region = data.routing_region
                                     and hour(cast(sch.time_begin AS time)) <= hour(data.event_at)
