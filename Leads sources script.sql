@@ -1,4 +1,4 @@
-drop table analyst.delivery_leads
+drop table if exists analyst.delivery_leads
 create table analyst.delivery_leads
 as
 
@@ -77,4 +77,4 @@ as
             and d.ftp_date_key >= date'2020-07-01'
             group by 1,2,3,4,5,6,7,8;
 
-GRANT select on analyst.delivery_leads to ROLE public
+grant all privileges on analyst.delivery_leads to role public with grant option
