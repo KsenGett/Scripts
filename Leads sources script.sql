@@ -19,7 +19,8 @@ as
             when d.fleet_gk = 200017111 then 'D_Uspekha'
             else 'Fleet' end) source,
 
-            d.registration_date_key, d.ftp_date_key first_ftr,
+            d.registration_date_key,
+            d.ftp_date_key first_ftr,
             max(case when ride_type = 'ReFTRD' then rftr.date_key end) reFTR,
             max(case when d.driver_gk = prog.driver_gk then date(lead_date) end) as "external_source_lead_date"
 
@@ -74,7 +75,7 @@ as
             and d.driver_gk <> 2000683923 -- some old bug
             and fl.vendor_name like '%courier%'
             and d.country_key = 2
-            and d.ftp_date_key >= date'2020-07-01'
-            group by 1,2,3,4,5,6,7,8;
+            and d.registration_date_key >= date'2020-07-01'
+            group by 1,2,3,4,5,6,7,8
 
 grant all privileges on analyst.delivery_leads to role public with grant option
