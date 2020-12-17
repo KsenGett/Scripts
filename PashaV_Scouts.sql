@@ -25,7 +25,7 @@ with leads as
                 and d.phone is not null
                 and d.driver_gk <> 2000683923 -- some old bug
                 and d.country_key = 2
-                and d.fleet_gk = 200017083
+                and d.fleet_gk = 200017083 -- scouts
                 --and d.registration_date_key >= date'2020-07-01'
                 group by 1,2,3,4,5,6,7,8,9
 
@@ -39,6 +39,7 @@ sum(case when deliv.date_key
 sum(case when deliv.date_key > date(l.ftr_date) + interval '30' day
                 then deliv.jorn end) journeys_after_promo,
 sum(deliv.jorn) journeys_total,
+min(case when Nth_ride >= 5 then date_key end) date_5th_jorn,
 count(distinct deliv.date_key) work_days_total,
 
 sum(case when deliv.date_key
@@ -55,13 +56,16 @@ left join --14 sec
 (
 select fo.city_name, fo.date_key, fo.driver_gk,
 orders + (case when deliveries is not null then deliveries else 0 end) deliv,
-orders + (case when journeys is not null then journeys else 0 end) jorn
+orders + (case when journeys is not null then journeys else 0 end) jorn,
+sum(orders + (case when journeys is not null then journeys else 0 end) )
+over(partition by fo.driver_gk order by fo.date_key asc) Nth_ride
+
 
 from
   (
         --select count(distinct driver_gk) from (
         select
-        distinct driver_gk,
+        distinct fo.driver_gk,
         date_key,
         city_name,
 
@@ -74,11 +78,14 @@ from
             ON ct.class_type_key = fo.class_type_key
         left join emilia_gettdwh.dwh_dim_locations_v loc on
             fo.origin_location_key = loc.location_key and loc.country_id = 2
+        left join emilia_gettdwh.dwh_dim_drivers_v d on fo.driver_gk = d.driver_gk
+            and d.fleet_gk = 200017083
 
         where fo.lob_key in (5,6)
         and date_key >= date'2020-7-1'
         and order_status_key = 7
         and fo.country_key = 2
+        and d.fleet_gk = 200017083 -- scouts only
 
         group by 1,2,3
         --)
@@ -94,11 +101,14 @@ left join --2sec
         count(distinct delivery_gk) deliveries,
         count(distinct journey_gk) journeys
 
-        from model_delivery.dwh_fact_deliveries_v
+        from model_delivery.dwh_fact_deliveries_v fd
+        left join emilia_gettdwh.dwh_dim_drivers_v d on fd.courier_gk = d.driver_gk
+            and d.fleet_gk = 200017083
 
         where date(scheduled_at) >= date'2020-7-1'
         and delivery_status_id = 4
-        and country_symbol = 'RU'
+        and fd.country_symbol = 'RU'
+        and d.fleet_gk = 200017083 -- scouts only
 
         group by 1,2
 
