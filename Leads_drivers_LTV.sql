@@ -2,6 +2,12 @@
 --from (
 --1. Get the list of courier driver_gk who registered since 2020-07-01
 ------- detect external sources - workle, Plan-net
+
+/*
+Owner - Ksenia Kozlova
+Cube Name - Leads_all_sources_1.11.20
+ID - 868A51A811EB1D1D0CB50080EFD535C4
+*/
 with leads as (
     --select count( distinct driver_gk) from (
     select
@@ -13,9 +19,9 @@ with leads as (
             (case when d.driver_gk = prog.driver_gk then prog.source end) external_source,
             d.fleet_gk,
 
-            (case when d.ftp_date_key between cast(ref."start" as date) and cast(ref."end" as date)
-            then True else False end) is_reff,
+            (case when d.driver_gk = ref.driver_gk then True else False end) is_reff,
             d.fleet_gk in (200014202,200016265,200016266,200016267,200016359,200016361) is_agent,
+            d.fleet_gk = 200017083 is_scouts,
 
             d.registration_date_key, d.ftp_date_key,
             max(case when d.driver_gk = prog.driver_gk then date(lead_date) end) as "lead_date"
@@ -23,11 +29,22 @@ with leads as (
         from emilia_gettdwh.dwh_dim_drivers_v d
             -- to filter by fleet name selecting only couriers
             left join emilia_gettdwh.dwh_dim_vendors_v fl on d.fleet_gk = fl.vendor_gk
-            -- reff - to learn original fleet
-            left join "sheets"."default".ru_fleet_promo ref on fl.vendor_gk = cast(ref.fleet_gk as bigint)
+            -- reff
+            left join
+            (
+                select
+                driver_gk, ftp_date_key between cast("start" as date) and cast("end" as date)
+                from emilia_gettdwh.dwh_dim_drivers_v d
+                left join "sheets"."default".ru_fleet_promo ref on cast(ref.fleet_gk as integer) = d.fleet_gk
+                where 1=1
+                -- select drivers who were led by reff
+                and ftp_date_key between cast("start" as date) and cast("end" as date)
+                and d.country_key = 2
+            ) ref on ref.driver_gk = d.driver_gk
 
             -- external sources: workle, website etc. It's taken from GoogleSheet filled by Valera
-            left join (
+            left join
+            (
                     select distinct d.phone phone_number, "name",
                     d.driver_name registration_name,
                     d.fleet_gk, driver_gk,
@@ -52,7 +69,7 @@ with leads as (
                     and cast(lead_date as date) >= date'2020-07-01'
 
                     group by 1,2,3,4,5,6,7,8,9,10
-                    ) prog on prog.driver_gk = d.driver_gk
+            ) prog on prog.driver_gk = d.driver_gk
 
 
             where 1=1
@@ -63,7 +80,7 @@ with leads as (
             and fl.vendor_name like '%courier%'
             and d.country_key = 2
             and d.ftp_date_key >= date'2020-07-01'
-            group by 1,2,3,4,5,6,7,8,9,10,11,12
+            group by 1,2,3,4,5,6,7,8,9,10,11,12,13
            --) where is_reff = True
             )
 
@@ -85,6 +102,7 @@ fl.vendor_name,
 -- raw agents & reff leads, not considering whether they've done ftr or not
 l.is_reff is_reff_original,
 l.is_agent is_agent_original,
+l.is_scouts,
 
 --determination of the source by factual activity
 (case when fo.fleet_gk = -1 then l.fleet_gk else fo.fleet_gk end) = cast(ref.fleet_gk AS bigint) is_reff,
@@ -108,13 +126,16 @@ min(fo.date_key) over(partition by l.driver_gk) FTR,
 max(fo.date_key) over(partition by l.driver_gk) last_date,
 
 -- source lable
-(case when (l.is_agent = True and l.external_source is null) or (l.registration_date_key <= l.lead_date and l.is_agent = True ) then 'Agent'
-        when (l.is_reff = True and l.external_source is null) or (l.registration_date_key <= l.lead_date and l.is_reff = True) then 'Reff'
+(case when (l.is_agent = True and l.external_source is null) or
+        (l.registration_date_key <= l.lead_date and l.is_agent = True ) then 'Gorizont'
+        when (l.is_reff = True and l.external_source is null) or (
+        l.registration_date_key <= l.lead_date and l.is_reff = True) then 'Reff'
         when l.external_source is not null then l.external_source
         else 'Fleet' end) source_lable,
 
-(case when l.is_agent = True then 'Agent'
+(case when l.is_agent = True then 'Gorizont'
         when l.is_reff = True then 'Reff'
+        when l.is_scouts = True then 'Scouts'
         when l.external_source is not null then l.external_source
         else 'Fleet' end) source_lable2
 
@@ -148,10 +169,10 @@ left join --14 sec
             fo.origin_location_key = loc.location_key and loc.country_id = 2
 
         where fo.lob_key in (5,6)
-        and date_key >= date'2020-11-01'
+        and date_key >= date'2020-07-01'
         and order_status_key = 7
         and fo.country_key = 2
-        
+
 --         ---TODO Check
 --         and driver_gk in (2000837187,2000837478,2000842055,2000843852,2000844651)
 --         and date_key >= date'2020-10-01'
@@ -174,7 +195,7 @@ left join --2sec
         from model_delivery.dwh_fact_deliveries_v
 
         where
-        date(created_at) >= date'2020-11-01'
+        date(created_at) >= date'2020-07-01'
         and delivery_status_id = 4
 
         group by 1,2
@@ -191,6 +212,7 @@ LEFT JOIN  emilia_gettdwh.periods_v AS tp ON tp.hour_key = 0 and tp.date_key = f
 left join "sheets"."default".ru_fleet_promo ref on fo.fleet_gk = cast(ref.fleet_gk as bigint)
 -- fleet names
 left join emilia_gettdwh.dwh_dim_vendors_v fl on fo.fleet_gk = fl.vendor_gk
+
 ;
 
 
