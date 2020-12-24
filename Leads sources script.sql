@@ -1,6 +1,6 @@
 drop table if exists analyst.delivery_leads
 create table analyst.delivery_leads
-as
+as;
 
     select
     distinct
@@ -15,13 +15,13 @@ as
 
             (case when d.driver_gk = ref.driver_gk then 'Reff'
             when d.fleet_gk in (200014202,200016265,200016266,200016267,200016359,200016361) then 'Gorizont'
-            when d.fleet_gk = 200017083 then 'Scouts'
+            when d.fleet_gk in (200017177,200017083) then 'Scouts'
             when d.fleet_gk = 200017111 then 'D_Uspekha'
             else 'Fleet' end) source,
 
             d.registration_date_key,
-            d.ftp_date_key first_ftr,
-            max(case when ride_type = 'ReFTRD' then rftr.date_key end) reFTR,
+            nullif(d.ftp_date_key, date'1900-1-1') first_ftr,
+            max(case when ride_type = 'ReFTRD' then date(rftr.date_key) end) reFTR,
             max(case when d.driver_gk = prog.driver_gk then date(lead_date) end) as "external_source_lead_date"
 
         from emilia_gettdwh.dwh_dim_drivers_v d
@@ -32,13 +32,23 @@ as
             left join
             (
                 select
-                driver_gk, ftp_date_key between cast("start" as date) and cast("end" as date)
+                d.driver_gk,
+                ( case when date(rftr.date_key) is null then d.ftp_date_key else date(rftr.date_key) end)
+                 between cast("start" as date) and cast("end" as date)
+
                 from emilia_gettdwh.dwh_dim_drivers_v d
+                left join bp_ba.sm_ftr_reftr_drivers rftr on d.driver_gk = rftr.driver_gk
                 left join "sheets"."default".ru_fleet_promo ref on cast(ref.fleet_gk as integer) = d.fleet_gk
+
                 where 1=1
                 -- select drivers who were led by reff
-                and ftp_date_key between cast("start" as date) and cast("end" as date)
+                and (
+                    (( case when date(rftr.date_key) is null then d.ftp_date_key else date(rftr.date_key) end)
+                                            between cast("start" as date) and cast("end" as date))
+                        )
+
                 and d.country_key = 2
+
             ) ref on ref.driver_gk = d.driver_gk
 
             -- external sources: workle, website etc. It's taken from GoogleSheet filled by Valera
@@ -75,7 +85,8 @@ as
             and d.driver_gk <> 2000683923 -- some old bug
             and fl.vendor_name like '%courier%'
             and d.country_key = 2
-            and d.registration_date_key >= date'2020-07-01'
+            --and d.registration_date_key >= date'2020-07-01'
             group by 1,2,3,4,5,6,7,8
+;
 
 grant all privileges on analyst.delivery_leads to role public with grant option
