@@ -45,6 +45,7 @@ as;
                 and (
                     (( case when date(rftr.date_key) is null then d.ftp_date_key else date(rftr.date_key) end)
                                             between cast("start" as date) and cast("end" as date))
+                    or (d.registration_date_key between cast("start" as date) and cast("end" as date))
                         )
 
                 and d.country_key = 2
