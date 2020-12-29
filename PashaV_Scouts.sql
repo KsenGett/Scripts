@@ -25,7 +25,7 @@ with leads as
                 and d.phone is not null
                 and d.driver_gk <> 2000683923 -- some old bug
                 and d.country_key = 2
-                and d.fleet_gk = 200017083 -- scouts
+                and d.fleet_gk in (200017177,200017083) -- scouts
                 --and d.registration_date_key >= date'2020-07-01'
                 group by 1,2,3,4,5,6,7,8,9
 
@@ -85,7 +85,7 @@ from
         and date_key >= date'2020-7-1'
         and order_status_key = 7
         and fo.country_key = 2
-        and d.fleet_gk = 200017083 -- scouts only
+        and d.fleet_gk in (200017177,200017083) -- scouts only
 
         group by 1,2,3
         --)
@@ -108,7 +108,7 @@ left join --2sec
         where date(scheduled_at) >= date'2020-7-1'
         and delivery_status_id = 4
         and fd.country_symbol = 'RU'
-        and d.fleet_gk = 200017083 -- scouts only
+        and d.fleet_gk in (200017177,200017083) -- scouts only
 
         group by 1,2
 
@@ -145,7 +145,11 @@ with leads as
                 where 1=1
                 and d.phone is not null
                 and d.country_key = 2
-                and ftp_date_key between cast("start" as date) and cast("end" as date)
+                and (
+                    (( case when date(rftr.date_key) is null then d.ftp_date_key else date(rftr.date_key) end)
+                                            between cast("start" as date) and cast("end" as date))
+                    or (d.registration_date_key between cast("start" as date) and cast("end" as date))
+                        )
 
         )
 select l.*,
