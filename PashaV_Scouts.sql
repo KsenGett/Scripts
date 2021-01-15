@@ -337,3 +337,24 @@ left join --2sec
 ) deliv on l.driver_gk = deliv.driver_gk
 
 group by 1,2,3,4,5,6,7,8,9,10,11,12,13;
+
+-- driver - date - journey - deliveries
+select
+fo.driver_gk,
+fo.date_key,
+fo.order_gk journey,
+coalesce(fj.number_of_completed_deliveries, 1) completed_deliveries
+
+from emilia_gettdwh.dwh_fact_orders_v fo
+left join emilia_gettdwh.dwh_dim_drivers_v d on fo.driver_gk = d.driver_gk
+left join model_delivery.dwh_fact_journeys_v fj on fo.order_gk = fj.order_gk
+and fj.country_symbol = 'RU'
+
+where lob_key in (5,6)
+and order_status_key = 7
+-- change dates
+and date_key >= date'2020-12-01'
+-- change fleets (add, delete)
+and d.fleet_gk in (200017083)
+
+
