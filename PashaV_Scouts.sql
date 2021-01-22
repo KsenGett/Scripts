@@ -131,7 +131,7 @@ with leads as
                 d.registration_date_key,
                 (case when is_frozen = 1 then 'Заблокирован' else 'Активен' end) status,
                 (case when d.ltp_date_key <> date'1900-01-01' then d.ltp_date_key end) last_ride_date,
-                ftp_date_key ftr_date,
+                d.ftp_date_key ftr_date,
                 programme
 
             from emilia_gettdwh.dwh_dim_drivers_v d
@@ -140,6 +140,7 @@ with leads as
                 -- reff
                 left join "sheets"."default".ru_fleet_promo ref
                 on cast(ref.fleet_gk as integer) = d.fleet_gk
+                left join bp_ba.sm_ftr_reftr_drivers rftr on d.driver_gk = rftr.driver_gk
 
 
                 where 1=1
@@ -155,6 +156,9 @@ with leads as
 select l.*,
 date(l.ftr_date) + interval '14' day stop_promo_date,
 deliv.city_name,
+count(distinct case when deliv.date_key
+                    between date(l.ftr_date) and date(l.ftr_date) + interval '14' day and deliv.zones > 0
+                then deliv.date_key end) days_in_zone,
 sum(case when deliv.date_key
                     between date(l.ftr_date) and date(l.ftr_date) + interval '14' day
                 then deliv.jorn end) journeys_14days,
@@ -176,6 +180,7 @@ from leads l
 left join --14 sec
 (
 select fo.city_name, fo.date_key, fo.driver_gk,
+ zones,
 orders + (case when deliveries is not null then deliveries else 0 end) deliv,
 orders + (case when journeys is not null then journeys else 0 end) jorn
 
@@ -186,7 +191,7 @@ from
         distinct driver_gk,
         date_key,
         city_name,
-
+        sum(case when r.pickup_lng is not null and r.pickup_lat is not null then 1 end) zones,
         -- orders only on OF
         count(distinct case when ct.class_family <> 'Premium'
          and ordering_corporate_account_gk <> 20004730 then order_gk end) orders
@@ -196,6 +201,9 @@ from
             ON ct.class_type_key = fo.class_type_key
         left join emilia_gettdwh.dwh_dim_locations_v loc on
             fo.origin_location_key = loc.location_key and loc.country_id = 2
+        left join sheets."default".targets_reff r
+            on fo.origin_longitude  = cast(r.pickup_lng as decimal(15,9))
+            and fo.origin_latitude =  cast(r.pickup_lat as decimal(15,9))
 
         where fo.lob_key in (5,6)
         and date_key >= date'2020-7-1'
