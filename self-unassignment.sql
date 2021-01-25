@@ -84,11 +84,11 @@ city_name,
 --journey_id, assignment_time, unas_time, -- check on the journey level
 
 -- unas. time based on unassignment event time
-sum(case when assignment_time < unas_time then date_diff('second', assignment_time, unas_time)/60.00 end)
+sum(case when assignment_time < unas_time and unassignment_type = 'app' then date_diff('second', assignment_time, unas_time)/60.00 end)
 /count(case when assignment_time < unas_time and date_diff('second', assignment_time, unas_time)is not null then 1 end) unas_time,
 
 -- unas. time based on unassignment from journey history
-sum(case when assignment_time < unas_time2 then date_diff('second', assignment_time, unas_time2)/60.00 end)
+sum(case when assignment_time < unas_time2 and unassignment_type = 'app' then date_diff('second', assignment_time, unas_time2)/60.00 end)
 /count(case when assignment_time < unas_time2 and date_diff('second', assignment_time, unas_time2)is not null then 1 end) unas_time2,
 
 count(distinct case when unassignment_type = 'CC' then journey_id end) cc_un_journeys,
@@ -104,9 +104,7 @@ where timecategory = '3.Weeks'
 group by 1,2--,3,4
 )
 
--- warnings
--- journey id is less then in events.-> from journeys history less  then from events ?
---- 541530
+-- warnings:
+-- 1. Time difference between time in the events and journey history. Like journey id = 541530
 
 
-select * from model_delivery.dwh_dim_journey_statuses_v
