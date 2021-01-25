@@ -202,8 +202,8 @@ from
         left join emilia_gettdwh.dwh_dim_locations_v loc on
             fo.origin_location_key = loc.location_key and loc.country_id = 2
         left join sheets."default".targets_reff r
-            on fo.origin_longitude  = cast(r.pickup_lng as decimal(15,9))
-            and fo.origin_latitude =  cast(r.pickup_lat as decimal(15,9))
+            on round(fo.origin_longitude, 3)  = round(cast(r.pickup_lng as decimal(15,9)), 3)
+            and round(fo.origin_latitude, 3) =  round(cast(r.pickup_lat as decimal(15,9)), 3)
 
         where fo.lob_key in (5,6)
         and date_key >= date'2020-7-1'
@@ -366,3 +366,4 @@ and date_key >= date'2020-12-01'
 and d.fleet_gk in (200017083)
 
 
+select round(55.345556, 4)
