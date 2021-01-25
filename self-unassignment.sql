@@ -108,3 +108,31 @@ group by 1,2--,3,4
 -- 1. Time difference between time in the events and journey history. Like journey id = 541530
 
 
+--Scripts for check:
+-- events
+select event_at, event_date,
+    cast(json_extract_scalar(from_utf8("payload"), '$.distinct_id') as bigint) driver_id,
+    try(cast(json_extract_scalar(from_utf8("payload"), '$.journey_id') as bigint)) journey_id
+
+    from "events"
+    where "event_name" in ('courier|journey_details_screen|cancel_order_popup|positive|button_clicked')
+    and event_date >= date'2020-10-01'
+    and try(cast(json_extract_scalar(from_utf8("payload"), '$.journey_id') as bigint)) = 541530
+    and env = 'RU';
+
+-- to count number of app unassignment
+with events as (
+  select event_at, event_date,
+    cast(json_extract_scalar(from_utf8("payload"), '$.distinct_id') as bigint) driver_id,
+    try(cast(json_extract_scalar(from_utf8("payload"), '$.journey_id') as bigint)) journey_id
+
+    from "events"
+    where "event_name" = 'courier|journey_details_screen|cancel_order_popup|positive|button_clicked'
+    and event_date between date'2020-10-26' and date'2020-11-1'
+    and env = 'RU'
+)
+select count(distinct events.journey_id)
+from events
+left join model_delivery.dwh_fact_journeys_v fj on fj.journey_id = events.journey_id
+where pickup_location_key = 245;
+
