@@ -26,7 +26,7 @@ with main as(
     fj.journey_status_id, -- 3 cancelled, 4 completed, 6 rejected
     fj.number_of_completed_deliveries,
     (date_diff('second', fj.created_at, fj.scheduled_at))*1.00/60 >= 20 is_future_order,
-    jh.offer_gk, jh.order_gk, jh.is_auto_accept,
+    jh.offer_gk, jh.order_gk, jh.is_auto_accept, jh.offer_screen_eta, jh.matching_driving_distance,
     jh.unassigned_driver,
     (case when jh.unas_user <> 'system@gett.com' then 'CC' -- check CC via journey history
         when sa.event_at is not null then 'app' -- check event of self unassignment via events
@@ -55,6 +55,7 @@ with main as(
             jh.journey_id,
             jh.driver_id assigned_driver,
             fof.is_auto_accept, fof.offer_gk, fof.order_gk,
+            fof.offer_screen_eta, fof.matching_driving_distance,
             jh.created_at assigned,
             jh.user as_user,
             jhu.driver_id unassigned_driver,
@@ -92,7 +93,7 @@ with main as(
         left join
             (
             select
-            journey_id, fof.offer_gk, fof.order_gk,
+            journey_id, fof.offer_gk, fof.order_gk, fof.offer_screen_eta, fof.matching_driving_distance,
             cast(substring(cast(driver_gk as varchar), 5) as integer)  driver_id,
             is_auto_accept,
             rank() over (partition by journey_id, driver_gk order by created_at) action_order
@@ -138,7 +139,7 @@ with main as(
 date_key, timecategory, subperiod, "period", time_period,
 city_name, company_gk, corporate_account_name,
 final_courier, journey_status_id, number_of_completed_deliveries,
-journey_id, offer_gk, order_gk, is_auto_accept,
+journey_id, offer_gk, order_gk, is_auto_accept, offer_screen_eta, matching_driving_distance,
 is_future_order, unassigned_driver as driver_id, assignment_time, unassignment_type,  unas_time,
 -- unas. time based on unassignment from journey history
 sum(case when assignment_time <= unas_time  then date_diff('second', assignment_time, unas_time)/60.00 end)
@@ -147,7 +148,7 @@ count(case when assignment_time <= unas_time and date_diff('second', assignment_
 
 from main
 --where journey_id = 819169
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22
 )
 -- )
 -- where time_period like '%W52%'
