@@ -73,7 +73,7 @@ with main as(
                 ---and journey_id = 819169
             ) jh
 
-        join
+        left join
             (
                 select
                 journey_id, cast(substring(description, 14) as integer) driver_id,
