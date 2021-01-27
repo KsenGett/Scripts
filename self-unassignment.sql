@@ -26,7 +26,7 @@ with main as(
     fj.journey_status_id, -- 3 cancelled, 4 completed, 6 rejected
     fj.number_of_completed_deliveries,
     (date_diff('second', fj.created_at, fj.scheduled_at))*1.00/60 >= 20 is_future_order,
-
+    jh.offer_gk, jh.order_gk, jh.is_auto_accept,
     jh.unassigned_driver,
     (case when jh.unas_user <> 'system@gett.com' then 'CC' -- check CC via journey history
         when sa.event_at is not null then 'app' -- check event of self unassignment via events
@@ -54,6 +54,7 @@ with main as(
             select
             jh.journey_id,
             jh.driver_id assigned_driver,
+            fof.is_auto_accept, fof.offer_gk, fof.order_gk,
             jh.created_at assigned,
             jh.user as_user,
             jhu.driver_id unassigned_driver,
@@ -88,6 +89,26 @@ with main as(
                 and jh.driver_id = jhu.driver_id
                 and jh.action_order = jhu.action_order
 
+        left join
+            (
+            select
+            journey_id, fof.offer_gk, fof.order_gk,
+            cast(substring(cast(driver_gk as varchar), 5) as integer)  driver_id,
+            is_auto_accept,
+            rank() over (partition by journey_id, driver_gk order by created_at) action_order
+
+            from model_delivery.dwh_fact_journeys_v fj
+            left join emilia_gettdwh.dwh_fact_offers_v fof
+                    on fj.order_gk = fof.order_gk
+                    and fof.country_key = 2
+                    and fof.date_key between current_date - interval '90' day and current_date
+
+
+            where fj.country_symbol = 'RU'
+            ) fof on jh.journey_id = fof.journey_id
+                and jh.driver_id = fof.driver_id
+                and fof.action_order = jh.action_order
+
         ) as jh on fj.journey_id = jh.journey_id
 
         left join self_unas sa
@@ -116,7 +137,8 @@ with main as(
 (select
 date_key, timecategory, subperiod, "period", time_period,
 city_name, company_gk, corporate_account_name,
-final_courier, journey_status_id, number_of_completed_deliveries, journey_id,
+final_courier, journey_status_id, number_of_completed_deliveries,
+journey_id, offer_gk, order_gk, is_auto_accept,
 is_future_order, unassigned_driver as driver_id, assignment_time, unassignment_type,  unas_time,
 -- unas. time based on unassignment from journey history
 sum(case when assignment_time <= unas_time  then date_diff('second', assignment_time, unas_time)/60.00 end)
@@ -125,7 +147,7 @@ count(case when assignment_time <= unas_time and date_diff('second', assignment_
 
 from main
 --where journey_id = 819169
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
 )
 -- )
 -- where time_period like '%W52%'
