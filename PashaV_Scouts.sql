@@ -131,8 +131,10 @@ with leads as
                 d.registration_date_key,
                 (case when is_frozen = 1 then 'Заблокирован' else 'Активен' end) status,
                 (case when d.ltp_date_key <> date'1900-01-01' then d.ltp_date_key end) last_ride_date,
-                d.ftp_date_key ftr_date,
-                programme
+                programme,
+                max(case when ride_type = 'ReFTRD' then rftr.date_key end) reFTR,
+                max(rftr.date_key) ftr_date
+
 
             from emilia_gettdwh.dwh_dim_drivers_v d
                 -- to filter by fleet name selecting only couriers
@@ -151,7 +153,7 @@ with leads as
                                             between cast("start" as date) and cast("end" as date))
                     or (d.registration_date_key between cast("start" as date) and cast("end" as date))
                         )
-
+                group by 1,2,3,4,5,6,7,8,9,10
         )
 select l.*,
 date(l.ftr_date) + interval '14' day stop_promo_date,
@@ -235,7 +237,7 @@ left join --2sec
     ) md on md.courier_gk  = fo.driver_gk and md.date_key = fo.date_key
 ) deliv on l.driver_gk = deliv.driver_gk
 
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13;
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14;
 
 -- Департамент  успеха - agents, their payment is based on number of JOURNEYS within 30 days after FTR (reFTR included)
 with leads as
