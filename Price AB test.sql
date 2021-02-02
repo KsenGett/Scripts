@@ -45,6 +45,7 @@ with GH AS (
 (
 select
 distinct source_id,
+dd.phone, dd.driver_name,
 fo.days,
 fo.city_name,
 dd.ltp_date_key,
