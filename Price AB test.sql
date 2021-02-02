@@ -13,7 +13,7 @@ with GH AS (
 
     FROM emilia_gettdwh.dwh_fact_drivers_hourly_v fdh
      WHERE   1 = 1
-                and fdh.date_key between current_date - interval '90' day and current_date - interval '20' day
+                and fdh.date_key between current_date - interval '200' day and current_date - interval '20' day
                 and fdh.country_key = 2
     GROUP BY 1
     )
@@ -29,7 +29,7 @@ with GH AS (
     FROM emilia_gettdwh.dwh_fact_offers_v fof
      LEFT JOIN emilia_gettdwh.dwh_dim_class_types_v cl ON cl.class_type_key = fof.class_type_key
     WHERE lob_key IN (5,6)
-    and date_key between current_date - interval '90' day and current_date - interval '20' day
+    and date_key between current_date - interval '200' day and current_date - interval '20' day
     GROUP BY 1
     )
 (
@@ -61,7 +61,7 @@ left join emilia_gettdwh.dwh_dim_vendors_v fl on dd.fleet_gk = fl.vendor_gk
             where fo.lob_key in (5,6)
             and order_status_key = 7
             and fo.country_key = 2
-            and fo.date_key between current_date - interval '90' day and current_date - interval '20' day
+            and fo.date_key between current_date - interval '200' day and current_date - interval '20' day
 
 
             group by 1,2
@@ -73,7 +73,7 @@ left join GH on dd.driver_gk = GH.driver_gk
 
 where dd.country_key = 2
 and fl.vendor_name like '%courier%'
-and ltp_date_key between current_date - interval '60' day and current_date - interval '14' day
+and ltp_date_key between current_date - interval '120' day and current_date - interval '20' day
 )
 )
 
