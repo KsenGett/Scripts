@@ -47,6 +47,7 @@ select
 distinct source_id,
 fo.days,
 fo.city_name,
+dd.ltp_date_key,
 fo.orders_OF + coalesce(orders_NF, 0) deliveries,
 GH.gh, GH.days gh_days, GH.gh_in_ride,
 AR.numerator, AR.denominator
