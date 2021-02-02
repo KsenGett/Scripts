@@ -1,9 +1,9 @@
-select
-avg(numerator*1.00 / nullif(denominator,0)) mean,
-sum(numerator)*1.00/sum(denominator) w_mean
-
-from
-(
+-- select
+-- avg(numerator*1.00 / nullif(denominator,0)) mean,
+-- sum(numerator)*1.00/sum(denominator) w_mean
+--
+-- from
+-- (
 with GH AS (
     SELECT driver_gk,
     count(CASE when fdh.driver_status_key IN (2, 4, 5, 6) then date_key end) days,
@@ -75,7 +75,7 @@ where dd.country_key = 2
 and fl.vendor_name like '%courier%'
 and ltp_date_key between current_date - interval '120' day and current_date - interval '20' day
 )
-)
+--)
 
 
 
