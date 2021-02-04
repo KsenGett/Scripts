@@ -31,7 +31,7 @@ origin_full_address,
 
 -- if there is a fallback then old class from events, if is no fallback - from fact orders/dim classes
 coalesce(t1.old_class_word, dc.class_group) original_class,
-coalesce(t1.new_class_word, dc.class_group) completed_class,
+coalesce(t1.new_class_word, dc.class_group) final_class,
 
 -- completed journeys total per week
 count(distinct case when order_status_key = 7 then fo.order_gk end) completed_journeys_total,
@@ -61,7 +61,7 @@ FROM "emilia_gettdwh"."dwh_fact_orders_v" fo
 WHERE fo.country_key = 2
 and fo.lob_key in (5,6)
 and origin_location_key = 245
-and fo.date_key between current_date - interval '7' day and current_date
+and fo.date_key between current_date - interval '8' day and current_date
 and fo.ordering_corporate_account_gk <> 20004730
 
 group by 1,2,3,4,5,6--,7--,8
