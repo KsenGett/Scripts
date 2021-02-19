@@ -99,6 +99,7 @@ left join emilia_gettdwh.dwh_dim_vendors_v fl on dd.fleet_gk = fl.vendor_gk
             and fo.country_key = 2
             and fo.origin_location_key = 245
             and fl.vendor_name like '%courier%'
+            and fo.date_key between current_date - interval '14' day and current_date
 
             group by 1,2
             )
