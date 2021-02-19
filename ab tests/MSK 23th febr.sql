@@ -99,7 +99,7 @@ left join emilia_gettdwh.dwh_dim_vendors_v fl on dd.fleet_gk = fl.vendor_gk
             and fo.country_key = 2
             and fo.origin_location_key = 245
             and fl.vendor_name like '%courier%'
-            and fo.date_key between current_date - interval '14' day and current_date
+            and fo.date_key between dd.ltp_date_key - interval '14' day and dd.ltp_date_key
 
             group by 1,2
             )
@@ -114,7 +114,7 @@ where dd.country_key = 2
 and fl.vendor_name like '%courier%'
 and (fl.vendor_name like '%МСК%'
         or fl.vendor_gk in (200010351, 200012868, 200010116,200013818,200010350)) -- only moscow fleets
-and (fo.days_19_del is null or fo.days_19_del = 0)
+and (fo.days_19_del is null or fo.days_19_del = 0) -- no ftr or did less than 19 once within last 14 days
 and dd.is_frozen <> 1
 and dd.phone <> '8'
 
