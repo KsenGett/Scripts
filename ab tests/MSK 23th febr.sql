@@ -61,7 +61,7 @@ left join emilia_gettdwh.dwh_dim_vendors_v fl on dd.fleet_gk = fl.vendor_gk
       (
             select driver_gk,
             sum(orders_OF + coalesce(orders_NF, 0)) deliveries,
-            count(distinct date_key) days,
+            count(distinct case when coalesce(orders_OF, orders_NF) is not null then date_key end) days,
             count(distinct case when (orders_OF + coalesce(orders_NF, 0)) >= 15 then date_key end) days_15_deliveries,
             count(distinct case when (orders_OF_last_14_days + coalesce(orders_NF_last_14_days, 0)) > 19 then date_key end) days_19_del
 
@@ -99,7 +99,6 @@ left join emilia_gettdwh.dwh_dim_vendors_v fl on dd.fleet_gk = fl.vendor_gk
             and fo.country_key = 2
             and fo.origin_location_key = 245
             and fl.vendor_name like '%courier%'
-            and fo.date_key between dd.ltp_date_key - interval '14' day and dd.ltp_date_key
 
             group by 1,2
             )
