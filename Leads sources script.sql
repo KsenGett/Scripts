@@ -15,7 +15,7 @@ as;
 
             (case when d.driver_gk = ref.driver_gk then 'Reff'
             when d.fleet_gk in (200014202,200016265,200016266,200016267,200016359,200016361) then 'Gorizont'
-            when d.fleet_gk in (200017177,200017083) then 'Scouts'
+            when d.fleet_gk in (200017083,200017177,200017412,200017342,200017205,200017203, 200017524,200017523,200017517,200017430) then 'Scouts'
             when d.fleet_gk = 200017111 then 'D_Uspekha'
             else 'Fleet' end) source,
 
