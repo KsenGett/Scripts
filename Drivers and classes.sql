@@ -22,7 +22,7 @@ with rd as
     and d.driver_status in ('Operational')
     and fo.date_key >= (current_date - interval '30' day)
     and origin_location_key = 245
-    and d.registration_date_key between current_date - interval '30' day and current_date
+    --and d.registration_date_key between current_date - interval '30' day and current_date
     group by 1,2,3
     )
 , rs as
