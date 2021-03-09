@@ -1,96 +1,7 @@
 -- PASHA V FUNNEL  |
 --                 V
-with leads as (
-        (select
-        distinct leads.phone_number lead_phone,
-        "name" lead_name,
-        leads.city lead_city,
-        case when "source" like '%web%' then 'Plan-net'
-        when "source" like '%workle%' then 'workle' else "source" end source,
-        d.driver_gk,
-        d.phone,
-        d.driver_name registration_name,
-        d.fleet_gk,
-        fl.vendor_name,
-        fl.vendor_name like '%courier%' is_courier,
-        d.registration_date_key,
-        ltp_date_key last_ride,
-        concat('W', cast(week(d.registration_date_key) as varchar)) week_cohort,
-        max(date(lead_date)) as lead_date,
-        max(case when ride_type = 'ReFTRD' then rftr.date_key end) reFTR,
-        max(rftr.date_key) ftr_date
-                            -- google sheet
-        from sheets."default".delivery_courier_leads_new leads
-                            -- get info about drivers by their phones
-        LEFT JOIN "emilia_gettdwh"."dwh_dim_drivers_v" d
-        ON substring(d.phone, -10) = leads.phone_number
-            and d.phone not in ('89999999999', '8', '')
-            and country_key = 2
-        left join bp_ba.sm_ftr_reftr_drivers rftr on d.driver_gk = rftr.driver_gk
-        left join emilia_gettdwh.dwh_dim_vendors_v fl on d.fleet_gk = fl.vendor_gk
-        and fl.country_symbol = 'RU'
-
-        where "source" <> 'source' --filter the bug that occured because of union of tables in google sheet
-        and phone_2 <> 'phone_2'
-        and phone_number not in ('8', '', '9999999999', ' ', '3333333333', '2222222222') -- dummy phones
-        and phone_number is not null
-        and cast(lead_date as date) >= date'2020-07-01'
-
-        group by 1,2,3,4,5,6,7,8,9,10,11,12,13
-        )
-
-    union
-
-        (select
-                null as lead_phone,
-                null as lead_name,
-                 null as lead_city,
-                (case when d.fleet_gk in (200014202,200016265,200016266,200016267,200016359,200016361) then 'Agent'
-                        when d.driver_gk = ref.driver_gk then 'Reff'
-                        when d.fleet_gk = 200017083 then 'Scouts'
-                        else 'Fleet' end)  source,
-                d.driver_gk,
-                d.phone,
-                d.driver_name registration_name,
-                d.fleet_gk,
-                fl.vendor_name,
-                fl.vendor_name like '%courier%' is_courier,
-                d.registration_date_key,
-                ltp_date_key last_ride,
-                concat('W', cast(week(d.registration_date_key) as varchar)) week_cohort,
-                null as lead_date,
-                max(case when ride_type = 'ReFTRD' then rftr.date_key end) reFTR,
-                max(rftr.date_key) ftr_date
-
-            from emilia_gettdwh.dwh_dim_drivers_v d
-                -- to filter by fleet name selecting only couriers
-                left join emilia_gettdwh.dwh_dim_vendors_v fl on d.fleet_gk = fl.vendor_gk
-                -- reff - to learn original fleet
-                left join
-		            (
-		                select
-		                driver_gk, ftp_date_key between cast("start" as date) and cast("end" as date)
-		                from emilia_gettdwh.dwh_dim_drivers_v d
-		                left join "sheets"."default".ru_fleet_promo ref on cast(ref.fleet_gk as integer) = d.fleet_gk
-		                where 1=1
-		                -- select drivers who were led by reff
-		                and ftp_date_key between cast("start" as date) and cast("end" as date)
-		                and d.country_key = 2
-		            ) ref on ref.driver_gk = d.driver_gk
-                -- FTR
-                left join bp_ba.sm_ftr_reftr_drivers rftr on d.driver_gk = rftr.driver_gk
-
-
-                where 1=1
-                and d.phone is not null
-                and d.driver_gk <> 2000683923 -- some old bug
-                and fl.vendor_name like '%courier%'
-                and d.country_key = 2
-                --and d.registration_date_key >= date'2020-07-01'
-                group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14
-            )
-)
-select l.*,
+select
+l.*,
 deliv.city_name,
 
 sum(case when deliv.date_key
@@ -107,25 +18,21 @@ count(distinct case when  deliv.date_key
                 then deliv.deliv end) wdays_14days
 
 
-from leads l
-
-left join --14 sec
-(
-select fo.city_name, fo.date_key, fo.driver_gk,
-orders + (case when deliveries is not null then deliveries else 0 end) deliv,
-orders + (case when journeys is not null then journeys else 0 end) jorn
-
-from
-  (
-        --select count(distinct driver_gk) from (
-        select
+from analyst.delivery_leads l
+left join
+(       select
         distinct driver_gk,
         date_key,
         city_name,
-
+        --finance
+        (sum(customer_total_cost) - sum(driver_total_cost_inc_vat))
+        + (sum(driver_total_commission_exc_vat)*(-1)) TR,
         -- orders only on OF
         count(distinct case when ct.class_family <> 'Premium'
-         and ordering_corporate_account_gk <> 20004730 then order_gk end) orders
+         and ordering_corporate_account_gk <> 20004730 then  order_gk end) of_orders,
+        count(distinct case when ordering_corporate_account_gk = 20004730 then  order_gk end) nf_orders,
+        count(distinct case when ordering_corporate_account_gk <> 20004730 then  order_gk end) journeys_total
+
 
         from emilia_gettdwh.dwh_fact_orders_v fo
         left join emilia_gettdwh.dwh_dim_class_types_v AS ct
@@ -134,158 +41,141 @@ from
             fo.origin_location_key = loc.location_key and loc.country_id = 2
 
         where fo.lob_key in (5,6)
-        and date_key >= date'2020-7-1'
-        and order_status_key = 7
+        and date_key >= date'2020-11-01'
+        --and order_status_key = 7
         and fo.country_key = 2
+        and driver_gk = 2000613275
 
         group by 1,2,3
-        --)
 
-    ) fo
+    ) deliv on l.driver_gk = deliv.driver_gk
 
--- Deliveries NF
-left join --2sec
-    (
-        select
-        distinct courier_gk,
-        date(scheduled_at) date_key,
-        count(distinct delivery_gk) deliveries,
-        count(distinct journey_gk) journeys
-
-        from model_delivery.dwh_fact_deliveries_v
-
-        where date(scheduled_at) >= date'2020-7-1'
-        and delivery_status_id = 4
-        and country_symbol = 'RU'
-
-        group by 1,2
-
-    ) md on md.courier_gk  = fo.driver_gk and md.date_key = fo.date_key
-) deliv on l.driver_gk = deliv.driver_gk
-
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17;
+group by 1,2,3,4,5,6,7,8,9,10,11;
 
 
+-- Funnel dossier
+select *
+from
+(
+select funnel.* ,
+tp_a.subperiod2 activation_week,
+tp_ftr.subperiod2 ftr_week
+from
+(
+    (select
+            distinct
+            leads.phone_number lead_phone,
+            "name" lead_name,
+            leads.city lead_city,
+            (case when "source" like '%web%' then 'Plan-net'
+                    when "source" like '%workle%' then 'Workle' end) external_source,
+            max(date(lead_date)) over (partition by leads.phone_number) lead_date,
+            null driver_gk,
+            null source,
+            null phone,
+            null registration_name,
+            d.frozen_comment, d.is_frozen,
+            null fleet_gk,
+            null fleet_name,
+            null registration_date_key,
+            null reFTR,
+            null FTR,
+            null city_name,
+            null deliv_total,
+            null work_days,
+            null is_wau
 
--- Conversion (to activated, ftr, 5 rides, N rides, work days, percentage of completion)
--- of week leads cohorts by sources
--- check CR and Work days
+                                -- google sheet
+            from sheets."default".delivery_courier_leads_new leads
+                                -- get info about drivers by their phones
+            LEFT JOIN "emilia_gettdwh"."dwh_dim_drivers_v" d
+            ON substring(d.phone, -10) = leads.phone_number
+                and d.phone not in ('89999999999', '8', '')
+                and country_key = 2
 
--- additional
--- Count number of leads for a period (count driver_gk over registration_date_key)
--- Track DNMK of FTR, reFTR
-
-    with leads as (
-        (select
-        distinct leads.phone_number lead_phone,
-        "name" lead_name,
-        leads.city lead_city,
-        "source",
-        d.driver_gk,
-        d.phone,
-        d.driver_name registration_name,
-        d.fleet_gk,
-        d.registration_date_key,
-        concat('W', cast(week(d.registration_date_key) as varchar)) week_cohort,
-        (case when ride_type = 'ReFTRD' then rftr.date_key end) reFTR,
-        max(date(lead_date)) as lead_date,
-        max(rftr.date_key) ftr_date
-                            -- google sheet
-        from sheets."default".delivery_courier_leads_new leads
-                            -- get info about drivers by their phones
-        LEFT JOIN "emilia_gettdwh"."dwh_dim_drivers_v" d
-        ON substring(d.phone, -10) = leads.phone_number
-            and d.phone not in ('89999999999', '8', '')
-            and country_key = 2
-        left join bp_ba.sm_ftr_reftr_drivers rftr on d.driver_gk = rftr.driver_gk
-
-        where "source" <> 'source' --filter the bug that occured because of union of tables in google sheet
-        and phone_2 <> 'phone_2'
-        and phone_number not in ('8', '', '9999999999', ' ', '3333333333', '2222222222') -- dummy phones
-        and phone_number is not null
-        and cast(lead_date as date) >= date'2020-07-01'
-
-        group by 1,2,3,4,5,6,7,8,9,10,11
-        )
+            where "source" <> 'source' --filter the bug that occured because of union of tables in google sheet
+            and phone_2 <> 'phone_2'
+            and phone_number not in ('8', '', '9999999999', ' ', '3333333333', '2222222222') -- dummy phones
+            and phone_number is not null
+            and cast(lead_date as date) >= date'2020-07-01'
+            and d.driver_gk is null
+    )
 
     union
 
-        (select
-                null as lead_phone,
-                null as lead_name,
-                 null as lead_city,
-                (case when d.fleet_gk in (200014202,200016265,200016266,200016267,200016359,200016361) then 'Agent'
-                        when d.driver_gk = ref.driver_gk then 'Reff'
-                        else 'Fleet' end)  source,
-                d.driver_gk,
-                d.phone,
-                d.driver_name registration_name,
-                d.fleet_gk,
-                d.registration_date_key,
-                concat('W', cast(week(d.registration_date_key) as varchar)) week_cohort,
-                (case when ride_type = 'ReFTRD' then rftr.date_key end) reFTR,
-                null as lead_date,
-                max(rftr.date_key) ftr_date
+    (
+        select
 
-            from emilia_gettdwh.dwh_dim_drivers_v d
-                -- to filter by fleet name selecting only couriers
-                left join emilia_gettdwh.dwh_dim_vendors_v fl on d.fleet_gk = fl.vendor_gk
-                -- reff - to learn original fleet
-                left join
-		            (
-		                select
-		                driver_gk, ftp_date_key between cast("start" as date) and cast("end" as date)
-		                from emilia_gettdwh.dwh_dim_drivers_v d
-		                left join "sheets"."default".ru_fleet_promo ref on cast(ref.fleet_gk as integer) = d.fleet_gk
-		                where 1=1
-		                -- select drivers who were led by reff
-		                and ftp_date_key between cast("start" as date) and cast("end" as date)
-		                and d.country_key = 2
-		            ) ref on ref.driver_gk = d.driver_gk
-                -- FTR
-                left join bp_ba.sm_ftr_reftr_drivers rftr on d.driver_gk = rftr.driver_gk
+        case when l.external_source is not null then l.phone_number end lead_phone,
+        l.registration_name lead_name,
+        null lead_city,
+        l.external_source,
+        l.external_source_lead_date lead_date,
+        l.driver_gk,
+        l.source,
+        l.phone_number phone,
+        l.registration_name,
+        d.frozen_comment, d.is_frozen,
+        l.fleet_gk,
+        fl.vendor_name,
+        l.registration_date_key,
+        l.reftr is not null reFTR,
+        (case when date(l.reftr) is not null then date(l.reftr) else l.first_ftr end) FTR,
+        fo.city_name,
+        (case when fo.of_deliv is null then 0 else fo.of_deliv end) +
+        (case when fo.nf_deliv is null then 0 else fo.nf_deliv end) deliv_total,
+        fo.work_days,
+        fo.last_ride between current_date - interval '7' day and current_date is_wau
 
 
-                where 1=1
-                and d.phone is not null
-                and d.driver_gk <> 2000683923 -- some old bug
-                and fl.vendor_name like '%courier%'
-                and d.country_key = 2
-                and d.registration_date_key >= date'2020-07-01'
-                group by 1,2,3,4,5,6,7,8,9,10,11
-            )
+        from analyst.delivery_leads l
+        left join emilia_gettdwh.dwh_dim_drivers_v d on l.driver_gk = d.driver_gk
+        left join emilia_gettdwh.dwh_dim_vendors_v fl on fl.vendor_gk = l.fleet_gk
+                  and fl.country_key = 2
+        left join
+                (
+                    select
+                    driver_gk, loc.city_name,
+                    count(distinct case when ct.class_family <> 'Premium'
+                             and ordering_corporate_account_gk <> 20004730 then order_gk end) of_deliv,
+                    count(distinct case when ordering_corporate_account_gk = 20004730 then order_gk end) nf_deliv,
+                    count(distinct date_key) work_days,
+                    max(date_key) last_ride
+
+                    from emilia_gettdwh.dwh_fact_orders_v fo
+                    left join emilia_gettdwh.dwh_dim_locations_v loc on
+                                fo.origin_location_key = loc.location_key and loc.country_id = 2
+                    left join emilia_gettdwh.dwh_dim_class_types_v AS ct
+                                ON ct.class_type_key = fo.class_type_key
+
+                    where fo.country_key = 2 and fo.lob_key in (5,6)
+                    and fo.date_key >= date'2020-07-1'
+                    and order_status_key = 7
+
+                    group by 1,2
+                ) fo on l.driver_gk = fo.driver_gk
+        )
+) funnel
+LEFT JOIN  emilia_gettdwh.periods_v AS tp_ftr ON tp_ftr.hour_key = 0 and tp_ftr.date_key = funnel.FTR
+       and tp_ftr.timecategory = '3.Weeks'
+       and tp_ftr.timecategory is not null
+LEFT JOIN  emilia_gettdwh.periods_v AS tp_a ON tp_a.hour_key = 0 and tp_a.date_key = funnel.registration_date_key
+       and tp_a.timecategory = '3.Weeks'
+       and tp_a.timecategory is not null
 )
-select l.*,
-loc.city_name,
-
-count(distinct case when fo.date_key
-                    between l.registration_date_key and l.registration_date_key + interval '7' day
-                then fo.order_gk end) journeys_7days,
-count(distinct case when order_status_key = 7 and fo.date_key
-                    between l.registration_date_key and l.registration_date_key + interval '7' day
-                then fo.order_gk end) journeys_7days_compl,
-
-count(distinct case when fo.date_key
-                    between l.registration_date_key and l.registration_date_key + interval '14' day
-                then fo.order_gk end) journeys_14days,
-count(distinct case when order_status_key = 7 and fo.date_key
-                    between l.registration_date_key and l.registration_date_key + interval '14' day
-                then fo.order_gk end) journeys_14days_compl,
-
-count(distinct date_key) work_days_totall,
-count(distinct case when fo.date_key
-                    between l.registration_date_key and l.registration_date_key + interval '14' day
-                then fo.date_key end) wdays_14days
+where activation_week is null
+and driver_gk is not null
 
 
-from leads l
-left join emilia_gettdwh.dwh_fact_orders_v fo on l.driver_gk = fo.driver_gk
-    and fo.country_key = 2 and lob_key in (5,6)
-    and ordering_corporate_account_gk <> 20004730
-left join emilia_gettdwh.dwh_dim_locations_v loc on
-            fo.origin_location_key = loc.location_key and loc.country_id = 2
+select count(distinct driver_gk)
+from analyst.delivery_leads
+where first_ftr = date'2020-12-20'
 
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14;
+count(distinct driver_gk)
+
+
+
+
 
 
 
@@ -295,135 +185,33 @@ group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14;
 
 select *
 
-from(
+select
+driver_gk,
+substring (cast(driver_gk as varchar), 5) id,
+registration_date_key,
+phone_number phone,
+"source",
+vendor_name,
+gt.name registration_name,
+case when first_ftr is null then 'NO FTR' end status
 
-with leads as (
-        (
-        select
-        distinct leads.phone_number lead_phone,
-        leads."name" lead_name,
-        leads.city lead_city,
-        "source",
-        d.driver_gk, d.source_id id,
-        d.phone,
-        gt.name registration_name,
-        d.fleet_gk,
-        d.registration_date_key,
-        concat('W', cast(week(d.registration_date_key) as varchar)) week_cohort,
-        (case when ride_type = 'ReFTRD' then rftr.date_key end) reFTR,
-        max(date(lead_date)) as lead_date,
-        max(rftr.date_key) ftr_date
-                            -- google sheet
-        from sheets."default".delivery_courier_leads_new leads
-                            -- get info about drivers by their phones
-        LEFT JOIN "emilia_gettdwh"."dwh_dim_drivers_v" d
-        ON substring(d.phone, -10) = leads.phone_number
-            and d.phone not in ('89999999999', '8', '')
-            and country_key = 2
-        left join bp_ba.sm_ftr_reftr_drivers rftr on d.driver_gk = rftr.driver_gk
-        -- full name
-        left join (select id, name from "gt-ru".gettaxi_ru_production.drivers) gt on  d.source_id = gt.id
+from analyst.delivery_leads l
+left join (select cast(id as varchar) id, name from "gt-ru".gettaxi_ru_production.drivers) gt
+on  concat('2000', gt.id) = cast(l.driver_gk as varchar)
+left join emilia_gettdwh.dwh_dim_vendors_v fl on l.fleet_gk = fl.vendor_gk
 
-        where "source" <> 'source' --filter the bug that occured because of union of tables in google sheet
-        and phone_2 <> 'phone_2'
-        and phone_number not in ('8', '', '9999999999', ' ', '3333333333', '2222222222') -- dummy phones
-        and phone_number is not null
-        and cast(lead_date as date) >= date'2020-07-01'
-
-        group by 1,2,3,4,5,6,7,8,9,10,11,12
-        )
-
-    union
-
-        (select
-                null as lead_phone,
-                null as lead_name,
-                 null as lead_city,
-                (case when d.fleet_gk in (200014202,200016265,200016266,200016267,200016359,200016361) then 'Agent'
-                        when d.driver_gk = ref.driver_gk then 'Reff'
-                        else 'Fleet' end)  source,
-                d.driver_gk, d.source_id id,
-                d.phone,
-                gt.name registration_name,
-                d.fleet_gk,
-                d.registration_date_key,
-                concat('W', cast(week(d.registration_date_key) as varchar)) week_cohort,
-                (case when ride_type = 'ReFTRD' then rftr.date_key end) reFTR,
-                null as lead_date,
-                max(rftr.date_key) ftr_date
-
-            from emilia_gettdwh.dwh_dim_drivers_v d
-                -- to filter by fleet name selecting only couriers
-                left join  emilia_gettdwh.dwh_dim_vendors_v fl on d.fleet_gk = fl.vendor_gk
-                left join
-		            (
-		                select
-		                driver_gk, ftp_date_key between cast("start" as date) and cast("end" as date)
-		                from emilia_gettdwh.dwh_dim_drivers_v d
-		                left join "sheets"."default".ru_fleet_promo ref on cast(ref.fleet_gk as integer) = d.fleet_gk
-		                where 1=1
-		                -- select drivers who were led by reff
-		                and ftp_date_key between cast("start" as date) and cast("end" as date)
-		                and d.country_key = 2
-		            ) ref on ref.driver_gk = d.driver_gk
-                -- FTR
-                left join bp_ba.sm_ftr_reftr_drivers rftr on d.driver_gk = rftr.driver_gk
-                -- full name
-                left join (select id, name from "gt-ru".gettaxi_ru_production.drivers) gt on  d.source_id = gt.id
-                -- to exclude external sources
-                left join
-                --select count(distinct driver_gk) from
-                    (
-                        select
-                        distinct  d.driver_gk
-
-                        -- google sheet
-                        from sheets."default".delivery_courier_leads_new leads
-                        -- get info about drivers by their phones
-                        JOIN "emilia_gettdwh"."dwh_dim_drivers_v" d
-                            ON substring(d.phone, -10) = leads.phone_number
-                                and d.phone not in ('89999999999', '8', '')
-                                and country_key = 2
-                        -- to exclude reff
-                        left join  "sheets"."default".ru_fleet_promo ref on d.fleet_gk = cast(ref.fleet_gk as bigint)
-
-                        where "source" <> 'source' --filter the bug that occured because of union of tables in google sheet
-                        and phone_2 <> 'phone_2'
-                        and phone_number not in ('8', '', '9999999999', ' ', '3333333333', '2222222222') -- dummy phones
-                        and phone_number is not null
-                        and cast(lead_date as date) >= date'2020-07-01'
-                        -- exclude agents
-                        and d.fleet_gk not in (200014202,200016265,200016266,200016267,200016359,200016361)
-                        -- exclude reff
-                        and ref.fleet_gk is null
-                        ) prog on prog.driver_gk = d.driver_gk
-
-                where 1=1
-                and d.phone is not null
-                and d.driver_gk <> 2000683923 -- some old bug
-                and fl.vendor_name like '%courier%'
-                and d.country_key = 2
-                and d.registration_date_key >= date'2020-07-01'
-                -- exclude external sources
-                and prog.driver_gk is null
-                group by 1,2,3,4,5,6,7,8,9,10,11,12
-            )
-)
-select l.*,
-
-case when
-registration_date_key = current_date - interval '3' day
-and ftr_date is null then 'NO FTR'
---when lead_date = current_date - interval '3' day and registration_date_key is null then 'NOT Registered'
-end status
-
-from leads l
-)
-where status is not null
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+where registration_date_key = current_date - interval '1' day
+and first_ftr is null
 ;
 
+select
+case when ftp_date_key is null then date'1900-01-01' else ftp_date_key end ftr
 
+from  emilia_gettdwh.dwh_dim_drivers_v
+where source_id = 918442
+--tp_date_key = date'1900-1-1'
+and country_key = 2
+limit 2;
 
 --- Agents Nth ride
 with t as (
