@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="BranchesTreeState">
     <expand />
     <select>
@@ -10,43 +13,28 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="new bersion">
-      <change afterPath="$PROJECT_DIR$/AB_test_drivers.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Drivers to recover.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GH.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Kate finances.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Leads - New Funnel.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Leads Conversions.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Leads_drivers_LTV.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pasha Archaic dossier.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pasha vkusvill points.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Routing cancell.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Sadovoe TTK.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Taya dossier drivers FO.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Tzlil Batch Matching.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/VV_pasha.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cancell new way Pasha.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/companies variance .sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/driver promo.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/falback.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/analyst.glx7zA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/area.jdAtAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/coupon.JthCrw.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/default.QdYTXA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/emilia_gettdwh.e9_Tig.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/staging_ccs.DzKGAQ.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/91601007-24ff-495d-9f48-eb7aeeb13fbe/storage_v2/_src_/database/hive.cN8wAA/schema/staging_fraud.YM3yuA.meta" beforeDir="false" />
+    <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="stabilised">
+      <change afterPath="$PROJECT_DIR$/Big Dossier Delivery.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Qwest.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TR catch.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/week katya.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/K_ata.sql" beforeDir="false" afterPath="$PROJECT_DIR$/K_ata.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AB_test_drivers.sql" beforeDir="false" afterPath="$PROJECT_DIR$/AB_test_drivers.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes SLA, ops.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Classes SLA, ops.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Leads_drivers_LTV.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Leads_drivers_LTV.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/New drivers.sql" beforeDir="false" afterPath="$PROJECT_DIR$/New drivers.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Riding Drivers.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tzlil Batch Matching.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Weekly - fin, ops. Del Performance" beforeDir="false" afterPath="$PROJECT_DIR$/Weekly - fin, ops. Del Performance" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ab tests/MSK 23th febr.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ab tests/MSK 23th febr.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cancell new way Pasha.sql" beforeDir="false" afterPath="$PROJECT_DIR$/cancell new way Pasha.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dasboard_leads_delivery.sql" beforeDir="false" afterPath="$PROJECT_DIR$/dasboard_leads_delivery.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/falback.sql" beforeDir="false" afterPath="$PROJECT_DIR$/falback.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/k-mean drivers.sql" beforeDir="false" afterPath="$PROJECT_DIR$/k-mean drivers.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/self-unassignment.sql" beforeDir="false" afterPath="$PROJECT_DIR$/self-unassignment.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/week_report_finance.sql" beforeDir="false" afterPath="$PROJECT_DIR$/week_report_finance.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/week_report_ops.sql" beforeDir="false" afterPath="$PROJECT_DIR$/week_report_ops.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/week_report_ops_ataonly.sql" beforeDir="false" afterPath="$PROJECT_DIR$/week_report_ops_ataonly.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week_report_v2.sql" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +43,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GithubDefaultAccount">
     <option name="defaultAccountId" value="033262b3-3f33-461d-abb0-52cbf9de9fb0" />
@@ -123,15 +112,21 @@
     <property name="database.data.extractors.current.id" value="Comma-separated (CSV)_id" />
     <property name="grid.search.filter.rows" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
-    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/Orders 7 per day in Companies old.sql" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.externalResources" />
+    <property name="two.files.diff.last.used.file" value="$PROJECT_DIR$/week katya.sql" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$USER_HOME$/Desktop/Desktop/MY/sql" />
     </key>
   </component>
-  <component name="RunManager" selected="Database Script.week_report_ops_ataonly.sql">
+  <component name="RunManager" selected="Database Script.Batch Matching Main.sql">
+    <configuration name="Batch Matching Main.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/Batch Matching Main.sql" />
+      <script-mode>FILE</script-mode>
+      <method v="2" />
+    </configuration>
     <configuration name="Steal Cases.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
       <script-file value="$PROJECT_DIR$/Steal Cases.sql" />
       <script-mode>FILE</script-mode>
@@ -168,89 +163,157 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="First commit" />
-    <MESSAGE value="Copied from console" />
-    <MESSAGE value="New file" />
-    <MESSAGE value="deleted big development script about steal cases" />
-    <MESSAGE value="some correctioms" />
-    <MESSAGE value="added all details about delivery performance" />
-    <MESSAGE value="Corrections of companies dynamic part. Added all companies and fixed mistakes" />
-    <MESSAGE value="new script" />
-    <MESSAGE value="old skript" />
-    <MESSAGE value="Fixed Orders 7 per day in Fleets and inserted correct script fpr companies" />
-    <MESSAGE value="Automated Fraud search for dossier. Finding of intersect values between clients and drivers is added." />
-    <MESSAGE value="Mistakes checked and corrected" />
-    <MESSAGE value="Time categories are added" />
-    <MESSAGE value="Distance calculation for GT" />
-    <MESSAGE value="general" />
-    <MESSAGE value="added agents, fixed bugs and etc" />
-    <MESSAGE value="new bersion" />
-    <option name="LAST_COMMIT_MESSAGE" value="new bersion" />
+    <MESSAGE value="Before change" />
+    <MESSAGE value="Delivery_leads, reFTR, deliveries on Fact orders" />
+    <MESSAGE value="added Scouts fleet" />
+    <MESSAGE value="reff changed and scouts added" />
+    <MESSAGE value="scouts added and reff expanded with registration date" />
+    <MESSAGE value="journey level was added" />
+    <MESSAGE value="Periods table is replaced" />
+    <MESSAGE value="Cities was fixed" />
+    <MESSAGE value="Created (in development)" />
+    <MESSAGE value="zones added" />
+    <MESSAGE value="reff coordinates round" />
+    <MESSAGE value="original" />
+    <MESSAGE value="Change of unassignment tables" />
+    <MESSAGE value="reFTR for reff is added" />
+    <MESSAGE value="is autoaccept is added" />
+    <MESSAGE value="offer eta, distance, is_auto_accept are added" />
+    <MESSAGE value="Churned drivers fixed" />
+    <MESSAGE value="Created" />
+    <MESSAGE value="edits" />
+    <MESSAGE value="created" />
+    <MESSAGE value="+scouts fleet" />
+    <MESSAGE value="create" />
+    <MESSAGE value="optimised" />
+    <MESSAGE value="added frozen comments" />
+    <MESSAGE value="stabilised" />
+    <option name="LAST_COMMIT_MESSAGE" value="stabilised" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="30" y="286" key="#SQL_Dialects" timestamp="1600157086506">
+    <state x="247" y="113" width="1001" height="667" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617723662555">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="30" y="286" key="#SQL_Dialects/0.0.1440.900@0.0.1440.900" timestamp="1600157086506" />
-    <state x="247" y="113" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1604597620750">
+    <state x="247" y="113" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-200.-1080.1920.1080@0.0.1440.900" timestamp="1614847232244" />
+    <state x="244" y="-917" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-275.-1080.1920.1080@-275.-1080.1920.1080" timestamp="1616421576808" />
+    <state x="247" y="113" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-275.-1080.1920.1080@0.0.1440.900" timestamp="1617723662555" />
+    <state x="247" y="113" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1617363678705" />
+    <state x="259" y="302" width="1001" height="667" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1616420205027" />
+    <state x="244" y="-898" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.22.1440.838/-275.-1058.1920.1058@-275.-1058.1920.1058" timestamp="1616422898750" />
+    <state x="342" y="259" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1611568023833">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="247" y="113" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1604597620750" />
-    <state x="186" y="96" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.22.1440.838@0.22.1440.838" timestamp="1602490201946" />
-    <state x="411" y="250" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1602404509743">
+    <state x="342" y="259" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1611568023832" />
+    <state x="463" y="312" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1616358849419">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="463" y="312" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1440.900@0.0.1440.900" timestamp="1616358849419" />
+    <state x="100" y="67" width="1240" height="808" key="DiffContextDialog" timestamp="1615276643558">
       <screen x="0" y="22" width="1440" height="838" />
     </state>
-    <state x="411" y="250" key="#com.intellij.fileTypes.FileTypeChooser/0.22.1440.838@0.22.1440.838" timestamp="1602404509743" />
-    <state x="408" y="202" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1601985068711">
+    <state x="100" y="67" width="1240" height="808" key="DiffContextDialog/0.22.1440.838@0.22.1440.838" timestamp="1615276643558" />
+    <state width="1551" height="454" key="GridCell.Tab.0.bottom" timestamp="1617975490700">
+      <screen x="1440" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1148" height="224" key="GridCell.Tab.0.bottom/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1613715992054" />
+    <state width="1551" height="366" key="GridCell.Tab.0.bottom/0.0.1440.900/-200.-1080.1920.1080@-200.-1080.1920.1080" timestamp="1614802053069" />
+    <state width="1148" height="313" key="GridCell.Tab.0.bottom/0.0.1440.900/-200.-1080.1920.1080@0.0.1440.900" timestamp="1615298397877" />
+    <state width="1551" height="367" key="GridCell.Tab.0.bottom/0.0.1440.900/-275.-1080.1920.1080@-275.-1080.1920.1080" timestamp="1617795912351" />
+    <state width="1148" height="464" key="GridCell.Tab.0.bottom/0.0.1440.900/-275.-1080.1920.1080@0.0.1440.900" timestamp="1617886308932" />
+    <state width="1148" height="120" key="GridCell.Tab.0.bottom/0.0.1440.900/1440.0.1920.1080@0.0.1440.900" timestamp="1617970650567" />
+    <state width="1551" height="454" key="GridCell.Tab.0.bottom/0.0.1440.900/1440.0.1920.1080@1440.0.1920.1080" timestamp="1617973619308" />
+    <state width="1148" height="393" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1617547119383" />
+    <state width="1551" height="367" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1617817122873" />
+    <state width="1551" height="209" key="GridCell.Tab.0.bottom/0.22.1440.838/-200.-1058.1920.1058@-200.-1058.1920.1058" timestamp="1614159888741" />
+    <state width="1148" height="262" key="GridCell.Tab.0.bottom/0.22.1440.838/-275.-1058.1920.1058@-275.-1058.1920.1058" timestamp="1616423701278" />
+    <state width="1148" height="290" key="GridCell.Tab.0.bottom/0.22.1440.838@0.22.1440.838" timestamp="1615273412018" />
+    <state width="1551" height="454" key="GridCell.Tab.0.bottom/0.22.1440.878/1440.0.1920.1080@1440.0.1920.1080" timestamp="1617975490700" />
+    <state width="1551" height="454" key="GridCell.Tab.0.center" timestamp="1617975490698">
+      <screen x="1440" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1148" height="224" key="GridCell.Tab.0.center/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1613715992047" />
+    <state width="1551" height="366" key="GridCell.Tab.0.center/0.0.1440.900/-200.-1080.1920.1080@-200.-1080.1920.1080" timestamp="1614802053068" />
+    <state width="1148" height="313" key="GridCell.Tab.0.center/0.0.1440.900/-200.-1080.1920.1080@0.0.1440.900" timestamp="1615298397875" />
+    <state width="1551" height="367" key="GridCell.Tab.0.center/0.0.1440.900/-275.-1080.1920.1080@-275.-1080.1920.1080" timestamp="1617795912348" />
+    <state width="1148" height="464" key="GridCell.Tab.0.center/0.0.1440.900/-275.-1080.1920.1080@0.0.1440.900" timestamp="1617886308930" />
+    <state width="1148" height="120" key="GridCell.Tab.0.center/0.0.1440.900/1440.0.1920.1080@0.0.1440.900" timestamp="1617970650508" />
+    <state width="1551" height="454" key="GridCell.Tab.0.center/0.0.1440.900/1440.0.1920.1080@1440.0.1920.1080" timestamp="1617973619306" />
+    <state width="1148" height="393" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1617547119382" />
+    <state width="1551" height="367" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1617817122872" />
+    <state width="1551" height="209" key="GridCell.Tab.0.center/0.22.1440.838/-200.-1058.1920.1058@-200.-1058.1920.1058" timestamp="1614159888738" />
+    <state width="1148" height="262" key="GridCell.Tab.0.center/0.22.1440.838/-275.-1058.1920.1058@-275.-1058.1920.1058" timestamp="1616423701276" />
+    <state width="1148" height="290" key="GridCell.Tab.0.center/0.22.1440.838@0.22.1440.838" timestamp="1615273412015" />
+    <state width="1551" height="454" key="GridCell.Tab.0.center/0.22.1440.878/1440.0.1920.1080@1440.0.1920.1080" timestamp="1617975490698" />
+    <state width="1551" height="454" key="GridCell.Tab.0.left" timestamp="1617975490697">
+      <screen x="1440" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1148" height="353" key="GridCell.Tab.0.left/0.0.1440.860@0.0.1440.900" timestamp="1613462564099" />
+    <state width="1148" height="224" key="GridCell.Tab.0.left/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1613715992041" />
+    <state width="1551" height="366" key="GridCell.Tab.0.left/0.0.1440.900/-200.-1080.1920.1080@-200.-1080.1920.1080" timestamp="1614802053067" />
+    <state width="1148" height="313" key="GridCell.Tab.0.left/0.0.1440.900/-200.-1080.1920.1080@0.0.1440.900" timestamp="1615298397874" />
+    <state width="1551" height="367" key="GridCell.Tab.0.left/0.0.1440.900/-275.-1080.1920.1080@-275.-1080.1920.1080" timestamp="1617795912345" />
+    <state width="1148" height="464" key="GridCell.Tab.0.left/0.0.1440.900/-275.-1080.1920.1080@0.0.1440.900" timestamp="1617886308927" />
+    <state width="1148" height="120" key="GridCell.Tab.0.left/0.0.1440.900/1440.0.1920.1080@0.0.1440.900" timestamp="1617970650504" />
+    <state width="1551" height="454" key="GridCell.Tab.0.left/0.0.1440.900/1440.0.1920.1080@1440.0.1920.1080" timestamp="1617973619306" />
+    <state width="1148" height="393" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1617547119381" />
+    <state width="1551" height="367" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1617817122871" />
+    <state width="1551" height="209" key="GridCell.Tab.0.left/0.22.1440.838/-200.-1058.1920.1058@-200.-1058.1920.1058" timestamp="1614159888737" />
+    <state width="1148" height="262" key="GridCell.Tab.0.left/0.22.1440.838/-275.-1058.1920.1058@-275.-1058.1920.1058" timestamp="1616423701275" />
+    <state width="1148" height="290" key="GridCell.Tab.0.left/0.22.1440.838@0.22.1440.838" timestamp="1615273412014" />
+    <state width="1551" height="454" key="GridCell.Tab.0.left/0.22.1440.878/1440.0.1920.1080@1440.0.1920.1080" timestamp="1617975490697" />
+    <state width="1551" height="454" key="GridCell.Tab.0.right" timestamp="1617975490699">
+      <screen x="1440" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1148" height="224" key="GridCell.Tab.0.right/0.0.1440.900/-1920.0.1920.1080@0.0.1440.900" timestamp="1613715992049" />
+    <state width="1551" height="366" key="GridCell.Tab.0.right/0.0.1440.900/-200.-1080.1920.1080@-200.-1080.1920.1080" timestamp="1614802053069" />
+    <state width="1148" height="313" key="GridCell.Tab.0.right/0.0.1440.900/-200.-1080.1920.1080@0.0.1440.900" timestamp="1615298397876" />
+    <state width="1551" height="367" key="GridCell.Tab.0.right/0.0.1440.900/-275.-1080.1920.1080@-275.-1080.1920.1080" timestamp="1617795912350" />
+    <state width="1148" height="464" key="GridCell.Tab.0.right/0.0.1440.900/-275.-1080.1920.1080@0.0.1440.900" timestamp="1617886308931" />
+    <state width="1148" height="120" key="GridCell.Tab.0.right/0.0.1440.900/1440.0.1920.1080@0.0.1440.900" timestamp="1617970650520" />
+    <state width="1551" height="454" key="GridCell.Tab.0.right/0.0.1440.900/1440.0.1920.1080@1440.0.1920.1080" timestamp="1617973619307" />
+    <state width="1148" height="393" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1617547119382" />
+    <state width="1551" height="367" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1617817122873" />
+    <state width="1551" height="209" key="GridCell.Tab.0.right/0.22.1440.838/-200.-1058.1920.1058@-200.-1058.1920.1058" timestamp="1614159888739" />
+    <state width="1148" height="262" key="GridCell.Tab.0.right/0.22.1440.838/-275.-1058.1920.1058@-275.-1058.1920.1058" timestamp="1616423701277" />
+    <state width="1148" height="290" key="GridCell.Tab.0.right/0.22.1440.838@0.22.1440.838" timestamp="1615273412016" />
+    <state width="1551" height="454" key="GridCell.Tab.0.right/0.22.1440.878/1440.0.1920.1080@1440.0.1920.1080" timestamp="1617975490699" />
+    <state width="256" height="528" key="HiddenNamespacesPopup" timestamp="1617970728231">
       <screen x="0" y="22" width="1440" height="838" />
     </state>
-    <state x="408" y="202" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.22.1440.838@0.22.1440.838" timestamp="1601985068711" />
-    <state x="646" y="147" key="EnvironmentVariablesDialog" timestamp="1601984275618">
+    <state width="256" height="491" key="HiddenNamespacesPopup/0.0.1440.900@0.0.1440.900" timestamp="1616359602423" />
+    <state width="256" height="528" key="HiddenNamespacesPopup/0.22.1440.838/1440.22.1920.1058@0.22.1440.838" timestamp="1617970728231" />
+    <state x="397" y="-772" key="MultipleFileMergeDialog" timestamp="1614768180573">
+      <screen x="-200" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="397" y="-772" key="MultipleFileMergeDialog/0.0.1440.900/-200.-1080.1920.1080@-200.-1080.1920.1080" timestamp="1614768180573" />
+    <state x="386" y="-831" key="RollbackChangesDialog" timestamp="1613732302833">
+      <screen x="-200" y="-1080" width="1920" height="1080" />
+    </state>
+    <state x="386" y="-831" key="RollbackChangesDialog/0.0.1440.900/-200.-1080.1920.1080@-200.-1080.1920.1080" timestamp="1613732302833" />
+    <state x="186" y="94" key="SettingsEditor" timestamp="1616358173161">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="186" y="94" key="SettingsEditor/0.0.1440.900/-275.-1080.1920.1080@0.0.1440.900" timestamp="1615823524677" />
+    <state x="186" y="94" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1616358173161" />
+    <state x="233" y="210" key="Vcs.Push.Dialog.v2" timestamp="1615795415828">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="33" y="-870" key="Vcs.Push.Dialog.v2/0.0.1440.900/-200.-1080.1920.1080@-200.-1080.1920.1080" timestamp="1614768190815" />
+    <state x="175" y="175" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1615286744567" />
+    <state x="233" y="210" key="Vcs.Push.Dialog.v2/0.0.1920.1080@0.0.1920.1080" timestamp="1615795415828" />
+    <state x="175" y="185" key="Vcs.Push.Dialog.v2/0.22.1440.838@0.22.1440.838" timestamp="1612451315308" />
+    <state x="513" y="363" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1612453894304">
       <screen x="0" y="22" width="1440" height="838" />
     </state>
-    <state x="646" y="147" key="EnvironmentVariablesDialog/0.22.1440.838@0.22.1440.838" timestamp="1601984275618" />
-    <state width="1155" height="296" key="GridCell.Tab.0.bottom" timestamp="1606839873270">
+    <state x="513" y="363" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.22.1440.838@0.22.1440.838" timestamp="1612453894304" />
+    <state x="430" y="82" width="706" height="735" key="find.popup" timestamp="1616358808012">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1155" height="296" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1606839873270" />
-    <state width="1155" height="296" key="GridCell.Tab.0.bottom/0.22.1440.838@0.22.1440.838" timestamp="1606831985761" />
-    <state width="1155" height="296" key="GridCell.Tab.0.center" timestamp="1606839873267">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state x="430" y="82" width="706" height="735" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1616358808012" />
+    <state x="238" y="-845" width="894" height="812" key="search.everywhere.popup" timestamp="1615967265043">
+      <screen x="-275" y="-1080" width="1920" height="1080" />
     </state>
-    <state width="1155" height="296" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1606839873267" />
-    <state width="1155" height="296" key="GridCell.Tab.0.center/0.22.1440.838@0.22.1440.838" timestamp="1606831985726" />
-    <state width="1155" height="296" key="GridCell.Tab.0.left" timestamp="1606839873264">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state width="1155" height="296" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1606839873264" />
-    <state width="1155" height="296" key="GridCell.Tab.0.left/0.22.1440.838@0.22.1440.838" timestamp="1606831985688" />
-    <state width="1155" height="296" key="GridCell.Tab.0.right" timestamp="1606839873269">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state width="1155" height="296" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1606839873269" />
-    <state width="1155" height="296" key="GridCell.Tab.0.right/0.22.1440.838@0.22.1440.838" timestamp="1606831985737" />
-    <state width="256" height="491" key="HiddenNamespacesPopup" timestamp="1606392736777">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state width="256" height="491" key="HiddenNamespacesPopup/0.0.1440.900@0.0.1440.900" timestamp="1606392736777" />
-    <state width="256" height="491" key="HiddenNamespacesPopup/0.22.1440.838@0.22.1440.838" timestamp="1602231201047" />
-    <state x="186" y="94" key="SettingsEditor" timestamp="1603983687087">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state x="186" y="94" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1603983687087" />
-    <state x="221" y="79" key="SettingsEditor/0.22.1440.838@0.22.1440.838" timestamp="1603377204786" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1606839931562">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1606839931562" />
-    <state x="484" y="277" width="472" height="343" key="com.intellij.database.psi.DbRenamePsiElementProcessor.DbRenameDialog" timestamp="1605610807334">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state x="484" y="277" width="472" height="343" key="com.intellij.database.psi.DbRenamePsiElementProcessor.DbRenameDialog/0.0.1440.900@0.0.1440.900" timestamp="1605610807334" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1605707939997">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1605707939997" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.22.1440.838@0.22.1440.838" timestamp="1603445269039" />
+    <state x="238" y="-845" width="894" height="812" key="search.everywhere.popup/0.0.1440.900/-275.-1080.1920.1080@-275.-1080.1920.1080" timestamp="1615967265043" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900/-275.-1080.1920.1080@0.0.1440.900" timestamp="1615830261907" />
   </component>
 </project>

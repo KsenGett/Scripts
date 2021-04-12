@@ -1,3 +1,8 @@
+/*
+    Owner - Kseniia Kozlova
+    Cube Name - WeekReport_finance
+    Cube ID - 1471D71C11EAFCCA59050080EFD58511
+*/
 with main as (
 with IML as (
     with t_total AS (
@@ -191,6 +196,7 @@ and p2p.city = iml.city)
 select main.*, case when platform = 'OF' then gross_orders else deliveries_NF end orders_corrected
 from main
 );
+
 
 /*
 (select  platform ,  client_type, subperiod,

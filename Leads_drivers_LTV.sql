@@ -1,4 +1,4 @@
-with check as (
+with check as (;
 
 with main as (
 
@@ -129,7 +129,7 @@ with main as (
 select
 *
 from main
-where ftr between current_date - interval '6' month and current_date)
+where ftr between current_date - interval '6' month and current_date
 )
 -- to check
 select

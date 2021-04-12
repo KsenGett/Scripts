@@ -1,6 +1,18 @@
 --with main as (
 -- OF
 select
+date_key,
+platform,
+corporate_account_gk,
+corporate_account_name,
+city_name,
+client_type,
+sum(gross_orders) gross_del,
+sum(completed_and_cancelled_orders) paid_deliv,
+sum(completed_orders) completed_deliv
+
+from (
+select
 fo.date_key,
 tp.timecategory,
 tp.subperiod,
@@ -90,9 +102,64 @@ WHERE d.env ='RU'
   and d.status IN ('not_delivered', 'completed', 'cancelled', 'rejected')
   and j.supplier_id <> 13
 GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12)
-
-
-select * from delivery.public.journeys
+)
+where date_key >= date'2020-12-1'
+and corporate_account_gk
+in (2000514214,
+2000514101,
+2000513800,
+2000512454,
+2000509349,
+2000503281,
+2000502595,
+2000502103,
+2000501355,
+2000501110,
+2000500812,
+2000500583,
+2000500146,
+2000500076,
+2000500068,
+2000500054,
+2000502654,
+2000502653,
+2000502651,
+2000502649,
+2000502648,
+2000502643,
+2000502641,
+2000502636,
+2000502635,
+2000502632,
+2000502630,
+2000502627,
+2000502625,
+200013129,
+200014379,
+200015004,
+200015005,
+200015006,
+200015007,
+200016049,
+200016108,
+200017938,
+200018212,
+200019488,
+200020844,
+200021576,
+200021653,
+200021654,
+200021657,
+200021778,
+200021979,
+200023293,
+200023673,
+200023748,
+200025149,
+200025427,
+200019771)
+and timecategory IN ('2.Dates' )
+group by 1,2,3,4,5,6
 
 /*)
 (select platform ,  subperiod, client_type,--name_internal,

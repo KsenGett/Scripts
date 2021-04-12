@@ -397,93 +397,62 @@ and ct.class_group not like 'Test'
 and ordering_corporate_account_gk <> 20004730
 );
 
--- EDP
-select *,
-case when cancellation_time <= 5 then '1. 1-5'
-when  cancellation_time >5 and cancellation_time <=10 then '2. 6-10'
-when  cancellation_time >10 and cancellation_time <=20 then '3. 11-20'
-when  cancellation_time >20 and cancellation_time <=30 then '4. 21-30'
-when  cancellation_time >30 and cancellation_time <=40 then '5. 31-40'
-when  cancellation_time >40 and cancellation_time <=50 then '6. 41-50'
-when  cancellation_time >50 then '7. 51+' end cancellation_time_group
 
---select cancellation_stage, count(distinct delivery_id)
-from (
+-- in dossier
+with t as (;
+
+/*
+Owner - Ksenia Kozlova
+Cube Name - Cancellations_EDP
+ID - 083AC87C11EB28D60E960080EFC516C6
+*/
 
 select
-'EDP' platform,
-loc.city_name,
-date(d.created_at) date_key,
-tp.timecategory,
-tp.subperiod,
-tp.period,
-tp.subperiod2 AS time_period,
-ca.corporate_account_name,
-company_id,
-d.cancelled_at,
- d.status delivery_status,
- d.id delivery_id,
- j.id journey_id,
+*,
+max(cancellation_stage_last_delivery) over (partition by journey_gk) cancellation_stage_jor
 
- --j.started_at,
- supplier_id,
-(case when c.cancelled_by = 'customer' and d.status = 'cancelled' then
-    (case when supplier_id = 0 or supplier_id is null
-                                or  j.started_at > d.cancelled_at
-                                or jh.created_at < d.cancelled_at
-                                    and (supplier_id = 0 or supplier_id is null)
-                                then 'before driver assignment'
-        when coalesce (d."arrived_at", d.picked_up_at) is null then 'on the way'
-        when coalesce (d."arrived_at", d.picked_up_at) is not null then 'after driver arrival'
-        else 'error' end)
-end) as cancellation_stage,
---count(distinct d.id) gross_deliveries,
-(case when d.status = 'cancelled' and c.cancelled_by = 'customer'
-then date_diff('second', d.created_at, d.cancelled_at)/60.00 end) as cancellation_time
+from
+
+(
+select
+*,
+case when cancellation_after_assignment_time < 3 then '1. 3-'
+when  cancellation_after_assignment_time >= 3 and cancellation_after_assignment_time < 5 THEN '2. 3-5'
+when  cancellation_after_assignment_time >= 5 and cancellation_after_assignment_time < 10 then '3. 5-10'
+when  cancellation_after_assignment_time >= 10 and cancellation_after_assignment_time < 20 then '4. 10-20'
+when  cancellation_after_assignment_time >= 20 and cancellation_after_assignment_time < 30 then '5. 20-30'
+when  cancellation_after_assignment_time >= 30 and cancellation_after_assignment_time < 40 then '6. 30-40'
+when  cancellation_after_assignment_time >= 40 and cancellation_after_assignment_time < 50 then '7. 40-50'
+when  cancellation_after_assignment_time >= 50 then '8. 50+' end cancellation_after_assignment_time_group,
+
+case when cancellation_after_assignment_time_jor < 3 then '1. 3-'
+when  cancellation_after_assignment_time_jor >= 3 and cancellation_after_assignment_time_jor < 5 THEN '2. 3-5'
+when  cancellation_after_assignment_time_jor >= 5 and cancellation_after_assignment_time_jor < 10 then '3. 5-10'
+when  cancellation_after_assignment_time_jor >= 10 and cancellation_after_assignment_time_jor < 20 then '4. 10-20'
+when  cancellation_after_assignment_time_jor >= 20 and cancellation_after_assignment_time_jor < 30 then '5. 20-30'
+when  cancellation_after_assignment_time_jor >= 30 and cancellation_after_assignment_time_jor < 40 then '6. 30-40'
+when  cancellation_after_assignment_time_jor >= 40 and cancellation_after_assignment_time_jor < 50 then '7. 40-50'
+when  cancellation_after_assignment_time_jor >= 50 then '8. 50+' end cancellation_after_assignment_time_group_jor
 
 
-from "delivery"."public"."deliveries" d
-left join "delivery"."public"."journeys" j on d.journey_id = j.id
--- cancellation info
-left join "delivery"."public".journey_history jh on jh.journey_id = j.id and "action" = 'courier unassigned'
-left join delivery.public.cancellation_infos c on d.id = c.cancellable_id and cancellable_type = 'deliveries'
--- company name
-left join "emilia_gettdwh"."dwh_dim_corporate_accounts_v" ca
-    ON cast(ca.source_id AS varchar) = d.company_id and ca.country_symbol = 'RU'
--- location
-LEFT JOIN emilia_gettdwh.dwh_fact_orders_v AS fo ON j.legacy_order_id = fo.sourceid
-    and fo.country_key = 2 and lob_key = 5 and year(fo.date_key) > 2019
-    and fo.date_key between current_date - interval '90' day and current_date
-left join emilia_gettdwh.dwh_dim_locations_v loc on fo.origin_location_key = loc.location_key
--- time
-LEFT JOIN  emilia_gettdwh.periods_v AS tp ON tp.date_key = date(j.created_at) and tp.hour_key = 0
-and tp.timecategory IN ('2.Dates', '3.Weeks', '4.Months')
+from
+(
+   select *,
+case when cancellation_time < 3 then '1. 3-'
+when  cancellation_time >= 3 and cancellation_time < 5 THEN '2. 3-5'
+when  cancellation_time >= 5 and cancellation_time < 10 then '3. 5-10'
+when  cancellation_time >= 10 and cancellation_time < 20 then '4. 10-20'
+when  cancellation_time >= 20 and cancellation_time < 30 then '5. 20-30'
+when  cancellation_time >= 30 and cancellation_time < 40 then '6. 30-40'
+when  cancellation_time >= 40 and cancellation_time < 50 then '7. 40-50'
+when  cancellation_time >= 50 then '8. 50+' end cancellation_time_group,
+case when cancellation_stage <> 'before driver assignment' then date_diff('second', started_at, cancelled_at)/60.00 end as cancellation_after_assignment_time,
+date_diff('second', started_at, cancelled_at_jor)/60.00 as cancellation_after_assignment_time_jor,
 
-where 1=1
--- for detailed info
---and company_id in ('25576', '25540')  -- X5 companies
---and company_id = '25140' --MVideo
---and date(d.created_at) >= date'2020-11-10'
-
-and date(d.created_at) between current_date - interval '90' day and current_date
---and d.status IN ('not_delivered', 'completed', 'cancelled', 'rejected')
-and d.env = 'RU'
---and d.id = 1921856
-)
---group by 1
+(case when  cancelled_at = (max(cancelled_at) over (partition by journey_gk)) then cancellation_stage end) cancellation_stage_last_delivery
 
 
---- MODEL DELIVERY
-select *,
-case when cancellation_time <= 5 then '1. 1-5'
-when  cancellation_time >5 and cancellation_time <=10 then '2. 6-10'
-when  cancellation_time >10 and cancellation_time <=20 then '3. 11-20'
-when  cancellation_time >20 and cancellation_time <=30 then '4. 21-30'
-when  cancellation_time >30 and cancellation_time <=40 then '5. 31-40'
-when  cancellation_time >40 and cancellation_time <=50 then '6. 41-50'
-when  cancellation_time >50 then '7. 51+' end cancellation_time_group
 
---select cancellation_stage, count(distinct delivery_id)
 from
 (
 select
@@ -496,13 +465,124 @@ tp.period,
 tp.subperiod2 AS time_period,
  company_gk,
  ca.corporate_account_name,
- --d.order_id_representation,
-
 st.delivery_status_desc,
 del.delivery_gk,
  del.journey_gk,
- --del."created_at",
+del.vendor_name,
+del.display_identifier,
+  del."created_at" as delivery_created_at,
  del."cancelled_at",
+ jor.cancelled_at cancelled_at_jor,
+jor.created_at as journey_created_at,
+ jor.started_at,
+ jor.courier_gk,
+ coalesce (del."arrived_at", del.picked_up_at) as arrived_at_pickup,
+
+ (case when st.delivery_status_desc = 'cancelled' and c.cancelled_by = 'customer' then
+    (case when jor.courier_gk = -1 or jor.courier_gk is null
+                            or  jor.started_at > del."cancelled_at"
+                            or jh.created_at < del."cancelled_at"
+                                and (jor.courier_gk = -1 or jor.courier_gk is null)
+                            then 'before driver assignment'
+    when coalesce (del."arrived_at", del.picked_up_at) is null then 'on the way'
+    when coalesce (del."arrived_at", del.picked_up_at) is not null then 'after driver arrival'
+    else 'error' end)
+    when st.delivery_status_desc = 'cancelled' and c.cancelled_by = 'cc' then 'by CC' end) as cancellation_stage,
+
+(case when st.delivery_status_desc = 'cancelled' and c.cancelled_by in ('customer', 'cc')
+then date_diff('second', del.created_at, del.cancelled_at)/60.00 end) as cancellation_time
+
+
+
+from model_delivery.dwh_fact_deliveries_v del
+left join model_delivery.dwh_fact_journeys_v jor on jor.journey_gk = del.journey_gk
+-- cancell info
+left join "delivery"."public".journey_history jh on jh.journey_id = jor.journey_id
+      and "action" = 'courier unassigned'
+left join delivery.public.cancellation_infos c on del.source_id = c.cancellable_id
+      and cancellable_type = 'deliveries'
+-- company name
+left join "emilia_gettdwh"."dwh_dim_corporate_accounts_v" ca ON ca.corporate_account_gk = del.company_gk
+     and ca.country_symbol = 'RU'
+left join model_delivery.dwh_dim_delivery_statuses_v st on del.delivery_status_id = st.delivery_status_id
+-- city
+left join emilia_gettdwh.dwh_dim_locations_v loc on del.pickup_location_key = loc.location_key
+-- time
+LEFT JOIN  data_vis.periods_v AS tp ON tp.date_key = date(del.created_at) and tp.hour_key = 0
+and tp.timecategory IN ('2.Dates', '3.Weeks', '4.Months')
+
+where 1=1
+and del.country_symbol = 'RU'
+and date(del.created_at) between current_date - interval '90' day and current_date
+)
+)
+)
+-- check
+-- )
+-- (
+-- select
+-- *
+--
+-- from t
+-- where city_name like '%Moscow%'
+-- and date_key >= date'2021-3-16'
+-- and journey_gk = 20001894291
+-- and cancellation_stage is not null
+-- and timecategory = '2.Dates'
+--
+-- )
+
+
+/*
+Owner - Ksenia Kozlova
+Cube Name - Cancellations_EDP
+ID - 083AC87C11EB28D60E960080EFC516C6
+*/
+
+select
+*,
+case when cancellation_after_assignment_time < 3 then '1. 3-'
+when  cancellation_after_assignment_time >= 3 and cancellation_after_assignment_time < 5 THEN '2. 3-5'
+when  cancellation_after_assignment_time >= 5 and cancellation_after_assignment_time < 10 then '3. 5-10'
+when  cancellation_after_assignment_time >= 10 and cancellation_after_assignment_time < 20 then '4. 10-20'
+when  cancellation_after_assignment_time >= 20 and cancellation_after_assignment_time < 30 then '5. 20-30'
+when  cancellation_after_assignment_time >= 30 and cancellation_after_assignment_time < 40 then '6. 30-40'
+when  cancellation_after_assignment_time >= 40 and cancellation_after_assignment_time < 50 then '7. 40-50'
+when  cancellation_after_assignment_time >= 50 then '8. 50+' end cancellation_after_assignment_time_group
+
+from
+(
+   select *,
+case when cancellation_time < 3 then '1. 3-'
+when  cancellation_time >= 3 and cancellation_time < 5 THEN '2. 3-5'
+when  cancellation_time >= 5 and cancellation_time < 10 then '3. 5-10'
+when  cancellation_time >= 10 and cancellation_time < 20 then '4. 10-20'
+when  cancellation_time >= 20 and cancellation_time < 30 then '5. 20-30'
+when  cancellation_time >= 30 and cancellation_time < 40 then '6. 30-40'
+when  cancellation_time >= 40 and cancellation_time < 50 then '7. 40-50'
+when  cancellation_time >= 50 then '8. 50+' end cancellation_time_group,
+case when cancellation_stage = 'on the way' then date_diff('second', started_at, cancelled_at)/60.00 end as cancellation_after_assignment_time
+
+from
+(
+select
+'EDP' platform,
+loc.city_name,
+date(del."created_at") as date_key,
+tp.timecategory,
+tp.subperiod,
+tp.period,
+tp.subperiod2 AS time_period,
+ company_gk,
+ ca.corporate_account_name,
+st.delivery_status_desc,
+del.delivery_gk,
+ del.journey_gk,
+del.vendor_name,
+del.display_identifier,
+  del."created_at" as delivery_created_at,
+ del."cancelled_at",
+jor.created_at as journey_created_at,
  jor.started_at,
  jor.courier_gk,
  coalesce (del."arrived_at", del.picked_up_at) as arrived_at_pickup,
@@ -525,31 +605,27 @@ from model_delivery.dwh_fact_deliveries_v del
 left join model_delivery.dwh_fact_journeys_v jor on jor.journey_gk = del.journey_gk
 -- cancell info
 left join "delivery"."public".journey_history jh on jh.journey_id = jor.journey_id
-						and "action" = 'courier unassigned'
+      and "action" = 'courier unassigned'
 left join delivery.public.cancellation_infos c on del.source_id = c.cancellable_id
-						and cancellable_type = 'deliveries'
+      and cancellable_type = 'deliveries'
 -- company name
 left join "emilia_gettdwh"."dwh_dim_corporate_accounts_v" ca ON ca.corporate_account_gk = del.company_gk
-					and ca.country_symbol = 'RU'
+     and ca.country_symbol = 'RU'
 left join model_delivery.dwh_dim_delivery_statuses_v st on del.delivery_status_id = st.delivery_status_id
 -- city
 left join emilia_gettdwh.dwh_dim_locations_v loc on del.pickup_location_key = loc.location_key
 -- time
-LEFT JOIN  emilia_gettdwh.periods_v AS tp ON tp.date_key = date(del.created_at) and tp.hour_key = 0
+LEFT JOIN  data_vis.periods_v AS tp ON tp.date_key = date(del.created_at) and tp.hour_key = 0
 and tp.timecategory IN ('2.Dates', '3.Weeks', '4.Months')
 
 where 1=1
 and del.country_symbol = 'RU'
---and del.spurce_id  = 20001899593
 and date(del.created_at) between current_date - interval '90' day and current_date
---and delivery_gk = 20001921856
+)
 )
 
 
-
-
-
-
-
+select * from desc delivery."public".journeys
+select * from desc emilia_gettdwh.dwh_fact_orders_v
 
 

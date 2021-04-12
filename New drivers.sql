@@ -21,17 +21,23 @@ select
 
 
     from "emilia_gettdwh"."dwh_dim_drivers_v" dd
-    join "emilia_gettdwh"."dwh_dim_vendors_v" v on v.vendor_gk = dd.fleet_gk and vendor_name like '%courier%'
+    join "emilia_gettdwh"."dwh_dim_vendors_v" v on v.vendor_gk = dd.fleet_gk
+                and vendor_name like '%courier%'
     -- reftr
     left join (
 
-            select d.driver_gk,
-            max(case when rftr.ride_type = 'ReFTRD' then 1 else 0 end) is_reftr,
-            max(case when rftr.date_key is not null then rftr.date_key else rftr.ftp_date_key end) ftr
+            select
+            distinct d.driver_gk,
+            max(case when rftr.ride_type = 'Rec' then 1 else 0 end) is_reftr,
+            max(coalesce((case when rftr.ride_type = 'ReFTRD' then date(rftr.date_key) end), d.ftp_date_key)) ftr
 
             from "emilia_gettdwh"."dwh_dim_drivers_v" d
             left join bp_ba.sm_ftr_reftr_drivers rftr on d.driver_gk = rftr.driver_gk
+            join "emilia_gettdwh"."dwh_dim_vendors_v" v on v.vendor_gk = d.fleet_gk
+                and vendor_name like '%courier%'
+
             where d.country_key = 2
+            and coalesce(date(rftr.date_key),d.ftp_date_key) between current_date - interval '1' year and current_date
             group by 1
 
         ) rftr on rftr.driver_gk = dd.driver_gk
@@ -54,6 +60,7 @@ select
             --and date_key between current_date - interval '30' day and current_date
             and order_status_key = 7
             and fo.country_key = 2
+            and date_key between current_date - interval '1' year and current_date
 
             group by 1,2
 
@@ -68,7 +75,7 @@ select
 
             from model_delivery.dwh_fact_deliveries_v fd
             where 1 = 1
-            and date(scheduled_at) between current_date - interval '90' day and current_date
+            and date(scheduled_at) between current_date - interval '1' year and current_date
             and delivery_status_id = 4
             and delivery_type_id = 1 -- not returns
 
@@ -84,14 +91,16 @@ select
     and dd.country_key = 2
     --and dd.ftp_date_key between date '2020-01-01' and current_date - interval '1' day
     and tp.timecategory is not null
+    and date(rftr.ftr) between current_date - interval '1' year and current_date
 )
 
 (select
-city_name,
+date_key,
 count(distinct driver_gk)
 from main
-where date_key between date'2020-12-7' and date'2020-12-13'
+where date_key >= date'2021-02-9'
 group by 1)
+-- 9.2 total 138, 10 ftr 118
 
 
 
@@ -247,3 +256,5 @@ where vendor_name like '%courier%'
 and dd.country_key = 2
 and tp.timecategory is not null
 and "ltp_date_key" between date '2019-01-01' and current_date - interval '7' day
+
+
