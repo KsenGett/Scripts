@@ -1,43 +1,45 @@
 -- Correction tracking
 -- to find cases which were corrected in BKK but not in New Pricing (only manual charges)
 with new_pricing as (
-     with all_prices as (
+     with all_prices as ( -- calculation id is null = correction manual, can be several
           select
            distinct date(created_at) as dates,
-           company_id ,
+            company_id ,
            journey_id,
            side,
             manual, comment,
         sum(amount) over (partition by journey_id,side) as total_amounts,
-        max(created_at) over (partition by journey_id,side) as last_time_tr,
-       max(created_at) over (partition by journey_id,side,manual) as last_time_tr_2
-           --tr.bkk_order_id,
+        max(created_at) over (partition by journey_id,side, manual) as last_time_tr,
+        -- was any manual correction att all
+        max(manual) over (partition by journey_id,side) as final_correction_tag
 
 
         FROM "delivery-pricing".public.transactions AS tr
          where tr.env = 'RU'
          --and manual = true
              --and journey_id = 2257191
-          and tr.created_at >= date_trunc('day', current_date - interval '8' day )
+         and tr.created_at >= date_trunc('day', current_date - interval '8' day )
 
      )
              , customers as (
                select distinct
                 company_id,
-                journey_id, manual corrections_tag, comment,
-                last_time_tr,total_amounts,last_time_tr_2
+                journey_id, final_correction_tag corrections_tag, comment,
+                last_time_tr,total_amounts
 
                from all_prices
                where side = 'customer'
+               and final_correction_tag = manual
 
              )
              , suppliers as (
               select distinct
                 company_id,
-                journey_id, manual corrections_tag, comment,
-                last_time_tr,total_amounts,last_time_tr_2
+                journey_id, final_correction_tag corrections_tag, comment,
+                last_time_tr,total_amounts
                from all_prices
                where side = 'supplier'
+               and final_correction_tag = manual
              )
          (select
           coalesce(cus.company_id, sup.company_id) as company_id,
@@ -53,10 +55,7 @@ with new_pricing as (
          from customers cus
           full outer join suppliers sup
            on cus.journey_id = sup.journey_id
-               -- to select only one final correction lable (was corrected at all finally or not) cosidering that correction = max transaction
-               and sup.last_time_tr = sup.last_time_tr_2
             and cus.company_id = sup.company_id
-         where cus.last_time_tr = cus.last_time_tr_2
         )
                )
 , bkk_c as (
@@ -88,6 +87,8 @@ date(j.started_at) as ride_date,
   user_email,
   comment bkk_correction_comment,
 bkk_c.dates as date_bkk_change,
+
+-- np
 np.last_tr last_tr_np,
 
 -- customer
@@ -113,7 +114,8 @@ where 1=1
  and np.company_id = 25140
  and bkk_c.order_id is not null -- correction was in BKK
  and np.customer_correction = False -- was not manual correction in New pricing
- and comment not like '%Ничего не исправлялось%' -- in BKK corrections sis not cause price changes
+ and bkk_c.comment not like '%Ничего не исправлялось%' -- in BKK corrections did not cause price changes
+
 
 -- old filters from Kolya
  --and np.journey_id is not null
