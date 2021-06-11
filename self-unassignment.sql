@@ -1,5 +1,14 @@
--- select count(distinct journey_id)
+-- select
+--        date_key, driver_id,
+--        count(distinct case when unassignment_type='CC' then journey_id end ) cc_journ,
+--        sum(cc_unas),
+--        count(distinct cc_jorn) cc_j, count(distinct app_jorn) app_j
 -- from (
+/*
+ Owner - Ksenia Kozlova
+Cube Name - Leads_all_sources_1.11.20
+ID - 0488D98E11EB608647D50080EF75357F
+*/
 
 with main as(
 
@@ -103,7 +112,7 @@ with main as(
                     on fj.order_gk = fof.order_gk
                     and fof.country_key = 2
                     and fof.date_key between current_date - interval '90' day and current_date
-
+                    and fof.offer_screen_eta is not null
 
             where fj.country_symbol = 'RU'
             ) fof on jh.journey_id = fof.journey_id
@@ -142,25 +151,36 @@ final_courier, journey_status_id, number_of_completed_deliveries,
 journey_id, offer_gk, order_gk, is_auto_accept, offer_screen_eta, matching_driving_distance,
 is_future_order, unassigned_driver as driver_id,
 assignment_time, unassignment_type,  unas_time,
+
+-- kostyl
+   case when unassignment_type ='CC' then journey_id end cc_jorn,
+   case when unassignment_type ='app' then journey_id end app_jorn,
+
 -- for correct work of dossier to count cases of 'unassignment' as well as 'no-unasssignment' per a driver
 coalesce(cast(unassigned_driver as varchar), substring(cast(final_courier as varchar), 5)) driver_id_2,
 d.phone,
 -- unas. time based on unassignment from journey history
 sum(case when assignment_time <= unas_time  then date_diff('second', assignment_time, unas_time)/60.00 end)
 unas_time_sum,
-count(case when assignment_time <= unas_time and date_diff('second', assignment_time, unas_time) is not null then 1 end) unas_time_count
+count(case when assignment_time <= unas_time and date_diff('second', assignment_time, unas_time) is not null then 1 end) unas_time_count,
+count(distinct case when unassignment_type ='CC' then 1 end) cc_unas,
+   count(distinct case when unassignment_type ='app' then 1 end) app_unas
+
 
 from main
--- phone for driver_id_2
 left join emilia_gettdwh.dwh_dim_drivers_v d on
     coalesce(cast(unassigned_driver as varchar), substring(cast(final_courier as varchar), 5)) = cast(d.source_id as varchar)
     and d.country_key = 2 and is_courier = 1
---where journey_id = 819169
-group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24
+where true
+--and unassigned_driver = 1000971
+--and  journey_id = 819169
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26
 )
 -- )
--- where date_key between date'2021-01-21' and date'2021-02-03'
--- and driver_id_2 = '742237'
+-- where date_key between date'2021-03-1' and date'2021-03-30'
+--     and timecategory = '2.Dates'
+-- --and driver_id_2 = '742237'
+-- group by 1,2
 
 -- warnings:
 -- 1. Time difference between time in the events and journey history. Like journey id = 541530

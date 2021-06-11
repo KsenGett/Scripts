@@ -4,11 +4,9 @@ Cube Name - OF classes ops
 ID - B0F5866011EB4A90619C0080EF851C99
 */
 
-select time_period,
-sum(paid_deliveries),
-sum(customer_total_cost)
+select *
 
-from (;
+from (
 /*
 Owner - Kozlova Kseniia
 Cube Name - Weekly_V2
@@ -24,6 +22,7 @@ ID - A049E02A11EB08E358E50080EFC56510
 with all_orders AS (
 SELECT fo.date_key AS dates,
        fo.hour_key,
+       jo.journey_id,
        loc.city_name AS city,
        ct.lob_desc AS lob_desc,
        ct.class_type_desc AS class_type,
@@ -71,7 +70,7 @@ sum(CASE when ct.class_family IN ('Premium') THEN jo.gross_deliveries ELSE 0 end
 FROM "emilia_gettdwh"."dwh_fact_orders_v" fo
 LEFT JOIN (
                         SELECT
-                            j.order_gk,
+                            j.order_gk, j.journey_id,
                             j.total_customer_amount_exc_vat,
                             COUNT(CASE WHEN d.delivery_status_id = 4 AND j.courier_gk <> 200013 THEN d.delivery_gk END) AS completed_deliveries, -- j.courier_gk = 200013 is a CC user that is used to cancel orders, all his orders should be marked AS cancelled
                             COUNT(CASE WHEN d.delivery_status_id IN (4,7) AND j.courier_gk <> 200013 THEN d.delivery_gk END) AS picked_up_deliveries, -- j.courier_gk = 200013 is a CC user that is used to cancel orders, all his orders should be marked AS cancelled
@@ -83,7 +82,7 @@ LEFT JOIN (
                             AND d.delivery_type_id <> 2 -- Returns
                             AND d.company_gk NOT IN (20001999) -- Test company
                             AND j.date_key BETWEEN date'2019-01-01' AND CURRENT_DATE
-                        GROUP BY 1,2 ) AS jo ON jo.order_gk=fo.order_gk
+                        GROUP BY 1,2,3 ) AS jo ON jo.order_gk=fo.order_gk
 LEFT JOIN emilia_gettdwh.dwh_dim_class_types_v AS ct
   ON ct.class_type_key = fo.class_type_key
 LEFT JOIN emilia_gettdwh.dwh_dim_corporate_accounts_v AS ca
@@ -98,7 +97,7 @@ WHERE fo.country_key=2
   AND ct.class_group NOT LIKE 'Test'
   and ordering_corporate_account_gk not IN ( 20004730, 200017459, 20001999) --dummy delivery user and test company
   AND fo.date_key BETWEEN date'2019-01-01' AND (CURRENT_DATE - interval '1' day)
-  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23
+  GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24
   )
 
 SELECT dates,
@@ -107,6 +106,7 @@ SELECT dates,
        tp.period,
        tp.subperiod2 AS time_period,
        city,
+       journey_id,
        all_orders.platform,
        lob_desc,
        class_type,
@@ -116,6 +116,7 @@ SELECT dates,
        company_name,
        account_manager,
        del_ftp_date_key,
+       order_gk,
        supply_type,
        order_status_key,
        CASE when lob_desc = 'Deliveries - B2C' THEN 'C2C'
@@ -142,12 +143,12 @@ SELECT dates,
        LEFT JOIN sheets."default".delivery_corp_accounts_20191203 AS accounts ON cast(accounts.company_gk AS bigint)=all_orders.company_gk
        LEFT JOIN data_vis.periods_v AS tp ON tp.date_key = all_orders.dates and tp.hour_key = all_orders.hour_key
         WHERE timecategory IN ('2.Dates', '3.Weeks', '4.Months', '5.Quarters', '7.Std Hours')
-       GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20
-;)
+       GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22
+)
 where
 timecategory like '2.Dates'
-and dates >= date'2021-03-27'
-group by 1
+and dates >= date'2021-05-01'
+and (company_gk in (200025576,200022121,200025540))
 ;
 
 /*
