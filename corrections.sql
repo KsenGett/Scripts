@@ -113,7 +113,7 @@ where 1=1
  and np.company_id = 25140
  and bkk_c.order_id is not null -- correction was in BKK
  and np.customer_correction = False -- was not manual correction in New pricing
- and comment not like '%Ничего не исправлялось%' -- in BKK corrections sis not cause price changes
+ and comment not like '%Ничего не исправлялось%' -- in BKK corrections did not cause price changes
 
 -- old filters from Kolya
  --and np.journey_id is not null
