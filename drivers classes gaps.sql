@@ -1,9 +1,9 @@
 with m as
-     (
+     (;
          select distinct dr.driver_gk,
                 dr.city_name  driver_city,
-                p.class_name_desc class_should_be,
-                p.class_number class_type_key,
+                p."Class Type Desc" class_should_be,
+                cl.class_type_key,
                 p.supply_connect supply_should_connect,
                 dr.courier_type,
 --                dr.courier_type_cl,
@@ -13,6 +13,7 @@ with m as
 
 -- classes that should be cannected to all drivers
          from sheets."default".delivery_classes_all p
+             left join emilia_gettdwh.dwh_dim_class_types_v cl on p."Class Type Desc" = cl.class_type_desc
 
 --         join emilia_gettdwh.dwh_dim_class_types_v clt
 --             on cast(p.class_number as integer) = clt.internal_class_id
@@ -41,7 +42,7 @@ with m as
 
 -- drivers
         left join emilia_gettdwh.dwh_fact_drivers_classes_v ct
-        on cast(p.class_number as integer) = ct.class_type_key
+        on p."Class Type Desc" = cl.class_type_desc
         and dr.driver_gk = ct.driver_gk
 
 
@@ -51,11 +52,11 @@ and dr.location_key = cast(p.location_key as integer)
 and (case when p.supply_connect in ('car','rest') then dr.courier_type_cl = p.supply_connect
     when p.supply_connect = 'cycle' then dr.cycle = p.supply_connect end)
 
-order by driver_city, class_name_desc
+order by driver_city, class_name_desc;
 )
 (select
 driver_city, class_should_be,supply_should_connect,class_type_key,
-count(driver_gk)
+count(distinct driver_gk)
 from m
 
 -- where class_type_key = 2000703
@@ -133,7 +134,94 @@ select
 
 
 
+select
+
+--  count(distinct d.driver_gk)
+distinct d.driver_gk, d.source_id driver_id, ltp_date_key, city_name,
+       --coalesce(courier_type, 'taxi')
+       (case when car_model like '%велосипед%' then 'cycle' else courier_type end ) courier_type
+
+
+from emilia_gettdwh.dwh_dim_drivers_v d
+    left join emilia_gettdwh.dwh_dim_drivers_classes_v dc on d.driver_gk = dc.driver_gk
+    join emilia_gettdwh.dwh_dim_class_types_v cl on dc.class_type_key = cl.class_type_key
+
+left join emilia_gettdwh.dwh_dim_vendors_v v on d.fleet_gk = v.vendor_gk
+left join emilia_gettdwh.dwh_dim_locations loc on d.primary_city_id = loc.city_id
+left join (select distinct d.driver_gk
+           from emilia_gettdwh.dwh_dim_drivers_v d
+                join emilia_gettdwh.dwh_dim_drivers_classes_v dc on d.driver_gk = dc.driver_gk
+                join emilia_gettdwh.dwh_dim_class_types_v cl on dc.class_type_key = cl.class_type_key
+                            and cl.lob_key in (5,6)
+                and class_type_desc = 'sp delivery daas ondemand nf av'
+                where d.country_key = 2
+                and is_courier = 0
+    ) ct on d.driver_gk = ct.driver_gk
+where d.country_key =  2
+  -- with MSK primary city or fleet has MSK in name or connected to Moscow class
+and (loc.location_key = 246 or vendor_name like '%СПБ%' or
+     (cl.class_type_desc like '%sp%' and cl.class_type_desc <> 'moscow delivery daas ondemand nf ozons op'))
+-- ped sc cycle
+  and ((is_courier = 1 and courier_type <> 'car') or (car_model like '%велосипед%'))
+and (ltp_date_key <> date'1900-01-01')
+and city_name not in  ('Moscow Region - General', 'Omsk Region - General','Krasnoyarsk Region - General')
+--group by 1,2
+;
 
 
 
 
+
+
+
+ select distinct d.driver_gk, d.source_id driver_id, ltp_date_key,
+                 city_name, coalesce(courier_type, 'taxi') courier_type
+
+
+           from emilia_gettdwh.dwh_dim_drivers_v d
+                join emilia_gettdwh.dwh_dim_drivers_classes_v dc on d.driver_gk = dc.driver_gk
+                join emilia_gettdwh.dwh_dim_class_types_v cl on dc.class_type_key = cl.class_type_key
+                left join emilia_gettdwh.dwh_dim_locations loc on d.primary_city_id = loc.city_id
+
+                where d.country_key = 2
+                  --and d.is_frozen <> 1
+                  and is_test <> 1
+                  --and is_courier = 1
+                  --and driver_status <> 'Blocked'
+                  --and cl.class_type_desc like '%moscow%'
+                  and cl.class_type_desc = 'moscow delivery daas ondemand nf ozons op'
+                  --and ltp_date_key >= current_date - interval '30' day
+                --and is_courier = 0
+ --and (city_name is not null and city_name not in ('unknown', 'Moscow Region - General'))
+
+except
+
+(select
+
+--  count(distinct d.driver_gk)
+distinct d.driver_gk, d.source_id driver_id, ltp_date_key, city_name, coalesce(courier_type, 'taxi') courier_type
+
+
+from emilia_gettdwh.dwh_dim_drivers_v d
+    left join emilia_gettdwh.dwh_dim_drivers_classes_v dc on d.driver_gk = dc.driver_gk
+    join emilia_gettdwh.dwh_dim_class_types_v cl on dc.class_type_key = cl.class_type_key
+
+left join emilia_gettdwh.dwh_dim_vendors_v v on d.fleet_gk = v.vendor_gk
+left join emilia_gettdwh.dwh_dim_locations loc on d.primary_city_id = loc.city_id
+left join (select distinct d.driver_gk
+           from emilia_gettdwh.dwh_dim_drivers_v d
+                join emilia_gettdwh.dwh_dim_drivers_classes_v dc on d.driver_gk = dc.driver_gk
+                join emilia_gettdwh.dwh_dim_class_types_v cl on dc.class_type_key = cl.class_type_key
+                            and cl.lob_key in (5,6)
+                and class_type_desc = 'moscow delivery b2b'
+                where d.country_key = 2
+                and is_courier = 0
+    ) ct on d.driver_gk = ct.driver_gk
+where d.country_key =  2
+  -- with MSK primary city or fleet has MSK in name or connected to Moscow class
+and (loc.location_key = 245 or vendor_name like '%МСК%' or
+     (cl.class_type_desc like '%moscow%' and cl.class_type_desc <> 'moscow delivery daas ondemand nf ozons op'))
+-- car courier or taxi who connected to delivery class
+  and ((is_courier = 1 and courier_type = 'car') or ct.driver_gk is not null)
+and (ltp_date_key <> date'1900-01-01')
+and city_name <> 'Saint Petersburg Region - General')

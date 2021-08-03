@@ -10,16 +10,24 @@ Cube Name - Leads_all_sources_1.11.20
 ID - 0488D98E11EB608647D50080EF75357F
 */
 
+/*
+ Owner - Ksenia Kozlova
+Cube Name - Leads_all_sources_1.11.20
+ID - 0488D98E11EB608647D50080EF75357F
+*/
+
 with main as(
 
     with self_unas as
     (
-        select event_at, event_date,
+        select event_at + interval '3' hour event_at,
         cast(json_extract_scalar(from_utf8("payload"), '$.distinct_id') as bigint) driver_id,
+               event_name,
         try(cast(json_extract_scalar(from_utf8("payload"), '$.journey_id') as bigint)) journey_id
 
         from "events"
-        where "event_name" = 'courier|journey_details_screen|cancel_order_popup|positive|button_clicked'
+        where "event_name" in ('courier|journey_details_screen|cancel_order_popup|positive|button_clicked', --Android
+                               'courier|journey_details_screen|cancel|button_clicked') -- iOS
         and event_date >= date'2020-10-01'
         and env = 'RU'
     )
@@ -390,3 +398,32 @@ from main
 group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24
 order by journey_id
 )
+
+select *
+from "delivery-courier-assignment".public.self_unassignments
+where env = 'RU'
+limit 5;
+
+
+
+select count(id) from "delivery-courier-assignment"."public".self_unassignments
+    where env = 'RU'
+and driver_id = 957024
+and unassigned_at >= date'2021-05-31'
+
+
+
+ select
+ journey_id,
+ cast(substring(description, 14) as integer) driver_id,
+ created_at assign
+ "user" <> 'system@gett.com' and "user" is not null by_cc_tag
+ from "delivery"."public".journey_history
+ where "action" = 'courier assigned'
+ and date(created_at) between current_date - interval '90' day and current_date
+
+
+select distinct event_name
+from events
+where event_name like '%matching%'
+and event_date = date'2021-06-01'

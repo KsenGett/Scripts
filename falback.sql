@@ -2,7 +2,7 @@
 -- with main as (
 with class_upgrade as
     (
-    select cast(json_extract_scalar(from_utf8("payload"), '$.order_id') as bigint) as order_id,
+    select *,cast(json_extract_scalar(from_utf8("payload"), '$.order_id') as bigint) as order_id,
     concat(json_extract_scalar(from_utf8("payload"), '$.data.old_class'), ' to ',
     json_extract_scalar(from_utf8("payload"), '$.data.new_class')) upgrade_details,
 
@@ -19,7 +19,8 @@ with class_upgrade as
      and cast(dc_new.class_type_key as varchar) like '2000%'
 
     where "event_name" = 'matching|upgrade_class_automatically'
-    and event_date >= date'2020-08-20'
+    and event_date = date'2021-03-01'
+      and json_extract_scalar(from_utf8("payload"), '$.order_id') = '1582919311'
     and env = 'RU'
     )
 (

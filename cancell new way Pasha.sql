@@ -399,7 +399,7 @@ and ordering_corporate_account_gk <> 20004730
 
 
 -- in dossier
-with t as (;
+with t as (
 
 /*
 Owner - Ksenia Kozlova
@@ -457,6 +457,7 @@ from
 (
 select
 'EDP' platform,
+  jor.order_gk,
 loc.city_name,
 date(del."created_at") as date_key,
 tp.timecategory,
@@ -466,7 +467,7 @@ tp.subperiod2 AS time_period,
  company_gk,
  ca.corporate_account_name,
 st.delivery_status_desc,
-del.delivery_gk,
+--del.delivery_gk,
  del.journey_gk,
 del.vendor_name,
 del.display_identifier,
@@ -476,6 +477,7 @@ del.display_identifier,
 jor.created_at as journey_created_at,
  jor.started_at,
  jor.courier_gk,
+jor.total_customer_amount_exc_vat, jor.gt_courier_total_cost_inc_vat,
  coalesce (del."arrived_at", del.picked_up_at) as arrived_at_pickup,
 
  (case when st.delivery_status_desc = 'cancelled' and c.cancelled_by = 'customer' then
@@ -517,20 +519,19 @@ and date(del.created_at) between current_date - interval '90' day and current_da
 )
 )
 )
--- check
--- )
--- (
--- select
--- *
---
--- from t
--- where city_name like '%Moscow%'
--- and date_key >= date'2021-3-16'
--- and journey_gk = 20001894291
--- and cancellation_stage is not null
--- and timecategory = '2.Dates'
---
--- )
+check
+)
+(
+select
+*
+
+from t
+where date_key >= date'2021-7-01'
+and cancellation_stage = 'on the way'
+and timecategory = '2.Dates'
+and total_customer_amount_exc_vat > 0
+
+);
 
 
 /*

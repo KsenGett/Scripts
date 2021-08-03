@@ -7,7 +7,7 @@ can differ from dim drivers as it considers only completed orders (status 7)
 
 
 create table temp.reftr_delivery
-as
+as;
 
 with main as (
     with ftr as (
@@ -35,6 +35,7 @@ with main as (
               and order_status_key = 7
               and ordering_corporate_account_gk <> 20004730
               and d.driver_gk <> 200013
+            and fo.driver_gk = 20001072774 -- 04-11 ftr but no in table
             order by driver_gk, date_key
         )
             (select *,
@@ -46,7 +47,7 @@ with main as (
          where (date_diff('day', date_key, previous_date) is null or date_diff('day', date_key, previous_date) <= -60)
         )
 )
-(select driver_gk, (case when days_between is null then ftr else date_key end) date_key, primary_city_id, moscow_region,
+(select driver_gk, (case when days_between is null and ftr <> date'1900-01-01' then ftr else date_key end) date_key, primary_city_id, moscow_region,
         ftr_fleet, current_fleet, change_fleet, is_courier,
         (case when ftr = date_key or days_between is null then 'FTR'
             when days_between is not null then 'reFTR' end) ride_type,
@@ -55,4 +56,4 @@ with main as (
     order by driver_gk, date_key)
     ;
 
-grant all privileges on temp.reftr_delivery to role public with grant option
+grant all privileges on temp.reftr_delivery to role public with grant option;

@@ -267,4 +267,50 @@ group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14);
 
 
 
+select fo.date_key,
+    tp.timecategory,
+    tp.subperiod,
+    tp.period,
+    tp.subperiod2 AS time_period,
+    'OF' as platform,
+    (CASE when fo.lob_key = 6 THEN 'C2C'
+   when am.name like '%Delivery%' or ca.account_manager_gk IN( 100079, 100096, 100090, 100073, 100088)
+   THEN 'eCommerce' ELSE 'Corporate' end ) AS client_type,
+    fo.ordering_corporate_account_gk,
+       fo.is_future_order_key,
+    ca.corporate_account_name,
+       fo.origin_full_address,
+    accounts.name_internal,
+    dl.city_name,
+    order_gk, ct.class_type_desc,
+    (CASE when order_status_key = 7 THEN 'completed' ELSE 'Cancelled ON Arrival' end) AS order_status,
+    fo.order_datetime, fo.driver_arrived_datetime,
+    CASE when date_diff('second', fo.order_datetime,fo.driver_arrived_datetime)*1.00/60 > 0 THEN
+    date_diff('second', fo.order_datetime, fo.driver_arrived_datetime)*1.00/60 end AS ata,
+       CASE when date_diff('second', fo.order_confirmed_datetime,fo.driver_arrived_datetime)*1.00/60 > 0 THEN
+    date_diff('second', fo.order_confirmed_datetime, fo.driver_arrived_datetime)*1.00/60 end AS ata_wo_routing,
 
+    (CASE when date_diff('second', fo.order_datetime,fo.driver_arrived_datetime)*1.00/60 > 0 THEN 1
+    end) count_ata --  В Катином скрипте 0 учитываются
+
+
+    from emilia_gettdwh.dwh_fact_orders_v fo
+        LEFT JOIN data_vis.periods_v  AS tp ON tp.hour_key = fo.hour_key and tp.date_key = fo.date_key
+           and tp.timecategory IN ('3.Weeks')
+        LEFT JOIN emilia_gettdwh.dwh_dim_corporate_accounts_v AS ca
+                  ON ca.corporate_account_gk = fo.ordering_corporate_account_gk
+        LEFT JOIN emilia_gettdwh.dwh_dim_class_types_v AS ct ON ct.class_type_key = fo.class_type_key
+        LEFT JOIN "emilia_gettdwh"."dwh_dim_account_managers_v" am ON am."account_manager_gk" = ca."account_manager_gk"
+        LEFT JOIN sheets."default".delivery_corp_accounts_20191203 AS accounts
+            ON cast(accounts.company_gk AS bigint)=fo.ordering_corporate_account_gk
+        left join emilia_gettdwh.dwh_dim_locations_v dl on fo.origin_location_key = dl.location_key
+
+    where tp.timecategory is not null
+        and fo.date_key >= date'2021-07-05'
+        and fo.country_key = 2
+        and fo.lob_key in (5,6)
+        and ct.class_family not IN ('Premium')
+        and ct.class_group not like 'Test'
+        and fo.ordering_corporate_account_gk not in (20004730,200017459)
+and fo.ordering_corporate_account_gk in  (200010176)
+        --and fo.order_status_key = 7 --compl, cancelled - AV.ru W36 with 7 974, w/o - 1012 = 4%
