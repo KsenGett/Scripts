@@ -1,4 +1,5 @@
  SELECT
+        -- to select by company
         d.company_gk,
         j.journey_id,
         d.order_id_representation,
