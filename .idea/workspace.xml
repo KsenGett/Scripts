@@ -14,25 +14,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/fact_offers_fbinfo.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fleets commissions.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fraud_corrections.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new_pricing.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/retention.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/zonning.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/деталка.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Drivers and classes.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Drivers and classes.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VV_pasha.sql" beforeDir="false" afterPath="$PROJECT_DIR$/acquisition.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Weekly - fin, ops. Del Performance" beforeDir="false" afterPath="$PROJECT_DIR$/Weekly - fin, ops. Del Performance" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ab tests/offers attract .sql" beforeDir="false" afterPath="$PROJECT_DIR$/ab tests/offers attract .sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/agents payments.sql" beforeDir="false" afterPath="$PROJECT_DIR$/agents payments.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cancell new way Pasha.sql" beforeDir="false" afterPath="$PROJECT_DIR$/cancell new way Pasha.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/corrections.sql" beforeDir="false" afterPath="$PROJECT_DIR$/corrections.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/drivers classes gaps.sql" beforeDir="false" afterPath="$PROJECT_DIR$/drivers classes gaps.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/falback.sql" beforeDir="false" afterPath="$PROJECT_DIR$/falback.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reftr_delivery.sql" beforeDir="false" afterPath="$PROJECT_DIR$/reftr_delivery.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/self-unassignment.sql" beforeDir="false" afterPath="$PROJECT_DIR$/self-unassignment.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/week_report_ops_ataonly.sql" beforeDir="false" afterPath="$PROJECT_DIR$/week_report_ops_ataonly.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,7 +151,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="reff changed and scouts added" />
     <MESSAGE value="scouts added and reff expanded with registration date" />
     <MESSAGE value="journey level was added" />
     <MESSAGE value="Periods table is replaced" />
@@ -193,6 +175,7 @@
     <MESSAGE value="stabilised" />
     <MESSAGE value="new changes" />
     <MESSAGE value="was transaction or not logic change" />
-    <option name="LAST_COMMIT_MESSAGE" value="was transaction or not logic change" />
+    <MESSAGE value="a lot changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="a lot changes" />
   </component>
 </project>
