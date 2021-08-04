@@ -18,16 +18,15 @@
         pickup_address,
         drop_off_address,
 
-        -- подача кост,
-        dist.cost * 1.2 dist_cost_vat,
-        dur.cost * 1.2 dur_cost_vat,
-        wt.waiting_cost * 1.2 wt_cost_vat,
-
-        return_cost*1.2 return_vat,
         -- подача
         const_cost*1.2 const_vat,
 
-        case when journey_status_id = 3 and j.total_customer_amount_exc_vat >0 then j.total_customer_amount_exc_vat*1.2 end cancellation_cost,
+        dist.cost * 1.2 dist_cost_vat,
+        dur.cost * 1.2 dur_cost_vat,
+        wt.waiting_cost * 1.2 wt_cost_vat,
+        return_cost*1.2 return_vat,
+        case when journey_status_id = 3 and j.total_customer_amount_exc_vat >0
+            then j.total_customer_amount_exc_vat*1.2 end cancellation_cost_vat,
 
         -- pereschet
         j.total_customer_amount_exc_vat*1.2 total_cost_vat
