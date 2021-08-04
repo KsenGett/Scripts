@@ -14,7 +14,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/деталка.sql" beforeDir="false" afterPath="$PROJECT_DIR$/деталка.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -151,7 +150,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="scouts added and reff expanded with registration date" />
     <MESSAGE value="journey level was added" />
     <MESSAGE value="Periods table is replaced" />
     <MESSAGE value="Cities was fixed" />
@@ -176,6 +174,7 @@
     <MESSAGE value="was transaction or not logic change" />
     <MESSAGE value="a lot changes" />
     <MESSAGE value="created" />
-    <option name="LAST_COMMIT_MESSAGE" value="created" />
+    <MESSAGE value="better" />
+    <option name="LAST_COMMIT_MESSAGE" value="better" />
   </component>
 </project>

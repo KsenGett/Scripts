@@ -1,4 +1,5 @@
  SELECT
+        'Доставка',
         -- to select by company
         d.company_gk,
         j.journey_id,
@@ -7,7 +8,7 @@
 
         j.date_key,
         date_format(d.requested_schedule_time, '%T') scheduled_at,
-        date_format(d.started_at, '%T') started_at,
+        date_format(j.started_at, '%T') started_at,
         date_format(d.arrived_to_drop_off_at, '%T') arrived_to_drop_off_at,
         date_format(d.ended_at, '%T') complited,
 
@@ -42,8 +43,6 @@
                 when j.total_customer_amount_exc_vat < 0 then 'negative'
             end check_lable,
 
-        -- чтобы тип "Маршрут" "Доставка" потом поставить
-        row_number() over (partition by j.journey_id) for_type
 
 
 FROM model_delivery.dwh_fact_journeys_v AS j
@@ -124,6 +123,8 @@ AND d.company_gk NOT IN (20001999) -- Test company
 AND j.date_key between date'2021-07-01' and date'2021-07-31'
 
 and company_gk = 200023861
-and j.total_customer_amount_exc_vat <0
+and j.total_customer_amount_exc_vat >0
 
 order by journey_id
+
+limit 10
