@@ -14,8 +14,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1454d6a-225e-418a-a50e-11dccbcfa4c2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/деталка.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/деталка.sql" beforeDir="false" afterPath="$PROJECT_DIR$/деталка.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,7 +166,6 @@
     <MESSAGE value="Churned drivers fixed" />
     <MESSAGE value="Created" />
     <MESSAGE value="edits" />
-    <MESSAGE value="created" />
     <MESSAGE value="+scouts fleet" />
     <MESSAGE value="create" />
     <MESSAGE value="optimised" />
@@ -176,6 +175,7 @@
     <MESSAGE value="new changes" />
     <MESSAGE value="was transaction or not logic change" />
     <MESSAGE value="a lot changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="a lot changes" />
+    <MESSAGE value="created" />
+    <option name="LAST_COMMIT_MESSAGE" value="created" />
   </component>
 </project>
