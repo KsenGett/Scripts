@@ -49,12 +49,12 @@ return parcel key +- only nf
 select *--suspecious_reason_full, correction_check_type, platform,  count(order_gk)
     from
 (
-    /*
+/*
 Owner - Kozlova Kseniia
 Cube Name - Fraud orders corrections
 ID - 46126A9511EBD7F7266D0080EFC5586B
 */
-    with main_table as (
+with main_table as (
         with all_orders AS (
                 SELECT fo.date_key   AS    dates, date_diff('day', current_date,fo.date_key) days_ago,
                        fo.fleet_gk,
@@ -316,9 +316,7 @@ ID - 46126A9511EBD7F7266D0080EFC5586B
                                            then 'Price over 800'
 
                     when platform = 'NF' and (ride_duration_min <= 2)  then 'Short ride'
-                    when platform = 'NF' and ( (waiting_time >= 30 and waiting_cost_customer>200) -- 15 paid waiting time, 30 total
-                             or (waiting_cost_customer >= 350)) -- rear cases when WT less than 30 but expensive
-                            then 'long waiting time'
+                    when platform = 'NF' and waiting_cost_customer >= 300 then 'long waiting time'
                     when platform = 'NF' and not_delivered_NF >0 and logistic_company = False then 'not delivered'
 
                    when (gross_deliveries_NF < 2 or platform = 'OF') -- not aggregated
@@ -326,7 +324,7 @@ ID - 46126A9511EBD7F7266D0080EFC5586B
                             and ride_duration_min between 4 and 17 -- based on analysis
                             and (distance_between_dest_and_dropoff between 0.31 and 0.6) -- thr is got from analysis
                        then 'drop off 300m+ from destination'
-                        when platform = 'NF' and
+                        when platform = 'NF' and order_status_desc = 'Completed' and
                              coalesce(customer_total_cost_ex_vat,0) = 0 and driver_total_cost > 0
                             then 'customer zero'
                         when company_gk = 200023861 and order_status_desc = 'Completed' and platform = 'NF' -- VV
@@ -334,6 +332,17 @@ ID - 46126A9511EBD7F7266D0080EFC5586B
                                 and ((gross_deliveries_NF=1 and est_distance >3 and est_distance / pickup_dest_dist >=5)
                                          or (gross_deliveries_NF=1 and est_distance / pickup_dest_dist >= 3 and est_distance >= 8) --wrong est
                                          or buy_sell < -300) then 'VV dist'
+                        when platform = 'NF' and
+                            ((order_status_desc = 'Completed' and
+                             coalesce(customer_total_cost_ex_vat,0) > 0 and driver_total_cost = 0)
+                             )
+                            then 'driver zero'
+                        when platform = 'NF' and order_status_desc = 'Cancelled' and
+                             coalesce(customer_total_cost_ex_vat,0) > 0 and driver_gk = -1
+                             then 'cancellation bug'
+                        when platform = 'NF' and (coalesce(customer_total_cost_ex_vat,0) < 0
+                        or driver_total_cost < 0) then 'negative cost'
+
                    end)  suspecious_reason,
 
                (customer_total_cost_ex_vat > 800) or (driver_total_cost > 800) price_over800_tag,
@@ -429,12 +438,12 @@ null pickup_dest_dist,
     else suspecious_reason end) suspecious_reason_full,
 
     (case
-    when coalesce(suspecious_reason,'0') not in ('0','customer zero','VV dist')
+    when coalesce(suspecious_reason,'0') not in ('0','customer zero', 'VV dist','driver zero','cancellation bug','negative cost')
             or bkk.comment like '%время ожидания%Обратился:Водитель%' then 'Fraud'
-    when suspecious_reason in ('customer zero', 'VV dist')
+    when suspecious_reason in ('customer zero', 'VV dist','driver zero','cancellation bug','negative cost')
             or bkk.comment like '%доплату (вес)%' then 'correction check' end) correction_type,
 
-    (case when suspecious_reason in ('customer zero', 'VV dist') then suspecious_reason
+    (case when suspecious_reason in ('customer zero', 'VV dist','driver zero','cancellation bug','negative cost') then suspecious_reason
     when bkk.comment like '%доплату (вес)%' then 'weight payment' end) correction_check_type,
 
     case when suspecious_reason = 'VV dist' then 'Изменение стоимости за дистанцию. Новая дистанция ___' end correction_comment_vv
@@ -476,8 +485,10 @@ null pickup_dest_dist,
             or bkk.comment like '%доплату (вес)%')
         )
 )
-where days_ago = -3
-and suspecious_reason = 'VV dist'
+where days_ago >= -30
+and suspecious_reason in ('driver zero',
+'cancellation bug',
+'negative cost')
 --group by 1,2,3
 
 

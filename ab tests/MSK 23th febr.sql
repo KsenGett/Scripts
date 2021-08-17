@@ -343,3 +343,152 @@ left join AR as ar on ar.driver_gk = fo.driver_gk and ar.date_key = fo.date_key
 );
 
 
+/*
+Время на линии в часы промо 8-12 (историческое за неделю до старта СВР)
+Время на линии в часы промо 8-12 (историческое за неделю во время СВР с 5 по 9 августа)
+Победил (да/нет)?
+daily Orders
+GH
+AR
+FTR date
+Days Inactive
+*/
+
+
+with GH AS (
+    SELECT
+    fdh.driver_gk,
+    count(distinct CASE when fdh.driver_status_key IN (2, 4, 5, 6) then date_key end) days,
+
+    sum(CASE when fdh.driver_status_key IN (2, 4, 5, 6) THEN fdh.minutes_in_status ELSE 0 end)/60.0 AS gh,
+
+    sum(CASE when (fdh.date_key between date'2021-08-05' and date'2021-08-09') and hour_key between 8 and 12
+                    and fdh.driver_status_key IN (2, 4, 5, 6) THEN fdh.minutes_in_status ELSE 0 end)/60.0 AS gh_morning_promo,
+
+    count(distinct CASE when (fdh.date_key between date'2021-08-05' and date'2021-08-09') and hour_key between 8 and 12
+                    and fdh.driver_status_key IN (2, 4, 5, 6) THEN fdh.date_key end) AS gh_morning_promo_days,
+
+    sum(CASE when fdh.date_key < date'2021-08-05' and hour_key between 8 and 12
+                    and fdh.driver_status_key IN (2, 4, 5, 6) THEN fdh.minutes_in_status ELSE 0 end)/60.0 AS gh_morning_before_promo,
+
+    count(distinct CASE when fdh.date_key < date'2021-08-05' and hour_key between 8 and 12
+                    and fdh.driver_status_key IN (2, 4, 5, 6) THEN fdh.date_key end) AS gh_morning_before_promo_days,
+
+
+    sum(case when (fdh.date_key between dd.ltp_date_key - interval '14' day and dd.ltp_date_key)
+                    and fdh.driver_status_key IN (5, 6) THEN fdh.minutes_in_status ELSE 0 end)/60.0 in_ride
+
+    FROM emilia_gettdwh.dwh_fact_drivers_hourly_v fdh
+    left join emilia_gettdwh.dwh_dim_drivers_v dd on fdh.driver_gk = dd.driver_gk and dd.country_key = 2
+    left join emilia_gettdwh.dwh_dim_vendors_v fl on dd.fleet_gk = fl.vendor_gk
+
+     WHERE   1 = 1
+                --and fdh.date_key between current_date - interval '40' day and current_date
+                and fdh.country_key = 2
+                and dd.ltp_date_key >= current_date - interval '14' day
+                and fdh.date_key >= current_date - interval '14' day
+                and dd.is_courier = 1
+       --and dd.source_id = 563921
+        and dd.courier_type = 'car'
+                --and dd.source_id in ({dasha_dr})
+    GROUP BY 1
+    )
+
+, AR AS (
+    SELECT
+     fof.driver_gk,
+     SUM(CASE WHEN fof.Driver_Response_Key=1 THEN 1 ELSE 0 END) AS numerator, -- accepted
+
+    (SUM(CASE WHEN fof.Delivered_Datetime IS NOT NULL or fof.Driver_Response_Key=1 THEN 1 ELSE 0 END) --received
+           - SUM(CASE WHEN fof.Delivered_Datetime IS NOT NULL AND fof.Is_Withdrawned=1
+           AND fof.Driver_Response_Key<>1 THEN 1 ELSE 0 END) )  AS denominator
+
+    FROM emilia_gettdwh.dwh_fact_offers_v fof
+    left join emilia_gettdwh.dwh_dim_drivers_v dd on fof.driver_gk = dd.driver_gk and dd.country_key = 2
+     LEFT JOIN emilia_gettdwh.dwh_dim_class_types_v cl ON cl.class_type_key = fof.class_type_key
+    WHERE lob_key IN (5,6)
+    and dd.ltp_date_key >= current_date - interval '14' day
+      and fof.date_key >= current_date - interval '14' day
+    and dd.is_courier =1
+      and fof.country_key = 2
+      and fof.origin_order_location_key = 245
+    and dd.courier_type = 'car'
+    GROUP BY 1
+    )
+(
+select
+distinct source_id,
+dd.registration_date_key,
+dd.phone, dd.driver_name,
+dd.ltp_date_key, reftr.ftr_date,
+GH.*,
+AR.numerator, AR.denominator,
+fo.deliveries, fo.days
+
+from emilia_gettdwh.dwh_dim_drivers_v dd
+left join emilia_gettdwh.dwh_dim_vendors_v fl on dd.fleet_gk = fl.vendor_gk
+    left join --4 sec;
+      (
+            select driver_gk,
+            sum(coalesce(orders_OF,0) + coalesce(orders_NF, 0)) deliveries,
+            count(distinct case when coalesce(nullif(orders_OF,0), nullif(orders_NF,0)) <> 0 then date_key end) days
+
+            from
+            (
+            select
+            fo.date_key,
+            fo.driver_gk,
+            count(distinct case when
+                            (fo.date_key between dd.ltp_date_key - interval '14' day and dd.ltp_date_key) and
+                            ordering_corporate_account_gk <> 20004730 and ct.class_family <> 'Premium'
+                            then order_gk end) orders_OF,
+            count(distinct case when
+                            (fo.date_key between dd.ltp_date_key - interval '14' day and dd.ltp_date_key) and
+                            ordering_corporate_account_gk = 20004730 then order_gk end) orders_NF
+
+            from emilia_gettdwh.dwh_fact_orders_v fo
+            left join emilia_gettdwh.dwh_dim_class_types_v AS ct
+                ON ct.class_type_key = fo.class_type_key
+            left join "emilia_gettdwh"."dwh_dim_locations" l on fo.origin_location_key = l.location_key
+            left join emilia_gettdwh.dwh_dim_drivers_v dd on fo.driver_gk = dd.driver_gk and dd.country_key = 2
+            left join emilia_gettdwh.dwh_dim_vendors_v fl on dd.fleet_gk = fl.vendor_gk
+
+            where fo.lob_key in (5,6)
+            and order_status_key = 7
+            and fo.country_key = 2
+            and fo.origin_location_key = 245
+            and dd.is_courier = 1 and courier_type = 'car'
+            and fl.vendor_name like '%courier%'
+            and date_key >= current_date - interval '14' day
+
+            group by 1,2
+            )
+            group by 1
+
+        ) fo on fo.driver_gk = dd.driver_gk
+
+left join AR on dd.driver_gk = AR.driver_gk
+left join GH on dd.driver_gk = GH.driver_gk
+left join (select driver_gk, max(date_key) ftr_date
+from analyst.reftr_delivery where is_courier = 1 group by 1) reftr on reftr.driver_gk = dd.driver_gk
+
+where dd.country_key = 2
+and dd.is_courier = 1
+and fl.vendor_name like '%car%'
+and (fl.vendor_name like '%МСК%'
+        or fl.vendor_gk in (200010351, 200012868, 200010116,200013818,200010350)) -- only moscow fleets
+and dd.is_frozen <> 1
+and dd.ltp_date_key >= current_date - interval '14' day
+and dd.phone <> '8'
+
+);
+
+select *
+from analyst.delivery_leads
+where driver_gk = 20001524502
+
+
+
+
+
+select max(first_ftr) from analyst.delivery_leads
